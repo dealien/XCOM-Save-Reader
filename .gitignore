@@ -68,3 +68,6 @@ logs/
 saves/
 web/
 config.json
+/data.json
+/soldiers.csv
+/~$*.xlsx
