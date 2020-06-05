@@ -1,0 +1,1 @@
+Place your XCOM save files here, or copy scripts to your OpenXCOM folder to use

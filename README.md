@@ -1,1 +1,1 @@
-XCOMSoldierStats
+OpenXCOM Soldier Stats

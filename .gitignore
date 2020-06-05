@@ -68,6 +68,10 @@ logs/
 saves/
 web/
 config.json
+user/*
+!user/piratez
+user/piratez/*
+!/user/piratez/README.txt
 /data.json
 /soldiers.csv
 /~$*.xlsx
