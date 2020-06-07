@@ -1,6 +1,12 @@
 import csv
 import json
 import os
+import tkinter as tk
+import tkinter.ttk as ttk
+from tkinter import *
+from tkinter import filedialog
+from tkintertable import TableCanvas, TableModel
+
 
 import yaml
 
@@ -13,14 +19,12 @@ else:
 
 USERDIR = os.path.join(ROOTDIR, 'user')
 
-debugmode = False
+debugmode = True
+jsondump = False
 
 if debugmode is True:
     file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
 else:
-    import tkinter as tk
-    from tkinter import filedialog
-
     root = tk.Tk()
     root.withdraw()
 
@@ -28,14 +32,7 @@ else:
 
 
 class Soldier:
-    """ """
-
     def __init__(self, type, id, name, initialstats, currentstats, rank, missions, kills, base):
-        """
-        :param name: The name of the soldier
-        :param initialstats:
-        :param currentstats:
-        """
         self.type = type
         self.id = id
         self.name = name
@@ -48,13 +45,7 @@ class Soldier:
 
 
 class Stats:
-    """ """
-
     def __init__(self, stats):
-        """
-        :param stats:
-        """
-
         if type(stats) is list:
             self.tu = stats[0]
             self.stamina = stats[1]
@@ -128,7 +119,7 @@ with open(file_path, 'r') as file:
         except KeyError:
             pass
 
-if debugmode is True:
+if jsondump is True:
     print('Writing converted json data to "data.json"...')
     with open('data.json', 'w') as outfile:
         json.dump(data, outfile)
@@ -140,3 +131,79 @@ print('Writing CSV soldier list to "soldiers.csv"...')
 with open('soldiers.csv', 'w', newline='') as csvfile:
     wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
     wr.writerows(soldiercsv)
+
+
+# # Original ScrollableFrame class copied from https://blog.tecladocode.com/tkinter-scrollable-frames/
+# class ScrollableFrame(ttk.Frame):
+#     def __init__(self, container, *args, **kwargs):
+#         super().__init__(container, *args, **kwargs)
+#         canvas = tk.Canvas(self)
+#         scrollbary = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
+#         scrollbarx = ttk.Scrollbar(self, orient="horizontal", command=canvas.xview)
+#         self.scrollable_frame = ttk.Frame(canvas)
+#         self.scrollable_frame.bind(
+#                 "<Configure>",
+#                 lambda e: canvas.configure(
+#                         scrollregion=canvas.bbox("all")
+#                 )
+#         )
+#         canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+#         canvas.configure(yscrollcommand=scrollbary.set)
+#         canvas.configure(xscrollcommand=scrollbarx.set)
+#         scrollbarx.pack(side="bottom", fill="x")
+#         scrollbary.pack(side="right", fill="y")
+#         canvas.pack(side="left", fill="both", expand=True)
+#
+#
+# class ScrollableTable:
+#     def __init__(self, table_data):
+#         frame = ScrollableFrame(root)
+#
+#         for i in range(len(table_data)):
+#             for j in range(len(table_data[0])):
+#                 if i is 0:  # Bold the header row
+#                     self.e = Entry(frame.scrollable_frame, width=20, fg='black', font=('Arial', 12, 'bold'))
+#                 else:
+#                     self.e = Entry(frame.scrollable_frame, width=20, fg='black', font=('Arial', 12))
+#                 self.e.grid(row=i, column=j)
+#                 self.e.insert(END, table_data[i][j])
+#         frame.pack(fill="both", expand=True)
+#
+#
+# def create_gui():
+#     root.title("XCOM Soldier Viewer")
+#     width = 1600
+#     height = 900
+#     screen_width = root.winfo_screenwidth()
+#     screen_height = root.winfo_screenheight()
+#     x = (screen_width / 2) - (width / 2)
+#     y = (screen_height / 2) - (height / 2)
+#     root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+#     root.resizable(0, 0)
+#
+#     t = ScrollableTable(soldiercsv)
+
+
+def create_gui():
+    root.title("XCOM Soldier Viewer")
+    width = 1600
+    height = 900
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width / 2) - (width / 2)
+    y = (screen_height / 2) - (height / 2)
+    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    root.resizable(0, 0)
+
+    tframe = Frame(root)
+    tframe.pack(fill="both", expand=True)
+    table = TableCanvas(tframe, editable=False)
+    table.importCSV('soldiers.csv')
+    table.show()
+    table.update()
+
+
+root = Tk()
+
+create_gui()
+root.mainloop()
