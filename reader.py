@@ -7,7 +7,6 @@ from tkinter import *
 from tkinter import filedialog
 from tkintertable import TableCanvas, TableModel
 
-
 import yaml
 
 if os.name == 'posix':
@@ -42,6 +41,9 @@ class Soldier:
         self.missions = missions
         self.kills = kills
         self.base = base
+        # TODO: Add physical/psi training status
+        # TODO: Add current craft
+        # TODO: Add inventory and loadout info
 
 
 class Stats:
@@ -90,18 +92,46 @@ def read_soldiers(data_):
 
 
 def make_csv(soldiers_):
-    csvlist = [
-        ['ID', 'Base', 'Type', 'Name', 'Rank', 'Missions', 'Kills', 'TUs', 'Stamina', 'Health', 'Bravery', 'Reactions',
-         'Firing', 'Throwing', 'Strength', 'PsiStrength', 'PsiSkill', 'Initial TUs', 'Initial Stamina',
-         'Initial Health', 'Initial Bravery', 'Initial Reactions', 'Initial Firing', 'Initial Throwing',
-         'Initial Strength', 'Initial PsiStrength', 'Initial PsiSkill']]
+    headers = ['ID', 'Base', 'Type', 'Name', 'Rank', 'Missions', 'Kills', 'TUs', 'Stamina', 'Health', 'Bravery',
+               'Reactions', 'Firing', 'Throwing', 'Strength', 'PsiStrength', 'PsiSkill', 'Initial TUs',
+               'Initial Stamina', 'Initial Health', 'Initial Bravery', 'Initial Reactions', 'Initial Firing',
+               'Initial Throwing', 'Initial Strength', 'Initial PsiStrength', 'Initial PsiSkill']
+    csvlist = [headers]
     for i in soldiers_:
-        row = [i.id, i.base, i.type, i.name, i.rank, i.missions, i.kills, i.currentstats.tu, i.currentstats.stamina,
-               i.currentstats.health, i.currentstats.bravery, i.currentstats.reactions, i.currentstats.firing,
-               i.currentstats.throwing, i.currentstats.strength, i.currentstats.psistrength, i.currentstats.psiskill,
-               i.initialstats.tu, i.initialstats.stamina, i.initialstats.health, i.initialstats.bravery,
-               i.initialstats.reactions, i.initialstats.firing, i.initialstats.throwing, i.initialstats.strength,
-               i.initialstats.psistrength, i.initialstats.psiskill]
+        keys = {
+            'ID'                 : i.id,
+            'Base'               : i.base,
+            'Type'               : i.type,
+            'Name'               : i.name,
+            'Rank'               : i.rank,
+            'Missions'           : i.missions,
+            'Kills'              : i.kills,
+            'TUs'                : i.currentstats.tu,
+            'Stamina'            : i.currentstats.stamina,
+            'Health'             : i.currentstats.health,
+            'Bravery'            : i.currentstats.bravery,
+            'Reactions'          : i.currentstats.reactions,
+            'Firing'             : i.currentstats.firing,
+            'Throwing'           : i.currentstats.throwing,
+            'Strength'           : i.currentstats.strength,
+            'PsiStrength'        : i.currentstats.psistrength,
+            'PsiSkill'           : i.currentstats.psiskill,
+            'Initial TUs'        : i.initialstats.tu,
+            'Initial Stamina'    : i.initialstats.stamina,
+            'Initial Health'     : i.initialstats.health,
+            'Initial Bravery'    : i.initialstats.bravery,
+            'Initial Reactions'  : i.initialstats.reactions,
+            'Initial Firing'     : i.initialstats.firing,
+            'Initial Throwing'   : i.initialstats.throwing,
+            'Initial Strength'   : i.initialstats.strength,
+            'Initial PsiStrength': i.initialstats.psistrength,
+            'Initial PsiSkill'   : i.initialstats.psiskill
+        }
+        row = []
+        for j in headers:
+            print(f'j = {j}')
+            print(f'keys[j] = {keys[j]}')
+            row.append(keys[j])
         csvlist.append(row)
     return csvlist
 
