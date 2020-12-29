@@ -72,6 +72,6 @@ user/*
 !user/piratez
 user/piratez/*
 !/user/piratez/README.txt
-/data.json
+/soldiers.json
 /soldiers.csv
 /~$*.xlsx
