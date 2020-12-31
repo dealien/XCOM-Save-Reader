@@ -2,8 +2,6 @@ import csv
 import json
 import logging
 import os
-import tkinter as tk
-import tkinter.ttk as ttk
 from tkinter import *
 from tkinter import filedialog
 from tkintertable import TableCanvas, TableModel
@@ -20,18 +18,22 @@ USERDIR = os.path.join(ROOTDIR, 'user')
 
 # TODO: debug_mode and json_dump should become arguments
 debug_mode = True
-json_dump = True
+json_dump = False
+write_csv = False
 
-if debug_mode is True:
-    save_file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
-    l = logging.DEBUG
-else:
+if debug_mode is not True:
     save_file_path = filedialog.askopenfilename(initialdir=USERDIR)
-    l = logging.INFO
-logging.basicConfig(format='%(name)-4s: %(levelname)-8s [%(asctime)s]: %(message)s', level=l)
-
+    lvl = logging.INFO
+else:
+    save_file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
+    lvl = logging.DEBUG
+logging.basicConfig(format='%(name)-4s: %(levelname)-8s [%(asctime)s]: %(message)s', level=lvl)
 soldiers_json_file = 'soldiers.json'
 soldiers_csv_file = 'soldiers.csv'
+DEFAULT_HEADERS = ['ID', 'Base', 'Type', 'Name', 'Rank', 'Missions', 'Kills', 'TUs', 'Stamina', 'Health', 'Bravery',
+                   'Reactions', 'Firing', 'Throwing', 'Strength', 'PsiStrength', 'PsiSkill', 'Initial TUs',
+                   'Initial Stamina', 'Initial Health', 'Initial Bravery', 'Initial Reactions', 'Initial Firing',
+                   'Initial Throwing', 'Initial Strength', 'Initial PsiStrength', 'Initial PsiSkill']
 
 
 class Soldier:
@@ -49,6 +51,57 @@ class Soldier:
         # TODO: Add current craft
         # TODO: Add inventory and loadout info
         # TODO: Add service record info
+
+    @property
+    def soldier_dict(self):
+        return {
+            'ID': self.id,
+            'Base': self.base,
+            'Type': self.type,
+            'Name': self.name,
+            'Rank': self.rank,
+            'Missions': self.missions,
+            'Kills': self.kills,
+            'TUs': self.currentstats.tu,
+            'Stamina': self.currentstats.stamina,
+            'Health': self.currentstats.health,
+            'Bravery': self.currentstats.bravery,
+            'Reactions': self.currentstats.reactions,
+            'Firing': self.currentstats.firing,
+            'Throwing': self.currentstats.throwing,
+            'Strength': self.currentstats.strength,
+            'PsiStrength': self.currentstats.psistrength,
+            'PsiSkill': self.currentstats.psiskill,
+            'Initial TUs': self.initialstats.tu,
+            'Initial Stamina': self.initialstats.stamina,
+            'Initial Health': self.initialstats.health,
+            'Initial Bravery': self.initialstats.bravery,
+            'Initial Reactions': self.initialstats.reactions,
+            'Initial Firing': self.initialstats.firing,
+            'Initial Throwing': self.initialstats.throwing,
+            'Initial Strength': self.initialstats.strength,
+            'Initial PsiStrength': self.initialstats.psistrength,
+            'Initial PsiSkill': self.initialstats.psiskill
+        }
+
+    def table_list(self, headers: list = None):
+        """Generates a list from the soldier's data usable for csv or table creation.
+        :param headers:
+        :return:
+        """
+        if headers is None:
+            logging.warning('No headers specified; defaulting to all.')
+            headers = DEFAULT_HEADERS
+        keys = self.soldier_dict
+        row = []
+        for j in headers:
+            row.append(keys[j])
+        return row
+
+    @property
+    def table_record(self):
+        rec = self.soldier_dict
+        return rec
 
 
 class Stats:
@@ -82,6 +135,24 @@ class Stats:
                 self.strength, self.psistrength, self.psiskill]
 
 
+def read_save(file):
+    logging.info(f'Loading data from "{os.path.basename(save_file_path)}"...')
+    with open(file, 'r') as file:
+        for y in yaml.load_all(file, Loader=yaml.FullLoader):
+            try:
+                type(y['difficulty'])
+                _data = y
+            except KeyError:
+                pass
+    _soldiers = read_soldiers(_data)
+    _soldier_csv = make_csv(_soldiers)
+    if json_dump is True:
+        logging.info(f'Writing converted json data to "{soldiers_json_file}"...')
+        with open(soldiers_json_file, 'w') as outfile:
+            json.dump(_data, outfile)
+    return _soldiers, _soldier_csv
+
+
 def read_soldiers(_data):
     _soldiers = []
     logging.info('Reading soldier data...')
@@ -89,7 +160,7 @@ def read_soldiers(_data):
         logging.debug(f'Loading soldiers from {base["name"]}...')
         try:
             len(base['soldiers'])
-        except KeyError as e:
+        except KeyError:
             logging.debug(f'Base {base["name"]} has no soldiers; skipping...')
             pass
         else:
@@ -107,51 +178,30 @@ def read_soldiers(_data):
 
 def make_csv(_soldiers):
     logging.info('Creating CSV data...')
-    headers = ['ID', 'Base', 'Type', 'Name', 'Rank', 'Missions', 'Kills', 'TUs', 'Stamina', 'Health', 'Bravery',
-               'Reactions', 'Firing', 'Throwing', 'Strength', 'PsiStrength', 'PsiSkill', 'Initial TUs',
-               'Initial Stamina', 'Initial Health', 'Initial Bravery', 'Initial Reactions', 'Initial Firing',
-               'Initial Throwing', 'Initial Strength', 'Initial PsiStrength', 'Initial PsiSkill']
+    headers = DEFAULT_HEADERS
     csv_list = [headers]
     for i in _soldiers:
-        keys = {
-            'ID': i.id,
-            'Base': i.base,
-            'Type': i.type,
-            'Name': i.name,
-            'Rank': i.rank,
-            'Missions': i.missions,
-            'Kills': i.kills,
-            'TUs': i.currentstats.tu,
-            'Stamina': i.currentstats.stamina,
-            'Health': i.currentstats.health,
-            'Bravery': i.currentstats.bravery,
-            'Reactions': i.currentstats.reactions,
-            'Firing': i.currentstats.firing,
-            'Throwing': i.currentstats.throwing,
-            'Strength': i.currentstats.strength,
-            'PsiStrength': i.currentstats.psistrength,
-            'PsiSkill': i.currentstats.psiskill,
-            'Initial TUs': i.initialstats.tu,
-            'Initial Stamina': i.initialstats.stamina,
-            'Initial Health': i.initialstats.health,
-            'Initial Bravery': i.initialstats.bravery,
-            'Initial Reactions': i.initialstats.reactions,
-            'Initial Firing': i.initialstats.firing,
-            'Initial Throwing': i.initialstats.throwing,
-            'Initial Strength': i.initialstats.strength,
-            'Initial PsiStrength': i.initialstats.psistrength,
-            'Initial PsiSkill': i.initialstats.psiskill
-        }
-        row = []
-        for j in headers:
-            # logging.debug(f'j = {j}')
-            # logging.debug(f'keys[j] = {keys[j]}')
-            row.append(keys[j])
+        row = i.table_list(headers)
         csv_list.append(row)
+    # TODO: Make writing CSV to file optional
+    if write_csv is True:
+        logging.info(f'Writing CSV soldier list to "{soldiers_csv_file}"...')
+        with open(soldiers_csv_file, 'w', newline='') as csv_file:
+            wr = csv.writer(csv_file, quoting=csv.QUOTE_NONE)
+            wr.writerows(csv_list)
     return csv_list
 
 
-def create_soldier_table(csv_data):
+def make_table_dict(data):
+    """Given a list of soldiers, create a dict to use as a table model."""
+    table_dict = {}
+    for i in data:
+        table_dict[i.id] = i.table_record
+    return table_dict
+
+
+def create_soldier_table(data):
+    logging.debug('Creating table...')
     root.title("XCOM Soldier Viewer")
     width = 1600
     height = 900
@@ -161,12 +211,13 @@ def create_soldier_table(csv_data):
     y = (screen_height / 2) - (height / 2)
     root.geometry("%dx%d+%d+%d" % (width, height, x, y))
     root.resizable(1, 1)
-
     tframe = Frame(root)
     tframe.pack(fill="both", expand=True)
-    table = TableCanvas(tframe, read_only=True)
-    table.maxcellwidth = 800
-    table.importCSV(soldiers_csv_file)
+    model = TableModel()
+    model.importDict(make_table_dict(data))
+    table = TableCanvas(tframe, model=model, read_only=True, showkeynamesinheader=True)
+    # table.importCSV(soldiers_csv_file)
+    logging.info('Showing table...')
     table.show()
     table.adjustColumnWidths()
     table.autoResizeColumns()
@@ -174,34 +225,7 @@ def create_soldier_table(csv_data):
     table.update()
 
 
-def read_save(file):
-    logging.info(f'Loading data from "{os.path.basename(save_file_path)}"...')
-    with open(file, 'r') as file:
-        for y in yaml.load_all(file, Loader=yaml.FullLoader):
-            try:
-                type(y['difficulty'])
-                _data = y
-            except KeyError:
-                pass
-
-    _soldiers = read_soldiers(_data)
-    _soldier_csv = make_csv(_soldiers)
-
-    if json_dump is True:
-        logging.info(f'Writing converted json data to "{soldiers_json_file}"...')
-        with open(soldiers_json_file, 'w') as outfile:
-            json.dump(_data, outfile)
-
-    logging.info(f'Writing CSV soldier list to "{soldiers_csv_file}"...')
-    with open(soldiers_csv_file, 'w', newline='') as csv_file:
-        wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
-        wr.writerows(_soldier_csv)
-    return _soldiers, _soldier_csv
-
-
 root = Tk()
-data = ''
 soldiers, soldier_csv = read_save(save_file_path)
-create_soldier_table(soldier_csv)
-
+create_soldier_table(soldiers)
 root.mainloop()
