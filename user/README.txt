@@ -1,1 +1,1 @@
-Place your XCOM save files here, or copy scripts to your OpenXCOM folder to use
+Copy your XCOM save files in their respective subfolders here, or copy scripts to your OpenXCOM folder to use
