@@ -6,5 +6,5 @@ EXIT 0
 
 :noargs
 echo Expected two paths as arguments; switching to default paths.
-ROBOCOPY "%HomePath%\Desktop\Gaming\OpenXcom\XPiratez\user\piratez" "user\piratez" /MIR /XF README.txt
+ROBOCOPY "%HomePath%\Desktop\Gaming\OpenXcom\XPiratez\user\piratez" "..\user\piratez" /MIR /XF README.txt
 EXIT 0

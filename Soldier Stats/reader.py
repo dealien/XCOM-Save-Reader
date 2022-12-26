@@ -14,9 +14,9 @@ else:
     # Windows
     ROOTDIR = os.getcwd().replace(';', '')
 
-USERDIR = os.path.join(ROOTDIR, 'user')
+USERDIR = os.path.join(ROOTDIR, '../user')
 
-# TODO: debug_mode and json_dump should become arguments
+# TODO: debug_mode, json_dump, and write_csv should become arguments
 debug_mode = True
 json_dump = False
 write_csv = False
@@ -25,7 +25,7 @@ if debug_mode is not True:
     save_file_path = filedialog.askopenfilename(initialdir=USERDIR)
     lvl = logging.INFO
 else:
-    save_file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
+    save_file_path = os.path.join(ROOTDIR, '../user', 'piratez', '_quick_.asav')
     lvl = logging.DEBUG
 logging.basicConfig(format='%(name)-4s: %(levelname)-8s [%(asctime)s]: %(message)s', level=lvl)
 soldiers_json_file = 'soldiers.json'
@@ -34,6 +34,9 @@ DEFAULT_HEADERS = ['ID', 'Base', 'Type', 'Name', 'Rank', 'Missions', 'Kills', 'T
                    'Reactions', 'Firing', 'Throwing', 'Strength', 'PsiStrength', 'PsiSkill', 'Initial TUs',
                    'Initial Stamina', 'Initial Health', 'Initial Bravery', 'Initial Reactions', 'Initial Firing',
                    'Initial Throwing', 'Initial Strength', 'Initial PsiStrength', 'Initial PsiSkill']
+
+
+# TODO: Load language data from XCom installation to load soldier type names, etc.
 
 
 class Soldier:
@@ -86,7 +89,7 @@ class Soldier:
 
     def table_list(self, headers: list = None):
         """Generates a list from the soldier's data usable for csv or table creation.
-        :param headers:
+        :type headers: list
         :return:
         """
         if headers is None:
@@ -135,9 +138,9 @@ class Stats:
                 self.strength, self.psistrength, self.psiskill]
 
 
-def read_save(file):
+def read_save(file_to_read):
     logging.info(f'Loading data from "{os.path.basename(save_file_path)}"...')
-    with open(file, 'r') as file:
+    with open(file_to_read, 'r') as file:
         for y in yaml.load_all(file, Loader=yaml.FullLoader):
             try:
                 type(y['difficulty'])
@@ -154,6 +157,10 @@ def read_save(file):
 
 
 def read_soldiers(_data):
+    """
+    :type _data: dict
+    :return:
+    """
     _soldiers = []
     logging.info('Reading soldier data...')
     for base in _data['bases']:
@@ -177,13 +184,16 @@ def read_soldiers(_data):
 
 
 def make_csv(_soldiers):
+    """
+    :type _soldiers: list
+    :rtype: list
+    """
     logging.info('Creating CSV data...')
     headers = DEFAULT_HEADERS
     csv_list = [headers]
     for i in _soldiers:
         row = i.table_list(headers)
         csv_list.append(row)
-    # TODO: Make writing CSV to file optional
     if write_csv is True:
         logging.info(f'Writing CSV soldier list to "{soldiers_csv_file}"...')
         with open(soldiers_csv_file, 'w', newline='') as csv_file:
@@ -193,7 +203,11 @@ def make_csv(_soldiers):
 
 
 def make_table_dict(data):
-    """Given a list of soldiers, create a dict to use as a table model."""
+    """
+    :param data: A list of soldiers to put in the table
+    :type data: list
+    :return:
+    """
     table_dict = {}
     for i in data:
         table_dict[i.id] = i.table_record
@@ -201,6 +215,9 @@ def make_table_dict(data):
 
 
 def create_soldier_table(data):
+    """
+    :type data: list
+    """
     logging.debug('Creating table...')
     root.title("XCOM Soldier Viewer")
     width = 1600
@@ -211,11 +228,8 @@ def create_soldier_table(data):
     y = (screen_height / 2) - (height / 2)
     root.geometry("%dx%d+%d+%d" % (width, height, x, y))
     root.resizable(1, 1)
-    tframe = Frame(root)
     tframe.pack(fill="both", expand=True)
-    model = TableModel()
     model.importDict(make_table_dict(data))
-    table = TableCanvas(tframe, model=model, read_only=True, showkeynamesinheader=True)
     # table.importCSV(soldiers_csv_file)
     logging.info('Showing table...')
     table.show()
@@ -223,9 +237,26 @@ def create_soldier_table(data):
     table.autoResizeColumns()
     table.redraw()
     table.update()
+    return tframe, table, model
+
+
+def sort_table(col):
+    logging.debug("Sorting table by column: " + col)
+    table.sortTable(columnName=col)
+    table.redraw()
 
 
 root = Tk()
+tframe = Frame(root, relief=RAISED, borderwidth=1)
+model = TableModel()
+table = TableCanvas(tframe, model=model, read_only=True, showkeynamesinheader=True)
 soldiers, soldier_csv = read_save(save_file_path)
 create_soldier_table(soldiers)
+sort_column = StringVar(root)
+sort_column.set(DEFAULT_HEADERS[0])
+sort_selector = OptionMenu(root, sort_column, *DEFAULT_HEADERS, command=sort_table)
+sort_selector.pack(side=LEFT, padx=5, pady=5)
+# sort_button = Button(root, text="SORT", command=sort_table)
+# sort_button.pack()
+sort_table(sort_column.get())
 root.mainloop()
