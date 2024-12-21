@@ -1,1 +1,1 @@
-python reader.py
+python main.py

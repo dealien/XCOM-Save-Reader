@@ -6,29 +6,7 @@ import tkinter.ttk as ttk
 from tkinter import *
 from tkinter import filedialog
 from tkintertable import TableCanvas, TableModel
-
-
 import yaml
-
-if os.name == 'posix':
-    # Linux
-    ROOTDIR = os.path.abspath(os.curdir).replace(';', '')
-else:
-    # Windows
-    ROOTDIR = os.getcwd().replace(';', '')
-
-USERDIR = os.path.join(ROOTDIR, 'user')
-
-debugmode = True
-jsondump = False
-
-if debugmode is True:
-    file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
-else:
-    root = tk.Tk()
-    root.withdraw()
-
-    file_path = filedialog.askopenfilename(initialdir=USERDIR)
 
 
 class Soldier:
@@ -106,85 +84,60 @@ def make_csv(soldiers_):
     return csvlist
 
 
-data = ''
-soldiers = []
-soldiercsv = []
+def get_file_path():
+    if os.name == 'posix':
+        # Linux
+        ROOTDIR = os.path.abspath(os.curdir).replace(';', '')
+    else:
+        # Windows
+        ROOTDIR = os.getcwd().replace(';', '')
 
-print(f'Loading data from "{os.path.basename(file_path)}"...')
-with open(file_path, 'r') as file:
-    for y in yaml.load_all(file, Loader=yaml.FullLoader):
-        try:
-            type(y['difficulty'])
-            data = y
-        except KeyError:
-            pass
+    USERDIR = os.path.join(ROOTDIR, 'user')
 
-if jsondump is True:
-    print('Writing converted json data to "data.json"...')
-    with open('data.json', 'w') as outfile:
-        json.dump(data, outfile)
+    # TODO: Make debugmode and jsondump command line arguments
+    debugmode = False
+    jsondump = False
 
-soldiers = read_soldiers(data)
-soldiercsv = make_csv(soldiers)
+    if debugmode is True:
+        file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
+    else:
+        root = tk.Tk()
+        root.withdraw()
 
-print('Writing CSV soldier list to "soldiers.csv"...')
-with open('soldiers.csv', 'w', newline='') as csvfile:
-    wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-    wr.writerows(soldiercsv)
+        file_path = filedialog.askopenfilename(initialdir=USERDIR)
+    return file_path
 
 
-# # Original ScrollableFrame class copied from https://blog.tecladocode.com/tkinter-scrollable-frames/
-# class ScrollableFrame(ttk.Frame):
-#     def __init__(self, container, *args, **kwargs):
-#         super().__init__(container, *args, **kwargs)
-#         canvas = tk.Canvas(self)
-#         scrollbary = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
-#         scrollbarx = ttk.Scrollbar(self, orient="horizontal", command=canvas.xview)
-#         self.scrollable_frame = ttk.Frame(canvas)
-#         self.scrollable_frame.bind(
-#                 "<Configure>",
-#                 lambda e: canvas.configure(
-#                         scrollregion=canvas.bbox("all")
-#                 )
-#         )
-#         canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-#         canvas.configure(yscrollcommand=scrollbary.set)
-#         canvas.configure(xscrollcommand=scrollbarx.set)
-#         scrollbarx.pack(side="bottom", fill="x")
-#         scrollbary.pack(side="right", fill="y")
-#         canvas.pack(side="left", fill="both", expand=True)
-#
-#
-# class ScrollableTable:
-#     def __init__(self, table_data):
-#         frame = ScrollableFrame(root)
-#
-#         for i in range(len(table_data)):
-#             for j in range(len(table_data[0])):
-#                 if i is 0:  # Bold the header row
-#                     self.e = Entry(frame.scrollable_frame, width=20, fg='black', font=('Arial', 12, 'bold'))
-#                 else:
-#                     self.e = Entry(frame.scrollable_frame, width=20, fg='black', font=('Arial', 12))
-#                 self.e.grid(row=i, column=j)
-#                 self.e.insert(END, table_data[i][j])
-#         frame.pack(fill="both", expand=True)
-#
-#
-# def create_gui():
-#     root.title("XCOM Soldier Viewer")
-#     width = 1600
-#     height = 900
-#     screen_width = root.winfo_screenwidth()
-#     screen_height = root.winfo_screenheight()
-#     x = (screen_width / 2) - (width / 2)
-#     y = (screen_height / 2) - (height / 2)
-#     root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-#     root.resizable(0, 0)
-#
-#     t = ScrollableTable(soldiercsv)
+def load_data_from_yaml(file_path, jsondump=True):
+    data = ''
+    soldiers = []
+    soldiercsv = []
+
+    print(f'Loading data from "{os.path.basename(file_path)}"...')
+    with open(file_path, 'r') as file:
+        for y in yaml.load_all(file, Loader=yaml.FullLoader):
+            try:
+                type(y['difficulty'])
+                data = y
+            except KeyError:
+                pass
+
+    if jsondump is True:
+        print('Writing converted json data to "data.json"...')
+        with open('data.json', 'w') as outfile:
+            json.dump(data, outfile)
+
+    soldiers = read_soldiers(data)
+    soldiercsv = make_csv(soldiers)
+
+    print('Writing CSV soldier list to "soldiers.csv"...')
+    with open('soldiers.csv', 'w', newline='') as csvfile:
+        wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        wr.writerows(soldiercsv)
+    return data
 
 
-def create_gui():
+def create_gui(root):
     root.title("XCOM Soldier Viewer")
     width = 1600
     height = 900
@@ -201,9 +154,3 @@ def create_gui():
     table.importCSV('soldiers.csv')
     table.show()
     table.update()
-
-
-root = Tk()
-
-create_gui()
-root.mainloop()
