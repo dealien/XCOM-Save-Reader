@@ -1,13 +1,10 @@
-import tkinter as tk
-import tkinter.ttk as ttk
 from tkinter import *
-from tkinter import filedialog
-from tkintertable import TableCanvas, TableModel
 import reader
-from reader import *
 
+# Create the main tkinter window
 root = Tk()
+root.title("XCOM Soldier Viewer")
 
-load_data_from_yaml(get_file_path())
-reader.create_gui(root)
+data = reader.load_data_from_yaml(reader.get_file_path(), return_csv=True)
+table = reader.TableWindow(root, data)
 root.mainloop()

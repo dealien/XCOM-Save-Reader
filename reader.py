@@ -5,7 +5,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import *
 from tkinter import filedialog
-from tkintertable import TableCanvas, TableModel
+from tkinter import font as tkFont
 import yaml
 
 
@@ -95,11 +95,11 @@ def get_file_path():
     USERDIR = os.path.join(ROOTDIR, 'user')
 
     # TODO: Make debugmode and jsondump command line arguments
-    debugmode = False
-    jsondump = False
+    debugmode = True
+    jsondump = True
 
     if debugmode is True:
-        file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
+        file_path = os.path.join(ROOTDIR, 'user', 'x-com-files', '_quick_.asav')
     else:
         root = tk.Tk()
         root.withdraw()
@@ -108,7 +108,7 @@ def get_file_path():
     return file_path
 
 
-def load_data_from_yaml(file_path, jsondump=True):
+def load_data_from_yaml(file_path, jsondump=True, return_csv=False):
     data = ''
     soldiers = []
     soldiercsv = []
@@ -134,23 +134,63 @@ def load_data_from_yaml(file_path, jsondump=True):
     with open('soldiers.csv', 'w', newline='') as csvfile:
         wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
         wr.writerows(soldiercsv)
-    return data
+    if return_csv:
+        return soldiercsv
+    else:
+        return data
 
 
-def create_gui(root):
-    root.title("XCOM Soldier Viewer")
-    width = 1600
-    height = 900
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    x = (screen_width / 2) - (width / 2)
-    y = (screen_height / 2) - (height / 2)
-    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-    root.resizable(0, 0)
+def load_csv(tree, data):
+    # Define columns
+    tree["columns"] = data[0]
 
-    tframe = Frame(root)
-    tframe.pack(fill="both", expand=True)
-    table = TableCanvas(tframe, editable=False)
-    table.importCSV('soldiers.csv')
-    table.show()
-    table.update()
+    # Format columns
+    for col in data[0]:
+        tree.column(col, anchor="center")
+        tree.heading(col, text=col, anchor="center")
+
+    # Insert rows
+    for row in data[1:]:
+        tree.insert("", tk.END, values=row)
+
+
+def create_treeview(root, data):
+    columns = data[0]
+    tree = ttk.Treeview(root, columns=columns, show="headings")
+
+    # Set column headings
+    for col in columns:
+        tree.heading(col, text=col.upper())
+
+    # Insert data into the Treeview
+    for row in data[1:]:
+        tree.insert("", tk.END, values=row)
+
+    return tree
+
+
+def resize_columns(tree):
+    for col in tree["columns"]:
+        tree.column(col, width=tkFont.Font().measure(tree.heading(col, "text")))
+        for item in tree.get_children():
+            width = tkFont.Font().measure(tree.set(item, col))
+            if tree.column(col, 'width') < width:
+                tree.column(col, width=width)
+
+
+class TableWindow:
+    def __init__(self, root, data):
+        width = 1600
+        height = 900
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root.resizable(0, 0)
+
+        tframe = Frame(root)
+        tframe.pack(fill=tk.BOTH, expand=True)
+        tree = create_treeview(tframe, data)
+        resize_columns(tree)
+        tree.pack(fill=tk.BOTH, expand=True)

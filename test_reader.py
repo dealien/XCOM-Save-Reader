@@ -1,11 +1,3 @@
-from tokenize import String
-
-import pytest
-import csv
-import json
-import os
-import yaml
-
 from reader import *
 
 
@@ -37,42 +29,42 @@ def import_yaml(file_path):
 
 
 class TestReader:
-    def test_get_path(self):
+    def test_get_path(self, printer):
         """ Ensure get_path() is working """
         path = get_path()
-        print(path)
+        printer(path)
         assert isinstance(path, str), '"path" should be a string'
 
-    def test_import(self):
+    def test_import(self, printer):
         """ Ensure data is importing properly """
         imported_data = import_yaml(get_path())
         assert isinstance(imported_data, dict), 'imported_data should be a dict'
         assert 'bases' in imported_data, '"bases" key should be in imported_data'
 
-    def test_read_soldiers(self):
+    def test_read_soldiers(self, printer):
         """ Test the soldier reading functions """
         imported_data = import_yaml(get_path())
         yaml_data = load_data_from_yaml(get_path(), False)
-        # print(yaml_data)
+        # printer(yaml_data)
         soldier_list = read_soldiers(yaml_data)
-        # print(soldier_list)
+        # printer(soldier_list)
 
-    def test_read_soldiers_with_json_write(self):
+    def test_read_soldiers_with_json_write(self, printer):
         """ Test the soldier reading functions with json write enabled """
         imported_data = import_yaml(get_path())
-        yaml_data = load_data_from_yaml(get_path(), False)
+        yaml_data = load_data_from_yaml(get_path(), True)
         # print(yaml_data)
-        print(f'yaml_data type: {type(yaml_data)}')
-        print(f'yaml_data length: {len(yaml_data)}')
+        printer(f'yaml_data type: {type(yaml_data)}')
+        printer(f'yaml_data length: {len(yaml_data)}')
         soldier_list = read_soldiers(yaml_data)
         # print(soldier_list)
-        print(f'soldier_list type: {type(soldier_list)}')
-        print(f'soldier_list length: {len(soldier_list)}')
+        printer(f'soldier_list type: {type(soldier_list)}')
+        printer(f'soldier_list length: {len(soldier_list)}')
 
-    def test_make_csv(self):
+    def test_make_csv(self, printer):
         imported_data = import_yaml(get_path())
         yaml_data = load_data_from_yaml(get_path(), True)
         csv_data = make_csv(read_soldiers(yaml_data))
         # print(csv_data)
-        print(f'csv_data type: {type(csv_data)}')
-        print(f'csv_data length: {len(csv_data)}')
+        printer(f'csv_data type: {type(csv_data)}')
+        printer(f'csv_data length: {len(csv_data)}')
