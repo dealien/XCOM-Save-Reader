@@ -76,3 +76,8 @@ class TestReader:
         # print(csv_data)
         print(f'csv_data type: {type(csv_data)}')
         print(f'csv_data length: {len(csv_data)}')
+
+    def test_tkinter_install(self):
+        main_window = Tk()
+        print(f'Arial installed = {"Arial" in tkFont.families()}')
+        assert 'Arial' in tkFont.families()
