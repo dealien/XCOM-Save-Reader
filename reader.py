@@ -5,7 +5,6 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import *
 from tkinter import filedialog
-from tkintertable import TableCanvas, TableModel
 from tkinter import font as tkFont
 import yaml
 

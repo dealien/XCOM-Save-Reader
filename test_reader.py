@@ -1,11 +1,3 @@
-from tokenize import String
-
-import pytest
-import csv
-import json
-import os
-import yaml
-
 from reader import *
 
 
