@@ -99,7 +99,7 @@ def get_file_path():
     jsondump = True
 
     if debugmode is True:
-        file_path = os.path.join(ROOTDIR, 'user', 'piratez', '_quick_.asav')
+        file_path = os.path.join(ROOTDIR, 'user', 'x-com-files', '_quick_.asav')
     else:
         root = tk.Tk()
         root.withdraw()
