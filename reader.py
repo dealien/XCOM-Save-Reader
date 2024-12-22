@@ -188,7 +188,7 @@ class TableWindow:
         root.resizable(0, 0)
 
         tframe = Frame(root)
-        tframe.pack(fill="both", expand=True)
+        tframe.pack(fill=tk.BOTH, expand=True)
         tree = create_treeview(tframe, data)
         resize_columns(tree)
-        tree.pack(fill=tk.BOTH)
+        tree.pack(fill=tk.BOTH, expand=True)
