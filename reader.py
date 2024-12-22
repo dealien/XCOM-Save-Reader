@@ -109,7 +109,7 @@ def get_file_path():
     return file_path
 
 
-def load_data_from_yaml(file_path, jsondump=True):
+def load_data_from_yaml(file_path, jsondump=True, return_csv=False):
     data = ''
     soldiers = []
     soldiercsv = []
@@ -135,7 +135,10 @@ def load_data_from_yaml(file_path, jsondump=True):
     with open('soldiers.csv', 'w', newline='') as csvfile:
         wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
         wr.writerows(soldiercsv)
-    return soldiercsv
+    if return_csv:
+        return soldiercsv
+    else:
+        return data
 
 
 def load_csv(tree, data):

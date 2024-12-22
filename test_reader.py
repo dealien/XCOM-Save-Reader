@@ -60,7 +60,7 @@ class TestReader:
     def test_read_soldiers_with_json_write(self):
         """ Test the soldier reading functions with json write enabled """
         imported_data = import_yaml(get_path())
-        yaml_data = load_data_from_yaml(get_path(), False)
+        yaml_data = load_data_from_yaml(get_path(), True)
         # print(yaml_data)
         print(f'yaml_data type: {type(yaml_data)}')
         print(f'yaml_data length: {len(yaml_data)}')
