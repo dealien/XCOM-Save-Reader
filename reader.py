@@ -167,6 +167,15 @@ def create_treeview(root, data):
     return tree
 
 
+def resize_columns(tree):
+    for col in tree["columns"]:
+        tree.column(col, width=tkFont.Font().measure(tree.heading(col, "text")))
+        for item in tree.get_children():
+            width = tkFont.Font().measure(tree.set(item, col))
+            if tree.column(col, 'width') < width:
+                tree.column(col, width=width)
+
+
 class TableWindow:
     def __init__(self, root, data):
         width = 1600
@@ -180,5 +189,6 @@ class TableWindow:
 
         tframe = Frame(root)
         tframe.pack(fill="both", expand=True)
-        tree = create_treeview(tframe,data)
+        tree = create_treeview(tframe, data)
+        resize_columns(tree)
         tree.pack(fill=tk.BOTH)
