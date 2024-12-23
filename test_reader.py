@@ -44,7 +44,7 @@ class TestReader:
     def test_read_soldiers(self, printer):
         """ Test the soldier reading functions """
         imported_data = import_yaml(get_path())
-        yaml_data = load_data_from_yaml(get_path(), False)
+        yaml_data = load_data_from_yaml(get_path(), json_dump=False, debug_mode=True)
         # printer(yaml_data)
         soldier_list = read_soldiers(yaml_data)
         # printer(soldier_list)
@@ -52,7 +52,7 @@ class TestReader:
     def test_read_soldiers_with_json_write(self, printer):
         """ Test the soldier reading functions with json write enabled """
         imported_data = import_yaml(get_path())
-        yaml_data = load_data_from_yaml(get_path(), True)
+        yaml_data = load_data_from_yaml(get_path(), json_dump=False, debug_mode=True)
         # print(yaml_data)
         printer(f'yaml_data type: {type(yaml_data)}')
         printer(f'yaml_data length: {len(yaml_data)}')
@@ -63,7 +63,7 @@ class TestReader:
 
     def test_make_csv(self, printer):
         imported_data = import_yaml(get_path())
-        yaml_data = load_data_from_yaml(get_path(), True)
+        yaml_data = load_data_from_yaml(get_path(), json_dump=False, debug_mode=True)
         csv_data = make_csv(read_soldiers(yaml_data))
         # print(csv_data)
         printer(f'csv_data type: {type(csv_data)}')
