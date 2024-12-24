@@ -2,7 +2,7 @@ name: XCOM Files
 version: Extended 7.14
 engine: Extended
 build: " (v2024-08-31)"
-time: {second: 55, minute: 1, hour: 0, weekday: 2, day: 21, month: 7, year: 1997}
+time: {second: 35, minute: 0, hour: 0, weekday: 2, day: 4, month: 8, year: 1997}
 mods:
   - "x-com-files ver: 3.4.1"
   - "StatstringsRoles ver: 1.0"
@@ -12,12 +12,12 @@ mods:
 ---
 difficulty: 2
 end: 0
-monthsPassed: 7
-daysPassed: 125
+monthsPassed: 8
+daysPassed: 139
 graphRegionToggles: 1111111111111110
 graphCountryToggles: 111111111111111100000000000000000000000000000000000000000000000000000000000000
 graphFinanceToggles: 00001
-rng: 14643450185527776870
+rng: 7036465223746980585
 funds:
   - 1756180
   - 1363245
@@ -26,7 +26,8 @@ funds:
   - 1049535
   - 477687
   - 1704156
-  - 1666643
+  - 2489472
+  - 2491402
 maintenance:
   - 496000
   - 707000
@@ -35,6 +36,7 @@ maintenance:
   - 1221000
   - 1285200
   - 1274400
+  - 1260400
   - 0
 userNotes:
   []
@@ -217,6 +219,44 @@ geoscapeDebugLog:
   - "gameTime: 1997-07-19 09:30:00 siteId: 9 siteType: STR_CULT_INVESTIGATION race: STR_ZSRR region: STR_SIBERIA deployment: STR_CULT_INVESTIGATION_ZSRR missionId: 114 missionType: STR_CULT_INVESTIGATION_ZSRR"
   - "gameTime: 1997-07-19 12:30:00 siteId: 28 siteType: STR_MONSTER_HUNT race: STR_WEREWOLF region: STR_EUROPE deployment: STR_MONSTERS_HUNT_SINGLE_TEMPERATE missionId: 107 missionType: STR_MONSTERS_HUNT_SINGLE_TEMPERATE"
   - "gameTime: 1997-07-20 18:00:00 siteId: 29 siteType: STR_MONSTER_HUNT race: STR_MUCKSTAR region: STR_EUROPE deployment: STR_MONSTERS_HUNT_PACK_TEMPERATE missionId: 110 missionType: STR_MONSTERS_HUNT_PACK_TEMPERATE"
+  - "gameTime: 1997-07-21 08:00:00 siteId: 55 siteType: STR_CULT_APPREHENSION race: STR_EXALT region: STR_SOUTH_AMERICA city: STR_BELEM deployment: STR_CULT_APPREHENSION_EXALT missionId: 101 missionType: STR_CULT_APPREHENSION_EXALT"
+  - "gameTime: 1997-07-21 11:30:00 siteId: 30 siteType: STR_MONSTER_HUNT race: STR_WEREWOLF region: STR_EUROPE deployment: STR_MONSTERS_HUNT_SINGLE_COLD missionId: 109 missionType: STR_MONSTERS_HUNT_SINGLE_COLD"
+  - "gameTime: 1997-07-22 11:00:00 siteId: 1 siteType: STR_ARACHNOQUAKE race: STR_GIANT_SPIDER region: STR_NORTH_AMERICA city: STR_SALTLAKECITY deployment: STR_ARACHNOQUAKE_SURFACE missionId: 118 missionType: STR_ARACHNOQUAKE"
+  - "gameTime: 1997-07-22 14:00:00 siteId: 31 siteType: STR_MONSTER_HUNT race: STR_WERECAT region: STR_SOUTH_AMERICA deployment: STR_MONSTERS_HUNT_FEW_JUNGLE missionId: 108 missionType: STR_MONSTERS_HUNT_FEW_JUNGLE"
+  - "gameTime: 1997-07-23 09:30:00 siteId: 32 siteType: STR_MONSTER_HUNT race: STR_GIANT_RAT region: STR_SOUTH_EAST_ASIA deployment: STR_MONSTERS_HUNT_SEVERAL_TEMPERATE missionId: 116 missionType: STR_MONSTERS_HUNT_SEVERAL_TEMPERATE"
+  - "gameTime: 1997-07-23 17:30:00 siteId: 56 siteType: STR_CULT_APPREHENSION race: STR_EXALT region: STR_SOUTH_AMERICA city: STR_SANTIAGO deployment: STR_CULT_BAND_EXALT missionId: 102 missionType: STR_CULT_BAND_EXALT"
+  - "gameTime: 1997-07-25 13:30:00 siteId: 3 siteType: STR_ZOMBIE_INFESTATION race: STR_ZOMBIE_STERILE region: STR_NORTH_AFRICA deployment: STR_ZOMBIE_INFESTATION_BASIC missionId: 117 missionType: STR_ZOMBIE_INFESTATION_BASIC"
+  - "gameTime: 1997-07-25 14:00:00 siteId: 10 siteType: STR_CULT_INVESTIGATION race: STR_BLACK_LOTUS region: STR_AUSTRALASIA deployment: STR_CULT_INVESTIGATION_BLACK_LOTUS missionId: 115 missionType: STR_CULT_INVESTIGATION_BLACK_LOTUS"
+  - "gameTime: 1997-07-26 18:30:00 siteId: 11 siteType: STR_CULT_INVESTIGATION race: STR_CHURCH_OF_DAGON region: STR_EUROPE deployment: STR_CULT_INVESTIGATION_CHURCH_OF_DAGON missionId: 112 missionType: STR_CULT_INVESTIGATION_CHURCH_OF_DAGON"
+  - "month: 8 script: CultApprehensionLotus id: 119 type: STR_CULT_APPREHENSION_BLACK_LOTUS race: STR_BLACK_LOTUS region: STR_SOUTH_EAST_ASIA targetZone: 3 targetArea: 23"
+  - "month: 8 script: CultApprehensionEXALT id: 120 type: STR_CULT_APPREHENSION_EXALT race: STR_EXALT region: STR_NORTH_AMERICA targetZone: 3 targetArea: 47"
+  - "month: 8 script: CultApprehensionDagon1 id: 121 type: STR_CULT_APPREHENSION_CHURCH_OF_DAGON race: STR_CHURCH_OF_DAGON region: STR_SOUTHERN_AFRICA targetZone: 3 targetArea: 16"
+  - "month: 8 script: CultApprehensionZSRR1 id: 122 type: STR_CULT_APPREHENSION_ZSRR race: STR_ZSRR region: STR_SIBERIA targetZone: 3 targetArea: 5"
+  - "month: 8 script: CultBandLotusConstant id: 123 type: STR_CULT_BAND_BLACK_LOTUS race: STR_BLACK_LOTUS region: STR_SOUTH_EAST_ASIA targetZone: 3 targetArea: 10"
+  - "month: 8 script: CultBandLotusConstant1 id: 124 type: STR_CULT_BAND_BLACK_LOTUS race: STR_BLACK_LOTUS region: STR_AUSTRALASIA targetZone: 3 targetArea: 1"
+  - "month: 8 script: CultBandDagonConstant1 id: 125 type: STR_CULT_BAND_CHURCH_OF_DAGON race: STR_CHURCH_OF_DAGON region: STR_EUROPE targetZone: 3 targetArea: 29"
+  - "month: 8 script: CultBandDagon3 id: 126 type: STR_CULT_BAND_CHURCH_OF_DAGON race: STR_CHURCH_OF_DAGON region: STR_SOUTHERN_AFRICA targetZone: 3 targetArea: 3"
+  - "month: 8 script: CultBandEXALT3 id: 127 type: STR_CULT_BAND_EXALT race: STR_EXALT region: STR_SOUTH_AMERICA targetZone: 3 targetArea: 16"
+  - "month: 8 script: CultBandZSRR3 id: 128 type: STR_CULT_BAND_ZSRR race: STR_ZSRR region: STR_ARCTIC targetZone: 3 targetArea: 1"
+  - "month: 8 script: CultSuppressionZSRRA id: 129 type: STR_CULT_SUPPRESSION_ZSRR race: STR_ZSRR region: STR_SIBERIA targetZone: 3 targetArea: 2"
+  - "month: 8 script: CultActivityZSRR id: 130 type: STR_CULT_INVESTIGATION_ZSRR race: STR_ZSRR region: STR_ARCTIC targetZone: 6 targetArea: 4"
+  - "month: 8 script: MonsterHuntSeveralTemperate id: 131 type: STR_MONSTERS_HUNT_SEVERAL_TEMPERATE race: STR_GIANT_BEETLE region: STR_SOUTH_EAST_ASIA targetZone: 1 targetArea: 13"
+  - "month: 8 script: MonsterHuntSeveralCold2 id: 132 type: STR_MONSTERS_HUNT_SEVERAL_COLD race: STR_ZOMBIE_STERILE region: STR_ARCTIC targetZone: 15 targetArea: 14"
+  - "month: 8 script: MonsterHuntLotsJungle3 id: 133 type: STR_MONSTERS_HUNT_LOTS_JUNGLE race: STR_ASMODEAN_COBRA region: STR_SOUTH_AMERICA targetZone: 13 targetArea: 1"
+  - "month: 8 script: MonsterHunFewCold5 id: 134 type: STR_MONSTERS_HUNT_FEW_COLD race: STR_MONGORN region: STR_ARCTIC targetZone: 15 targetArea: 8"
+  - "month: 8 script: CultActivityDagon7 id: 135 type: STR_CULT_INVESTIGATION_CHURCH_OF_DAGON race: STR_CHURCH_OF_DAGON region: STR_EUROPE targetZone: 6 targetArea: 3"
+  - "month: 8 script: ZombieInfestationBasic id: 136 type: STR_ZOMBIE_INFESTATION_BASIC race: STR_ZOMBIE_STERILE region: STR_NORTH_AFRICA targetZone: 6 targetArea: 15"
+  - "month: 8 script: ZombieInfestationBasic2 id: 137 type: STR_ZOMBIE_INFESTATION_BASIC race: STR_ZOMBIE_STERILE region: STR_NORTH_ATLANTIC targetZone: 6 targetArea: 25"
+  - "month: 8 script: cropCirclesMiB2 id: 138 type: STR_CROP_CIRCLES_MIB race: STR_MIB region: STR_EUROPE targetZone: 1 targetArea: 4"
+  - "month: 8 script: cropCirclesZombie1 id: 139 type: STR_CROP_CIRCLES_ZOMBIE race: STR_ZOMBIE_STERILE region: STR_SOUTH_EAST_ASIA targetZone: 1 targetArea: 2"
+  - "month: 8 script: cropCircles1 id: 140 type: STR_CROP_CIRCLES race: STR_FARMER region: STR_SOUTH_AMERICA targetZone: 1 targetArea: 9"
+  - "month: 8 script: leagueApprehensionEarly id: 141 type: STR_LEAGUE_APPREHENSION race: STR_LEAGUE region: STR_CENTRAL_ASIA targetZone: 3 targetArea: 7"
+  - "month: 8 script: DimensionXParty id: 142 type: STR_DIMENSION_X_PARTY race: STR_ANTHROPOD region: STR_SOUTH_EAST_ASIA targetZone: 6 targetArea: 18"
+  - "gameTime: 1997-08-01 00:00:00 eventSpawn: STR_UNTANGLING_THE_RED_TAPE days/hours: 9/19"
+  - "gameTime: 1997-08-01 00:00:00 eventSpawn: STR_MONEY_PRIZE days/hours: 21/22"
+  - "gameTime: 1997-08-02 22:30:00 siteId: 57 siteType: STR_CULT_APPREHENSION race: STR_BLACK_LOTUS region: STR_SOUTH_EAST_ASIA city: STR_SAPPORO deployment: STR_CULT_APPREHENSION_BLACK_LOTUS missionId: 119 missionType: STR_CULT_APPREHENSION_BLACK_LOTUS"
+  - "gameTime: 1997-08-03 08:30:00 siteId: 33 siteType: STR_MONSTER_HUNT race: STR_MONGORN region: STR_ARCTIC deployment: STR_MONSTERS_HUNT_FEW_COLD missionId: 134 missionType: STR_MONSTERS_HUNT_FEW_COLD"
+  - "gameTime: 1997-08-03 20:00:00 siteId: 58 siteType: STR_CULT_APPREHENSION race: STR_CHURCH_OF_DAGON region: STR_EUROPE city: STR_ANTALYA deployment: STR_CULT_BAND_CHURCH_OF_DAGON missionId: 125 missionType: STR_CULT_BAND_CHURCH_OF_DAGON"
 researchScores:
   - 42
   - 988
@@ -225,7 +265,8 @@ researchScores:
   - 615
   - 734
   - 571
-  - 712
+  - 1201
+  - 5
 incomes:
   - 1214000
   - 1366784
@@ -234,7 +275,8 @@ incomes:
   - 1924015
   - 1687130
   - 2485869
-  - 2017537
+  - 2682798
+  - 1929930
 expenditures:
   - 175820
   - 1548719
@@ -243,30 +285,32 @@ expenditures:
   - 1744000
   - 2330778
   - 1445200
-  - 1407450
+  - 1917482
+  - 1260400
 warned: false
 togglePersonalLight: true
 toggleNightVision: false
 toggleBrightness: 0
-globeLon: 0.60609227397090915
-globeLat: -0.70247268343020453
+globeLon: -1.6641839196377399
+globeLat: -0.83879960118314834
 globeZoom: 0
 ids:
-  ALIEN_MISSIONS: 119
+  ALIEN_MISSIONS: 143
+  STR_ARACHNOQUAKE: 2
   STR_BARN_OF_GORE: 2
   STR_CIVILIAN_CAR: 3
   STR_CROP_CIRCLES: 6
-  STR_CULT_APPREHENSION: 55
-  STR_CULT_INVESTIGATION: 10
+  STR_CULT_APPREHENSION: 59
+  STR_CULT_INVESTIGATION: 12
   STR_DEAD_CATTLE: 8
   STR_HELICOPTER: 2
   STR_LUXURY_CAR: 3
-  STR_MONSTER_HUNT: 30
+  STR_MONSTER_HUNT: 34
   STR_MONSTER_VS_MILITARY: 2
   STR_MUDRANGER: 2
-  STR_SOLDIER: 52
-  STR_VAN: 2
-  STR_ZOMBIE_INFESTATION: 3
+  STR_SOLDIER: 54
+  STR_VAN: 3
+  STR_ZOMBIE_INFESTATION: 4
   STR_ZSRR_GANG_WAR: 2
 countries:
   - type: STR_USA
@@ -279,6 +323,7 @@ countries:
       - 56000
       - 61000
       - 61000
+      - 71000
     activityXcom:
       - -6
       - 170
@@ -287,8 +332,10 @@ countries:
       - 69
       - 35
       - 28
-      - 74
+      - 510
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -307,6 +354,7 @@ countries:
       - 66000
       - 69000
       - 69000
+      - 77000
     activityXcom:
       - 0
       - 219
@@ -316,7 +364,9 @@ countries:
       - 14
       - 7
       - 14
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -335,6 +385,7 @@ countries:
       - 35000
       - 35000
       - 35000
+      - 38000
     activityXcom:
       - 0
       - 0
@@ -344,7 +395,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -363,6 +416,7 @@ countries:
       - 49000
       - 55000
       - 55000
+      - 58000
     activityXcom:
       - 0
       - 0
@@ -372,7 +426,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -391,6 +447,7 @@ countries:
       - 56000
       - 65000
       - 65000
+      - 72000
     activityXcom:
       - 0
       - 0
@@ -400,7 +457,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -419,6 +478,7 @@ countries:
       - 11000
       - 12000
       - 12000
+      - 14000
     activityXcom:
       - 0
       - 0
@@ -428,7 +488,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -447,6 +509,7 @@ countries:
       - 20000
       - 22000
       - 22000
+      - 26000
     activityXcom:
       - 0
       - 0
@@ -456,7 +519,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -475,6 +540,7 @@ countries:
       - 14000
       - 15000
       - 17000
+      - 18000
     activityXcom:
       - 0
       - 0
@@ -484,7 +550,9 @@ countries:
       - 0
       - 164
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -503,6 +571,7 @@ countries:
       - 22000
       - 22000
       - 22000
+      - 24000
     activityXcom:
       - 0
       - 0
@@ -511,6 +580,7 @@ countries:
       - 0
       - 0
       - 0
+      - -115
       - 0
     activityAlien:
       - 0
@@ -520,6 +590,7 @@ countries:
       - 0
       - 200
       - 200
+      - 0
       - 0
   - type: STR_CHINA
     funding:
@@ -531,6 +602,7 @@ countries:
       - 19000
       - 20000
       - 20000
+      - 22000
     activityXcom:
       - 0
       - 0
@@ -540,7 +612,9 @@ countries:
       - 8
       - 0
       - 20
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -559,6 +633,7 @@ countries:
       - 94000
       - 112000
       - 112000
+      - 122000
     activityXcom:
       - 0
       - 0
@@ -568,7 +643,9 @@ countries:
       - 0
       - 0
       - 0
+      - 8
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -587,6 +664,7 @@ countries:
       - 13000
       - 15000
       - 15000
+      - 17000
     activityXcom:
       - 0
       - 0
@@ -596,7 +674,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -615,6 +695,7 @@ countries:
       - 57000
       - 60000
       - 65000
+      - 70000
     activityXcom:
       - 0
       - 0
@@ -623,8 +704,10 @@ countries:
       - 0
       - 44
       - 20
+      - 58
       - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -643,6 +726,7 @@ countries:
       - 30000
       - 33000
       - 33000
+      - 37000
     activityXcom:
       - 0
       - 0
@@ -652,10 +736,12 @@ countries:
       - 20
       - 0
       - 0
+      - 0
     activityAlien:
       - 0
       - 250
       - 150
+      - 0
       - 0
       - 0
       - 0
@@ -671,6 +757,7 @@ countries:
       - 34000
       - 38000
       - 38000
+      - 41000
     activityXcom:
       - 0
       - 0
@@ -680,7 +767,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -699,6 +788,7 @@ countries:
       - 47000
       - 49000
       - 49000
+      - 57000
     activityXcom:
       - 0
       - 0
@@ -708,7 +798,9 @@ countries:
       - 0
       - 0
       - 4
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -727,6 +819,7 @@ countries:
       - 11000
       - 12000
       - 12000
+      - 13000
     activityXcom:
       - 0
       - 8
@@ -736,7 +829,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -755,6 +850,7 @@ countries:
       - 16000
       - 18000
       - 18000
+      - 20000
     activityXcom:
       - 0
       - 0
@@ -764,7 +860,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -783,6 +881,7 @@ countries:
       - 23000
       - 19000
       - 18000
+      - 21000
     activityXcom:
       - -8
       - 0
@@ -792,7 +891,9 @@ countries:
       - -124
       - -49
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -811,6 +912,7 @@ countries:
       - 17000
       - 18000
       - 18000
+      - 19000
     activityXcom:
       - 0
       - 0
@@ -820,7 +922,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -839,6 +943,7 @@ countries:
       - 33000
       - 38000
       - 38000
+      - 43000
     activityXcom:
       - 0
       - 0
@@ -848,7 +953,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -867,6 +974,7 @@ countries:
       - 9000
       - 10000
       - 10000
+      - 11000
     activityXcom:
       - 0
       - 0
@@ -876,7 +984,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -895,6 +1005,7 @@ countries:
       - 6000
       - 7000
       - 7000
+      - 8000
     activityXcom:
       - 0
       - 0
@@ -903,8 +1014,10 @@ countries:
       - 0
       - 0
       - 8
+      - 118
       - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -923,6 +1036,7 @@ countries:
       - 6000
       - 7000
       - 7000
+      - 8000
     activityXcom:
       - 0
       - 0
@@ -932,7 +1046,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -951,6 +1067,7 @@ countries:
       - 5000
       - 6000
       - 6000
+      - 7000
     activityXcom:
       - 0
       - 0
@@ -960,7 +1077,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -979,6 +1098,7 @@ countries:
       - 22000
       - 23000
       - 23000
+      - 24000
     activityXcom:
       - 0
       - 0
@@ -988,7 +1108,9 @@ countries:
       - 4
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1007,6 +1129,7 @@ countries:
       - 19000
       - 21000
       - 21000
+      - 23000
     activityXcom:
       - 0
       - 25
@@ -1016,7 +1139,9 @@ countries:
       - 30
       - 7
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1035,6 +1160,7 @@ countries:
       - 4000
       - 5000
       - 5000
+      - 6000
     activityXcom:
       - 0
       - 0
@@ -1044,7 +1170,9 @@ countries:
       - 0
       - 0
       - 14
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1063,6 +1191,7 @@ countries:
       - 5000
       - 6000
       - 6000
+      - 7000
     activityXcom:
       - 0
       - 0
@@ -1072,7 +1201,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1091,6 +1222,7 @@ countries:
       - 14000
       - 16000
       - 16000
+      - 18000
     activityXcom:
       - 0
       - 112
@@ -1100,7 +1232,9 @@ countries:
       - 0
       - 0
       - 65
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1119,6 +1253,7 @@ countries:
       - 30000
       - 36000
       - 36000
+      - 40000
     activityXcom:
       - 0
       - 0
@@ -1128,7 +1263,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1147,6 +1284,7 @@ countries:
       - 38000
       - 40000
       - 40000
+      - 45000
     activityXcom:
       - 0
       - 16
@@ -1156,7 +1294,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1175,6 +1315,7 @@ countries:
       - 30000
       - 30000
       - 30000
+      - 33000
     activityXcom:
       - 0
       - 0
@@ -1184,7 +1325,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1203,6 +1346,7 @@ countries:
       - 37000
       - 40000
       - 40000
+      - 44000
     activityXcom:
       - 0
       - 0
@@ -1212,7 +1356,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1231,6 +1377,7 @@ countries:
       - 42000
       - 48000
       - 48000
+      - 56000
     activityXcom:
       - 0
       - 0
@@ -1240,7 +1387,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1259,6 +1408,7 @@ countries:
       - 32000
       - 36000
       - 36000
+      - 39000
     activityXcom:
       - 0
       - 0
@@ -1268,7 +1418,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1287,6 +1439,7 @@ countries:
       - 25000
       - 26000
       - 26000
+      - 29000
     activityXcom:
       - 0
       - 0
@@ -1296,7 +1449,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1315,6 +1470,7 @@ countries:
       - 21000
       - 24000
       - 24000
+      - 25000
     activityXcom:
       - 0
       - 0
@@ -1324,7 +1480,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1343,6 +1501,7 @@ countries:
       - 22000
       - 25000
       - 25000
+      - 27000
     activityXcom:
       - 0
       - 6
@@ -1352,7 +1511,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1371,6 +1532,7 @@ countries:
       - 42000
       - 42000
       - 42000
+      - 45000
     activityXcom:
       - 0
       - 0
@@ -1380,7 +1542,9 @@ countries:
       - 0
       - 0
       - 10
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1399,6 +1563,7 @@ countries:
       - 20000
       - 24000
       - 24000
+      - 25000
     activityXcom:
       - 0
       - 0
@@ -1408,7 +1573,9 @@ countries:
       - 0
       - 5
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1427,6 +1594,7 @@ countries:
       - 46000
       - 54000
       - 54000
+      - 57000
     activityXcom:
       - 0
       - 0
@@ -1436,7 +1604,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1455,6 +1625,7 @@ countries:
       - 40000
       - 46000
       - 46000
+      - 49000
     activityXcom:
       - 0
       - 0
@@ -1464,7 +1635,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1483,6 +1656,7 @@ countries:
       - 4000
       - 5000
       - 5000
+      - 6000
     activityXcom:
       - 0
       - 0
@@ -1492,7 +1666,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1511,6 +1687,7 @@ countries:
       - 35000
       - 37000
       - 37000
+      - 41000
     activityXcom:
       - 0
       - 80
@@ -1519,8 +1696,10 @@ countries:
       - 0
       - 0
       - 0
+      - 169
       - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1539,6 +1718,7 @@ countries:
       - 20000
       - 22000
       - 22000
+      - 24000
     activityXcom:
       - 0
       - 0
@@ -1548,7 +1728,9 @@ countries:
       - -10
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1567,6 +1749,7 @@ countries:
       - 27000
       - 27000
       - 27000
+      - 32000
     activityXcom:
       - 0
       - 0
@@ -1576,7 +1759,9 @@ countries:
       - 0
       - 0
       - 5
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1595,9 +1780,11 @@ countries:
       - 32000
       - 37000
       - 37000
+      - 41000
     activityXcom:
       - 0
       - 112
+      - 0
       - 0
       - 0
       - 0
@@ -1613,6 +1800,7 @@ countries:
       - 0
       - 0
       - 0
+      - 0
   - type: STR_SAUDI_ARABIA
     funding:
       - 23000
@@ -1623,6 +1811,7 @@ countries:
       - 26000
       - 29000
       - 29000
+      - 34000
     activityXcom:
       - 0
       - 0
@@ -1632,7 +1821,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1651,6 +1842,7 @@ countries:
       - 14000
       - 15000
       - 15000
+      - 16000
     activityXcom:
       - 0
       - 132
@@ -1660,7 +1852,9 @@ countries:
       - 185
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1679,6 +1873,7 @@ countries:
       - 5000
       - 6000
       - 6000
+      - 7000
     activityXcom:
       - 0
       - 17
@@ -1688,7 +1883,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1707,6 +1904,7 @@ countries:
       - 10000
       - 10000
       - 10000
+      - 11000
     activityXcom:
       - 0
       - 16
@@ -1715,12 +1913,14 @@ countries:
       - 20
       - 0
       - 0
+      - 20
       - 0
     activityAlien:
       - 0
       - 0
       - 0
       - 50
+      - 0
       - 0
       - 0
       - 0
@@ -1735,6 +1935,7 @@ countries:
       - 7000
       - 7000
       - 7000
+      - 8000
     activityXcom:
       - 0
       - 0
@@ -1744,7 +1945,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1763,6 +1966,7 @@ countries:
       - 10000
       - 11000
       - 11000
+      - 13000
     activityXcom:
       - 0
       - 0
@@ -1772,7 +1976,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1791,6 +1997,7 @@ countries:
       - 13000
       - 14000
       - 14000
+      - 15000
     activityXcom:
       - 0
       - 0
@@ -1799,8 +2006,10 @@ countries:
       - 0
       - 18
       - 0
+      - 92
       - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1819,6 +2028,7 @@ countries:
       - 14000
       - 15000
       - 15000
+      - 16000
     activityXcom:
       - 0
       - 0
@@ -1828,7 +2038,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1847,6 +2059,7 @@ countries:
       - 37000
       - 43000
       - 43000
+      - 45000
     activityXcom:
       - 0
       - 0
@@ -1856,7 +2069,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1875,6 +2090,7 @@ countries:
       - 5000
       - 6000
       - 6000
+      - 7000
     activityXcom:
       - 0
       - 0
@@ -1884,7 +2100,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1903,6 +2121,7 @@ countries:
       - 11000
       - 12000
       - 12000
+      - 13000
     activityXcom:
       - 0
       - 0
@@ -1912,7 +2131,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1931,6 +2152,7 @@ countries:
       - 7000
       - 8000
       - 8000
+      - 9000
     activityXcom:
       - 0
       - 0
@@ -1940,7 +2162,9 @@ countries:
       - 0
       - 0
       - 26
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1959,6 +2183,7 @@ countries:
       - 6000
       - 7000
       - 7000
+      - 8000
     activityXcom:
       - 0
       - 0
@@ -1968,7 +2193,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -1987,6 +2214,7 @@ countries:
       - 13000
       - 15000
       - 15000
+      - 17000
     activityXcom:
       - 0
       - 0
@@ -1996,7 +2224,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2015,6 +2245,7 @@ countries:
       - 5000
       - 6000
       - 6000
+      - 7000
     activityXcom:
       - 0
       - 0
@@ -2024,7 +2255,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2043,7 +2276,9 @@ countries:
       - 10000
       - 11000
       - 11000
+      - 12000
     activityXcom:
+      - 0
       - 0
       - 0
       - 0
@@ -2061,6 +2296,7 @@ countries:
       - 0
       - 0
       - 0
+      - 0
   - type: STR_UGANDA
     funding:
       - 2000
@@ -2071,6 +2307,7 @@ countries:
       - 4000
       - 5000
       - 5000
+      - 6000
     activityXcom:
       - 0
       - 0
@@ -2080,7 +2317,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2099,7 +2338,9 @@ countries:
       - 16000
       - 17000
       - 17000
+      - 18000
     activityXcom:
+      - 0
       - 0
       - 0
       - 0
@@ -2117,6 +2358,7 @@ countries:
       - 0
       - 150
       - 0
+      - 0
   - type: STR_ARMENIA
     funding:
       - 17000
@@ -2127,6 +2369,7 @@ countries:
       - 20000
       - 23000
       - 23000
+      - 27000
     activityXcom:
       - 0
       - 0
@@ -2136,7 +2379,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2155,6 +2400,7 @@ countries:
       - 44000
       - 51000
       - 51000
+      - 54000
     activityXcom:
       - 0
       - 0
@@ -2164,7 +2410,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2183,6 +2431,7 @@ countries:
       - 30000
       - 31000
       - 31000
+      - 33000
     activityXcom:
       - 0
       - 0
@@ -2192,7 +2441,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2211,6 +2462,7 @@ countries:
       - 11000
       - 11000
       - 11000
+      - 12000
     activityXcom:
       - 0
       - 0
@@ -2220,7 +2472,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2239,6 +2493,7 @@ countries:
       - 15000
       - 17000
       - 17000
+      - 20000
     activityXcom:
       - 0
       - 0
@@ -2248,7 +2503,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2267,6 +2524,7 @@ countries:
       - 13000
       - 13000
       - 13000
+      - 15000
     activityXcom:
       - 0
       - 0
@@ -2276,7 +2534,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2295,6 +2555,7 @@ countries:
       - 6000
       - 7000
       - 7000
+      - 8000
     activityXcom:
       - 0
       - 0
@@ -2304,7 +2565,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2323,6 +2586,7 @@ countries:
       - 16000
       - 18000
       - 18000
+      - 19000
     activityXcom:
       - 0
       - 0
@@ -2332,7 +2596,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2351,6 +2617,7 @@ countries:
       - 8000
       - 9000
       - 9000
+      - 10000
     activityXcom:
       - 0
       - 0
@@ -2360,7 +2627,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2379,6 +2648,7 @@ countries:
       - 11000
       - 12000
       - 12000
+      - 13000
     activityXcom:
       - 0
       - 0
@@ -2388,7 +2658,9 @@ countries:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2407,7 +2679,9 @@ countries:
       - 4000
       - 5000
       - 5000
+      - 6000
     activityXcom:
+      - 0
       - 0
       - 0
       - 0
@@ -2425,6 +2699,7 @@ countries:
       - 0
       - 0
       - 0
+      - 0
 regions:
   - type: STR_NORTH_AMERICA
     activityXcom:
@@ -2435,8 +2710,10 @@ regions:
       - 73
       - -59
       - -34
-      - 54
+      - 490
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2454,12 +2731,14 @@ regions:
       - 41
       - 237
       - 20
+      - 78
       - 0
     activityAlien:
       - 0
       - 0
       - 0
       - 50
+      - 0
       - 0
       - 0
       - 0
@@ -2474,7 +2753,9 @@ regions:
       - 0
       - 20
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2492,8 +2773,10 @@ regions:
       - -18
       - 22
       - 169
-      - 155
+      - 416
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2512,10 +2795,12 @@ regions:
       - 14
       - 0
       - 5
+      - 0
     activityAlien:
       - 0
       - 0
       - 50
+      - 0
       - 0
       - 0
       - 0
@@ -2531,7 +2816,9 @@ regions:
       - 14
       - 7
       - 14
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2549,7 +2836,8 @@ regions:
       - 55
       - 8
       - 0
-      - 57
+      - -58
+      - 8
     activityAlien:
       - 0
       - 0
@@ -2558,6 +2846,7 @@ regions:
       - 0
       - 200
       - 200
+      - 0
       - 0
   - type: STR_NORTH_AFRICA
     activityXcom:
@@ -2568,8 +2857,10 @@ regions:
       - 14
       - -6
       - 36
-      - -150
+      - -86
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2588,6 +2879,7 @@ regions:
       - -25
       - 0
       - 0
+      - 0
     activityAlien:
       - 0
       - 150
@@ -2596,6 +2888,7 @@ regions:
       - 200
       - 0
       - 150
+      - 0
       - 0
   - type: STR_AUSTRALASIA
     activityXcom:
@@ -2606,7 +2899,8 @@ regions:
       - 0
       - 20
       - 8
-      - 34
+      - 152
+      - 0
     activityAlien:
       - 0
       - 250
@@ -2616,8 +2910,10 @@ regions:
       - 0
       - 0
       - 0
+      - 0
   - type: STR_ANTARCTICA
     activityXcom:
+      - 0
       - 0
       - 0
       - 0
@@ -2635,6 +2931,7 @@ regions:
       - 0
       - 600
       - 0
+      - 0
   - type: STR_PACIFIC
     activityXcom:
       - 0
@@ -2645,7 +2942,9 @@ regions:
       - 0
       - 0
       - 20
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2664,7 +2963,9 @@ regions:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2683,7 +2984,9 @@ regions:
       - 0
       - 0
       - 0
+      - 0
     activityAlien:
+      - 0
       - 0
       - 0
       - 0
@@ -2702,10 +3005,12 @@ regions:
       - -12
       - -146
       - 0
+      - 0
     activityAlien:
       - 0
       - 0
       - 200
+      - 0
       - 0
       - 0
       - 0
@@ -2752,50 +3057,11 @@ bases:
       - type: STR_HANGAR
         x: 4
         y: 0
+      - type: STR_SICK_BAY
+        x: 3
+        y: 3
+        buildTime: 16
     soldiers:
-      - type: STR_DOG
-        id: 25
-        name: Haruitike
-        nationality: 0
-        initialStats:
-          tu: 62
-          stamina: 82
-          health: 28
-          bravery: 10
-          reactions: 63
-          firing: 0
-          throwing: 0
-          strength: 1
-          psiStrength: 40
-          psiSkill: 0
-          melee: 85
-          mana: 123
-        currentStats:
-          tu: 62
-          stamina: 82
-          health: 28
-          bravery: 10
-          reactions: 63
-          firing: 0
-          throwing: 0
-          strength: 1
-          psiStrength: 40
-          psiSkill: 0
-          melee: 85
-          mana: 123
-        rank: 0
-        gender: 0
-        look: 0
-        lookVariant: 35
-        missions: 0
-        kills: 0
-        stuns: 0
-        armor: STR_DOGE_ARMOR
-        training: true
-        improvement: 0
-        psiStrImprovement: 0
-        diary:
-          monthsService: 5
       - type: STR_DOG
         id: 26
         name: Xena
@@ -2814,25 +3080,30 @@ bases:
           melee: 74
           mana: 140
         currentStats:
-          tu: 74
-          stamina: 90
-          health: 35
+          tu: 79
+          stamina: 92
+          health: 38
           bravery: 10
-          reactions: 75
+          reactions: 79
           firing: 0
           throwing: 0
           strength: 3
           psiStrength: 40
           psiSkill: 0
-          melee: 83
-          mana: 152
+          melee: 86
+          mana: 162
         rank: 0
+        craft:
+          lon: 2.6454859574785563
+          lat: -0.89150860077360505
+          type: STR_HELICOPTER
+          id: 1
         gender: 1
         look: 0
         lookVariant: 25
-        missions: 6
-        kills: 11
-        stuns: 1
+        missions: 9
+        kills: 13
+        stuns: 2
         armor: STR_DOGE_COMBAT_VEST_ARMOR
         training: true
         improvement: 0
@@ -2852,6 +3123,7 @@ bases:
             - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 2}
             - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
           killList:
             - {type: STR_MEGASCORPION_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MEGASCORPION, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 32, turn: 9606, side: 0, bodypart: 1, id: 1000023}
             - {type: STR_MEGASCORPION_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MEGASCORPION, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 32, turn: 9624, side: 0, bodypart: 1, id: 1000009}
@@ -2865,16 +3137,19 @@ bases:
             - {type: STR_ZSRR_PIONEER_FEMALE, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 7, faction: 1, mission: 79, turn: 23706, side: 0, bodypart: 1, id: 1000038}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 79, turn: 23709, side: 3, bodypart: 1, id: 1000021}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 79, turn: 23709, side: 3, bodypart: 1, id: 1000026}
-          missionIdList: [32, 39, 45, 49, 51, 79]
+            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 100, turn: 30006, side: 0, bodypart: 1, id: 1000001}
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 101, turn: 30327, side: 2, bodypart: 2, id: 1000004}
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 7, faction: 1, mission: 101, turn: 30327, side: 0, bodypart: 1, id: 1000007}
+          missionIdList: [32, 39, 45, 49, 51, 79, 100, 101, 104]
           daysWoundedTotal: 67
-          monthsService: 5
+          monthsService: 6
           unconciousTotal: 1
           shotAtCounterTotal: 7
           hitCounterTotal: 1
           shotsFiredCounterTotal: 5
           shotsLandedCounterTotal: 4
           timesWoundedTotal: 3
-          statGainTotal: 57
+          statGainTotal: 84
       - type: STR_DOG
         id: 27
         name: Constantine
@@ -2893,43 +3168,277 @@ bases:
           melee: 90
           mana: 124
         currentStats:
-          tu: 69
-          stamina: 90
+          tu: 70
+          stamina: 92
           health: 33
           bravery: 20
-          reactions: 62
+          reactions: 64
           firing: 0
           throwing: 0
-          strength: 1
+          strength: 3
           psiStrength: 40
           psiSkill: 0
-          melee: 90
-          mana: 131
+          melee: 93
+          mana: 138
         rank: 0
         craft:
-          lon: 4.6878180049063767
-          lat: -0.65988849038324626
+          lon: 4.9502422746449222
+          lat: -0.93051298207705857
           type: STR_VAN
           id: 1
         gender: 0
         look: 0
         lookVariant: 54
-        missions: 2
-        kills: 2
-        stuns: 0
+        missions: 4
+        kills: 3
+        stuns: 1
         armor: STR_DOGE_ARMOR
-        training: true
         improvement: 0
         psiStrImprovement: 0
         diary:
+          commendations:
+            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
           killList:
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 87, turn: 26103, side: 3, bodypart: 1, id: 1000000}
             - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 90, turn: 27021, side: 1, bodypart: 3, id: 1000006}
-          missionIdList: [87, 90]
-          monthsService: 5
+            - {type: STR_WEREWOLF_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_WEREWOLF, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 7, faction: 1, mission: 98, turn: 29409, side: 2, bodypart: 2, id: 1000000}
+            - {type: STR_WEREWOLF_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_WEREWOLF, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 98, turn: 29410, side: 2, bodypart: 2, id: 1000000}
+          missionIdList: [87, 90, 98, 103]
+          monthsService: 6
           unconciousTotal: 1
           allAliensKilledTotal: 1
-          statGainTotal: 22
+          statGainTotal: 39
+      - type: STR_DOG
+        id: 53
+        name: Bora
+        nationality: 0
+        initialStats:
+          tu: 63
+          stamina: 82
+          health: 27
+          bravery: 20
+          reactions: 70
+          firing: 0
+          throwing: 0
+          strength: 1
+          psiStrength: 40
+          psiSkill: 0
+          melee: 77
+          mana: 108
+        currentStats:
+          tu: 63
+          stamina: 82
+          health: 27
+          bravery: 20
+          reactions: 70
+          firing: 0
+          throwing: 0
+          strength: 1
+          psiStrength: 40
+          psiSkill: 0
+          melee: 77
+          mana: 108
+        rank: 0
+        gender: 1
+        look: 0
+        lookVariant: 4
+        missions: 0
+        kills: 0
+        stuns: 0
+        armor: STR_DOGE_ARMOR
+        improvement: 0
+        psiStrImprovement: 0
+        diary:
+          monthsService: 1
+      - type: STR_SOLDIER
+        id: 50
+        name: Rahul Narayan
+        nationality: 34
+        initialStats:
+          tu: 47
+          stamina: 44
+          health: 33
+          bravery: 10
+          reactions: 34
+          firing: 54
+          throwing: 39
+          strength: 29
+          psiStrength: 35
+          psiSkill: 0
+          melee: 56
+          mana: 65
+        currentStats:
+          tu: 47
+          stamina: 44
+          health: 33
+          bravery: 10
+          reactions: 34
+          firing: 54
+          throwing: 39
+          strength: 29
+          psiStrength: 35
+          psiSkill: 0
+          melee: 56
+          mana: 65
+        rank: 0
+        gender: 0
+        look: 2
+        lookVariant: 34
+        missions: 0
+        kills: 0
+        stuns: 0
+        armor: STR_SUIT_UC
+        improvement: 0
+        psiStrImprovement: 0
+        diary:
+          monthsService: 1
+      - type: STR_SOLDIER
+        id: 52
+        name: Mounir Khlifi
+        nationality: 74
+        initialStats:
+          tu: 49
+          stamina: 50
+          health: 27
+          bravery: 20
+          reactions: 37
+          firing: 54
+          throwing: 35
+          strength: 37
+          psiStrength: 33
+          psiSkill: 0
+          melee: 37
+          mana: 49
+        currentStats:
+          tu: 49
+          stamina: 50
+          health: 27
+          bravery: 20
+          reactions: 37
+          firing: 54
+          throwing: 35
+          strength: 37
+          psiStrength: 33
+          psiSkill: 0
+          melee: 37
+          mana: 49
+        rank: 0
+        craft:
+          lon: 2.6454859574785563
+          lat: -0.89150860077360505
+          type: STR_HELICOPTER
+          id: 1
+        gender: 0
+        look: 2
+        lookVariant: 58
+        missions: 1
+        kills: 0
+        stuns: 0
+        armor: STR_LEATHER_COAT_UC
+        improvement: 0
+        psiStrImprovement: 0
+        equipmentLayout:
+          - {itemType: STR_PPSH, slot: STR_RIGHT_HAND, ammoItem: STR_PPSH_CLIP, ammoItemSlots: [STR_PPSH_CLIP]}
+          - {itemType: STR_PPSH_CLIP, slot: STR_BELT}
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 1}
+          - {itemType: STR_INCENDIARY_GRENADE, slot: STR_BELT, slotX: 2}
+          - {itemType: STR_FIRST_AID, slot: STR_BELT, slotX: 2, slotY: 1}
+          - {itemType: STR_STIMS, slot: STR_RIGHT_LEG}
+          - {itemType: STR_PAINKILLER, slot: STR_RIGHT_LEG, slotX: 1}
+          - {itemType: STR_GOLDEN_DRAGONS, slot: STR_BELT, slotX: 3}
+        personalEquipmentLayout:
+          - {itemType: STR_PPSH, slot: STR_RIGHT_HAND, ammoItem: STR_PPSH_CLIP, ammoItemSlots: [STR_PPSH_CLIP]}
+          - {itemType: STR_PPSH_CLIP, slot: STR_BELT}
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 1}
+          - {itemType: STR_INCENDIARY_GRENADE, slot: STR_BELT, slotX: 2}
+          - {itemType: STR_FIRST_AID, slot: STR_BELT, slotX: 2, slotY: 1}
+          - {itemType: STR_STIMS, slot: STR_RIGHT_LEG}
+          - {itemType: STR_PAINKILLER, slot: STR_RIGHT_LEG, slotX: 1}
+          - {itemType: STR_GOLDEN_DRAGONS, slot: STR_BELT, slotX: 3}
+        personalEquipmentArmor: STR_LEATHER_COAT_UC
+        diary:
+          missionIdList: [104]
+          monthsService: 1
+      - type: STR_SOLDIER
+        id: 49
+        name: Flor Torres
+        nationality: 58
+        initialStats:
+          tu: 47
+          stamina: 42
+          health: 29
+          bravery: 50
+          reactions: 59
+          firing: 51
+          throwing: 53
+          strength: 39
+          psiStrength: 3
+          psiSkill: 0
+          melee: 32
+          mana: 69
+        currentStats:
+          tu: 47
+          stamina: 49
+          health: 32
+          bravery: 50
+          reactions: 62
+          firing: 53
+          throwing: 56
+          strength: 44
+          psiStrength: 3
+          psiSkill: 0
+          melee: 32
+          mana: 80
+        rank: 1
+        gender: 1
+        look: 0
+        lookVariant: 59
+        missions: 2
+        kills: 4
+        stuns: 0
+        recovery: 6
+        armor: STR_LEATHER_COAT_UC
+        returnToTrainingWhenHealed: true
+        improvement: 0
+        psiStrImprovement: 0
+        equipmentLayout:
+          - {itemType: STR_PPSH, slot: STR_RIGHT_HAND, slotX: 17, ammoItem: STR_PPSH_CLIP, ammoItemSlots: [STR_PPSH_CLIP]}
+          - {itemType: STR_PPSH_CLIP, slot: STR_BELT}
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 2, fuseTimer: 0}
+          - {itemType: STR_PPSH_CLIP, slot: STR_BELT, slotX: 1}
+          - {itemType: STR_DYNAMITE, slot: STR_RIGHT_LEG}
+          - {itemType: STR_INCENDIARY_GRENADE, slot: STR_BELT, slotX: 3}
+          - {itemType: STR_FIRST_AID, slot: STR_BELT, slotX: 2, slotY: 1}
+        personalEquipmentLayout:
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 2, fuseTimer: 0}
+          - {itemType: STR_PPSH, slot: STR_RIGHT_HAND, slotX: 17, ammoItem: STR_PPSH_CLIP, ammoItemSlots: [STR_PPSH_CLIP]}
+          - {itemType: STR_DYNAMITE, slot: STR_LEFT_LEG}
+          - {itemType: STR_INCENDIARY_GRENADE, slot: STR_BELT, slotX: 3}
+          - {itemType: STR_FIRST_AID, slot: STR_BELT, slotX: 2, slotY: 1}
+          - {itemType: STR_PPSH_CLIP, slot: STR_BELT}
+          - {itemType: STR_PPSH_CLIP, slot: STR_BELT, slotX: 1}
+        personalEquipmentArmor: STR_LEATHER_COAT_UC
+        diary:
+          commendations:
+            - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SPELUNKER_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
+          killList:
+            - {type: STR_GIANT_SPIDER_QUEEN_LEADER, rank: STR_LIVE_LEADER, race: STR_GIANT_SPIDER, weapon: STR_DYNAMITE, weaponAmmo: STR_DYNAMITE, status: 6, faction: 1, mission: 96, turn: 28803, side: 4, bodypart: 1, id: 1000043}
+            - {type: STR_GIANT_SPIDER_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_DYNAMITE, weaponAmmo: STR_DYNAMITE, status: 6, faction: 1, mission: 96, turn: 28806, side: 4, bodypart: 1, id: 1000028}
+            - {type: STR_GIANT_SPIDER_GREEN_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_PPSH, weaponAmmo: STR_PPSH_CLIP, status: 6, faction: 1, mission: 96, turn: 28806, side: 4, bodypart: 1, id: 1000042}
+            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_PPSH, weaponAmmo: STR_PPSH_CLIP, status: 6, faction: 1, mission: 100, turn: 30006, side: 2, bodypart: 2, id: 1000004}
+          missionIdList: [96, 100]
+          daysWoundedTotal: 17
+          monthsService: 1
+          shotAtCounterTotal: 3
+          hitCounterTotal: 1
+          shotsFiredCounterTotal: 9
+          shotsLandedCounterTotal: 3
+          timesWoundedTotal: 1
+          statGainTotal: 34
       - type: STR_SOLDIER
         id: 44
         name: Rafik Tosunyan
@@ -2949,16 +3458,16 @@ bases:
           mana: 37
         currentStats:
           tu: 53
-          stamina: 61
+          stamina: 63
           health: 32
           bravery: 60
           reactions: 61
-          firing: 53
-          throwing: 36
-          strength: 43
+          firing: 57
+          throwing: 39
+          strength: 44
           psiStrength: 36
           psiSkill: 0
-          melee: 32
+          melee: 36
           mana: 56
         rank: 1
         gender: 0
@@ -3003,7 +3512,7 @@ bases:
             - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_AKM, weaponAmmo: STR_WP_7_62_CLIP, status: 7, faction: 1, mission: 84, turn: 25218, side: 2, bodypart: 2, id: 1000001}
           missionIdList: [75, 77, 84]
           daysWoundedTotal: 6
-          monthsService: 2
+          monthsService: 3
           shotAtCounterTotal: 4
           hitCounterTotal: 1
           lowAccuracyHitCounterTotal: 1
@@ -3030,27 +3539,28 @@ bases:
           melee: 28
           mana: 35
         currentStats:
-          tu: 53
-          stamina: 46
-          health: 33
+          tu: 55
+          stamina: 52
+          health: 37
           bravery: 40
           reactions: 39
-          firing: 63
+          firing: 67
           throwing: 54
-          strength: 34
+          strength: 35
           psiStrength: 19
           psiSkill: 0
-          melee: 28
-          mana: 48
+          melee: 30
+          mana: 54
         rank: 1
         gender: 0
         look: 1
         lookVariant: 27
-        missions: 2
-        kills: 1
-        stuns: 1
+        missions: 3
+        kills: 3
+        stuns: 2
+        recovery: 3
         armor: STR_LEATHER_COAT_UC
-        training: true
+        returnToTrainingWhenHealed: true
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
@@ -3069,14 +3579,24 @@ bases:
           - {itemType: STR_WP_7_62_CLIP, slot: STR_BELT, slotX: 2}
         personalEquipmentArmor: STR_LEATHER_COAT_UC
         diary:
+          commendations:
+            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
           killList:
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_AKM, weaponAmmo: STR_WP_7_62_CLIP, status: 7, faction: 1, mission: 75, turn: 22503, side: 2, bodypart: 2, id: 1000001}
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_AKM, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 75, turn: 22504, side: 2, bodypart: 2, id: 1000001}
-          missionIdList: [75, 77]
-          monthsService: 2
-          shotsFiredCounterTotal: 6
-          shotsLandedCounterTotal: 1
-          statGainTotal: 30
+            - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_AKM, weaponAmmo: STR_WP_7_62_CLIP, status: 7, faction: 1, mission: 102, turn: 30606, side: 3, bodypart: 1, id: 1000004}
+            - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_AKM, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 102, turn: 30607, side: 3, bodypart: 1, id: 1000004}
+            - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_AKM, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 102, turn: 30609, side: 3, bodypart: 1, id: 1000012}
+          missionIdList: [75, 77, 102]
+          daysWoundedTotal: 10
+          monthsService: 3
+          shotAtCounterTotal: 1
+          hitCounterTotal: 5
+          shotsFiredCounterTotal: 13
+          shotsLandedCounterTotal: 7
+          hitCounter5in1Mission: 1
+          timesWoundedTotal: 1
+          statGainTotal: 55
       - type: STR_SOLDIER
         id: 37
         name: Valentin Makarov
@@ -3095,25 +3615,30 @@ bases:
           melee: 22
           mana: 58
         currentStats:
-          tu: 53
-          stamina: 67
+          tu: 56
+          stamina: 69
           health: 31
           bravery: 50
           reactions: 30
-          firing: 59
+          firing: 62
           throwing: 46
           strength: 24
           psiStrength: 14
           psiSkill: 0
           melee: 22
-          mana: 63
+          mana: 68
         rank: 1
+        craft:
+          lon: 4.7446825547897546
+          lat: -0.70605821970387117
+          type: STR_VAN
+          id: 2
         gender: 0
         look: 2
         lookVariant: 27
-        missions: 1
-        kills: 1
-        stuns: 0
+        missions: 2
+        kills: 5
+        stuns: 2
         armor: STR_VEST_BUSINESS_SUIT_UC
         improvement: 0
         psiStrImprovement: 0
@@ -3127,13 +3652,23 @@ bases:
           - {itemType: STR_SHOTGUN_SHELLS_AP, slot: STR_BELT}
         personalEquipmentArmor: STR_VEST_BUSINESS_SUIT_UC
         diary:
+          commendations:
+            - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SHOTGUN_SURGEON_NAME, decorationLevel: 0}
           killList:
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS_AP, status: 6, faction: 1, mission: 60, turn: 18012, side: 3, bodypart: 1, id: 1000000}
-          missionIdList: [60]
-          monthsService: 3
-          shotsFiredCounterTotal: 1
-          shotsLandedCounterTotal: 1
-          statGainTotal: 13
+            - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS_AP, status: 6, faction: 1, mission: 102, turn: 30603, side: 2, bodypart: 2, id: 1000006}
+            - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS_AP, status: 6, faction: 1, mission: 102, turn: 30606, side: 2, bodypart: 2, id: 1000002}
+            - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS_AP, status: 6, faction: 1, mission: 102, turn: 30606, side: 3, bodypart: 1, id: 1000003}
+            - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS_AP, status: 6, faction: 1, mission: 102, turn: 30606, side: 3, bodypart: 1, id: 1000010}
+            - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS_AP, status: 7, faction: 1, mission: 102, turn: 30609, side: 3, bodypart: 1, id: 1000007}
+            - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS_AP, status: 7, faction: 1, mission: 102, turn: 30612, side: 0, bodypart: 1, id: 1000013}
+          missionIdList: [60, 102]
+          monthsService: 4
+          shotAtCounterTotal: 1
+          shotsFiredCounterTotal: 9
+          shotsLandedCounterTotal: 9
+          statGainTotal: 26
       - type: STR_SOLDIER
         id: 38
         name: Min-jun Rim
@@ -3202,7 +3737,7 @@ bases:
             - {name: Min-jun Rim, rank: STR_SQUADDIE, race: STR_FRIENDLY, weapon: STR_SMOKE_GRENADE, weaponAmmo: STR_SMOKE_GRENADE, status: 7, faction: 0, mission: 84, turn: 25218, side: 0, bodypart: 1, id: 38}
           missionIdList: [55, 59, 63, 69, 76, 84]
           daysWoundedTotal: 7
-          monthsService: 3
+          monthsService: 4
           unconciousTotal: 1
           shotAtCounterTotal: 11
           hitCounterTotal: 3
@@ -3291,7 +3826,7 @@ bases:
             - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 6, faction: 1, mission: 74, turn: 22215, side: 3, bodypart: 1, id: 1000003}
           missionIdList: [53, 60, 62, 64, 65, 66, 67, 68, 70, 72, 74]
           daysWoundedTotal: 23
-          monthsService: 3
+          monthsService: 4
           shotAtCounterTotal: 5
           hitCounterTotal: 3
           lowAccuracyHitCounterTotal: 1
@@ -3318,30 +3853,27 @@ bases:
           mana: 54
         currentStats:
           tu: 58
-          stamina: 58
+          stamina: 63
           health: 36
           bravery: 40
           reactions: 62
-          firing: 57
+          firing: 61
           throwing: 35
-          strength: 41
+          strength: 43
           psiStrength: 51
           psiSkill: 0
           melee: 38
-          mana: 76
+          mana: 77
         rank: 1
-        craft:
-          lon: 5.5201348831746522
-          lat: -1.0432874675985886
-          type: STR_LUXURY_CAR
-          id: 1
         gender: 0
         look: 2
         lookVariant: 17
-        missions: 7
-        kills: 11
+        missions: 8
+        kills: 14
         stuns: 4
+        recovery: 21
         armor: STR_VEST_BUSINESS_SUIT_UC
+        returnToTrainingWhenHealed: true
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
@@ -3370,7 +3902,10 @@ bases:
             - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_WEAPON_PROFICIENCY_NAME, noun: STR_AK47, decorationLevel: 0}
             - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
           killList:
             - {type: STR_ASMODEAN_COBRA_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ASMODEAN_COBRA, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 53, turn: 15904, side: 1, bodypart: 3, id: 1000025}
             - {type: STR_ASMODEAN_COBRA_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ASMODEAN_COBRA, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 7, faction: 1, mission: 53, turn: 15907, side: 0, bodypart: 1, id: 1000015}
@@ -3387,17 +3922,22 @@ bases:
             - {type: STR_WEREWOLF_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_WEREWOLF, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 7, faction: 1, mission: 91, turn: 27303, side: 0, bodypart: 1, id: 1000000}
             - {type: STR_WEREWOLF_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_WEREWOLF, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 91, turn: 27304, side: 0, bodypart: 1, id: 1000000}
             - {type: STR_WEREWOLF_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_WEREWOLF, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 7, faction: 1, mission: 91, turn: 27306, side: 0, bodypart: 1, id: 1000001}
-          missionIdList: [53, 60, 80, 82, 89, 91, 92]
-          monthsService: 3
-          shotAtCounterTotal: 17
-          hitCounterTotal: 7
+            - {type: STR_MUCKSTAR_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MUCKSTAR, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 94, turn: 28206, side: 3, bodypart: 1, id: 1000006}
+            - {type: STR_MUCKSTAR_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MUCKSTAR, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 94, turn: 28206, side: 3, bodypart: 1, id: 1000010}
+            - {type: STR_MUCKSTAR_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MUCKSTAR, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 94, turn: 28206, side: 3, bodypart: 1, id: 1000000}
+          missionIdList: [53, 60, 80, 82, 89, 91, 92, 94]
+          daysWoundedTotal: 35
+          monthsService: 4
+          shotAtCounterTotal: 21
+          hitCounterTotal: 10
           ironManTotal: 3
           lowAccuracyHitCounterTotal: 2
-          shotsFiredCounterTotal: 71
-          shotsLandedCounterTotal: 28
+          shotsFiredCounterTotal: 81
+          shotsLandedCounterTotal: 34
           shotAtCounter10in1Mission: 1
           hitCounter5in1Mission: 1
-          statGainTotal: 77
+          timesWoundedTotal: 1
+          statGainTotal: 89
       - type: STR_SOLDIER
         id: 18
         name: Suleyman Taganov
@@ -3416,38 +3956,38 @@ bases:
           melee: 39
           mana: 69
         currentStats:
-          tu: 51
-          stamina: 71
-          health: 32
+          tu: 58
+          stamina: 79
+          health: 34
           bravery: 20
-          reactions: 47
-          firing: 57
+          reactions: 56
+          firing: 66
           throwing: 36
-          strength: 35
+          strength: 41
           psiStrength: 28
           psiSkill: 0
           melee: 39
-          mana: 81
+          mana: 92
         rank: 1
         craft:
-          lon: 4.6878180049063767
-          lat: -0.65988849038324626
+          lon: 2.6454859574785563
+          lat: -0.89150860077360505
           type: STR_HELICOPTER
           id: 1
         gender: 0
         look: 2
         lookVariant: 6
-        missions: 6
-        kills: 4
-        stuns: 0
+        missions: 11
+        kills: 10
+        stuns: 1
         armor: STR_VEST_BUSINESS_SUIT_UC
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
           - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 2, fuseTimer: 0}
           - {itemType: STR_MP, slot: STR_RIGHT_HAND, ammoItem: STR_MP_CLIP, ammoItemSlots: [STR_MP_CLIP]}
-          - {itemType: STR_PAINKILLER, slot: STR_BELT, slotX: 3}
           - {itemType: STR_STIMS, slot: STR_BELT, slotX: 2, slotY: 1}
+          - {itemType: STR_PAINKILLER, slot: STR_BELT, slotX: 3}
           - {itemType: STR_MP_CLIP, slot: STR_BELT}
           - {itemType: STR_MP_CLIP, slot: STR_BELT, slotX: 1}
         personalEquipmentLayout:
@@ -3463,101 +4003,34 @@ bases:
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_ASSAULTER_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_SPELUNKER_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_REACTIONFIRE_NAME, decorationLevel: 0}
           killList:
             - {type: STR_SHADOWBAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_SHADOWBAT, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 37, turn: 11107, side: 2, bodypart: 4, id: 1000009}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 39, turn: 11712, side: 0, bodypart: 1, id: 1000000}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 79, turn: 23709, side: 4, bodypart: 1, id: 1000027}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 93, turn: 27912, side: 4, bodypart: 1, id: 1000002}
-          missionIdList: [37, 39, 79, 81, 83, 93]
+            - {type: STR_GIANT_SPIDER_GREEN_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 96, turn: 28809, side: 3, bodypart: 1, id: 1000013}
+            - {type: STR_GIANT_SPIDER_PURPLE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 96, turn: 28806, side: 0, bodypart: 1, id: 1000041}
+            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 100, turn: 30006, side: 1, bodypart: 3, id: 1000003}
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 101, turn: 30312, side: 0, bodypart: 1, id: 1000001}
+            - {type: STR_ZOMBIE_GRUBAS_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 101, turn: 30318, side: 1, bodypart: 3, id: 1000008}
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 7, faction: 1, mission: 101, turn: 30319, side: 0, bodypart: 1, id: 1000002}
+            - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 104, turn: 31204, side: 1, bodypart: 3, id: 1000001}
+          missionIdList: [37, 39, 79, 81, 83, 93, 95, 96, 100, 101, 104]
           daysWoundedTotal: 14
           totalShotByFriendlyCounter: 1
-          monthsService: 6
+          monthsService: 7
           shotAtCounterTotal: 27
           hitCounterTotal: 11
-          shotsFiredCounterTotal: 27
-          shotsLandedCounterTotal: 5
+          shotsFiredCounterTotal: 80
+          shotsLandedCounterTotal: 26
           shotAtCounter10in1Mission: 2
           hitCounter5in1Mission: 1
           timesWoundedTotal: 1
-          statGainTotal: 47
-      - type: STR_SOLDIER
-        id: 23
-        name: Gaspar Vega
-        nationality: 15
-        initialStats:
-          tu: 49
-          stamina: 41
-          health: 27
-          bravery: 60
-          reactions: 51
-          firing: 58
-          throwing: 37
-          strength: 38
-          psiStrength: 61
-          psiSkill: 0
-          melee: 37
-          mana: 57
-        currentStats:
-          tu: 54
-          stamina: 51
-          health: 30
-          bravery: 60
-          reactions: 55
-          firing: 58
-          throwing: 37
-          strength: 38
-          psiStrength: 61
-          psiSkill: 0
-          melee: 37
-          mana: 68
-        rank: 1
-        gender: 0
-        look: 2
-        lookVariant: 25
-        missions: 2
-        kills: 2
-        stuns: 0
-        armor: STR_SUIT_UC
-        improvement: 0
-        psiStrImprovement: 0
-        equipmentLayout:
-          - {itemType: STR_SMOKE_GRENADE, slot: STR_QD_SLOT}
-          - {itemType: STR_ELECTRO_FLARE, slot: STR_QD_SLOT, slotY: 1, fuseTimer: 0}
-          - {itemType: STR_SHOTGUN, slot: STR_RIGHT_HAND, ammoItem: STR_SHOTGUN_SHELLS, ammoItemSlots: [STR_SHOTGUN_SHELLS]}
-          - {itemType: STR_SHOTGUN_SHELLS, slot: STR_BELT}
-          - {itemType: STR_SHOTGUN_SHELLS, slot: STR_BELT, slotX: 2, slotY: 1}
-          - {itemType: STR_SHOTGUN_SHELLS_BATON, slot: STR_BELT, slotX: 1}
-          - {itemType: STR_SHOTGUN_SHELLS_BATON, slot: STR_BELT, slotX: 3, slotY: 1}
-          - {itemType: STR_SHOTGUN_SHELLS_AP, slot: STR_BELT, slotX: 2}
-          - {itemType: STR_SHOTGUN_SHELLS_AP, slot: STR_BELT, slotX: 3}
-        personalEquipmentLayout:
-          - {itemType: STR_SHOTGUN, slot: STR_RIGHT_HAND, ammoItem: STR_SHOTGUN_SHELLS, ammoItemSlots: [STR_SHOTGUN_SHELLS]}
-          - {itemType: STR_SHOTGUN_SHELLS, slot: STR_BELT}
-          - {itemType: STR_SHOTGUN_SHELLS_BATON, slot: STR_BELT, slotX: 1}
-          - {itemType: STR_SHOTGUN_SHELLS_AP, slot: STR_BELT, slotX: 2}
-          - {itemType: STR_SMOKE_GRENADE, slot: STR_QD_SLOT}
-          - {itemType: STR_SHOTGUN_SHELLS, slot: STR_BELT, slotX: 2, slotY: 1}
-          - {itemType: STR_SHOTGUN_SHELLS_BATON, slot: STR_BELT, slotX: 3, slotY: 1}
-          - {itemType: STR_SHOTGUN_SHELLS_AP, slot: STR_BELT, slotX: 3}
-          - {itemType: STR_ELECTRO_FLARE, slot: STR_QD_SLOT, slotY: 1, fuseTimer: 0}
-        personalEquipmentArmor: STR_SUIT_UC
-        diary:
-          commendations:
-            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
-            - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
-          killList:
-            - {type: STR_SHADOWBAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_SHADOWBAT, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS, status: 6, faction: 1, mission: 37, turn: 11109, side: 0, bodypart: 4, id: 1000003}
-            - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS, status: 6, faction: 1, mission: 88, turn: 26406, side: 1, bodypart: 3, id: 1000001}
-          missionIdList: [37, 88]
-          daysWoundedTotal: 26
-          monthsService: 5
-          shotAtCounterTotal: 1
-          hitCounterTotal: 1
-          shotsFiredCounterTotal: 4
-          shotsLandedCounterTotal: 10
-          timesWoundedTotal: 2
-          statGainTotal: 33
+          statGainTotal: 99
       - type: STR_SOLDIER
         id: 14
         name: Kristýna Tichá
@@ -3576,31 +4049,28 @@ bases:
           melee: 23
           mana: 24
         currentStats:
-          tu: 57
-          stamina: 62
+          tu: 58
+          stamina: 66
           health: 38
           bravery: 40
           reactions: 40
-          firing: 65
+          firing: 67
           throwing: 35
-          strength: 47
+          strength: 49
           psiStrength: 55
           psiSkill: 0
           melee: 23
-          mana: 62
+          mana: 69
         rank: 1
-        craft:
-          lon: 5.5201348831746522
-          lat: -1.0432874675985886
-          type: STR_LUXURY_CAR
-          id: 1
         gender: 1
         look: 0
         lookVariant: 44
-        missions: 11
-        kills: 11
+        missions: 12
+        kills: 14
         stuns: 4
+        recovery: 9
         armor: STR_VEST_BUSINESS_SUIT_UC
+        returnToTrainingWhenHealed: true
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
@@ -3628,14 +4098,15 @@ bases:
           commendations:
             - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 1}
-            - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_GUNSLINGER_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_MISSION_KILLS_5_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_REACTIONFIRE_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_TASEMASTER_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 0}
           killList:
             - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_GLOCK_18, weaponAmmo: STR_GLOCK_18_CLIP, status: 6, faction: 1, mission: 27, turn: 8115, side: 1, bodypart: 3, id: 1000001}
             - {type: STR_MEGASCORPION_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MEGASCORPION, weapon: STR_GLOCK_18, weaponAmmo: STR_GLOCK_18_CLIP, status: 6, faction: 1, mission: 32, turn: 9604, side: 3, bodypart: 1, id: 1000021}
@@ -3652,95 +4123,19 @@ bases:
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_GLOCK_18, weaponAmmo: STR_GLOCK_18_CLIP, status: 6, faction: 1, mission: 76, turn: 22812, side: 2, bodypart: 2, id: 1000000}
             - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 7, faction: 1, mission: 85, turn: 25507, side: 0, bodypart: 1, id: 1000001}
             - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 6, faction: 1, mission: 85, turn: 25510, side: 0, bodypart: 1, id: 1000001}
-          missionIdList: [22, 25, 27, 31, 32, 55, 59, 63, 69, 76, 85]
-          daysWoundedTotal: 19
-          monthsService: 6
-          shotAtCounterTotal: 10
-          hitCounterTotal: 5
-          shotsFiredCounterTotal: 82
-          shotsLandedCounterTotal: 36
-          timesWoundedTotal: 2
+            - {type: STR_MUCKSTAR_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MUCKSTAR, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 6, faction: 1, mission: 94, turn: 28206, side: 0, bodypart: 1, id: 1000003}
+            - {type: STR_MUCKSTAR_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MUCKSTAR, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 6, faction: 1, mission: 94, turn: 28206, side: 1, bodypart: 3, id: 1000012}
+            - {type: STR_MUCKSTAR_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_MUCKSTAR, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 6, faction: 1, mission: 94, turn: 28206, side: 1, bodypart: 3, id: 1000004}
+          missionIdList: [22, 25, 27, 31, 32, 55, 59, 63, 69, 76, 85, 94]
+          daysWoundedTotal: 42
+          monthsService: 7
+          shotAtCounterTotal: 12
+          hitCounterTotal: 7
+          shotsFiredCounterTotal: 105
+          shotsLandedCounterTotal: 46
+          timesWoundedTotal: 3
           woundsHealedTotal: 1
-          statGainTotal: 101
-      - type: STR_SOLDIER
-        id: 16
-        name: Vim van der Veen
-        nationality: 23
-        initialStats:
-          tu: 54
-          stamina: 50
-          health: 25
-          bravery: 10
-          reactions: 35
-          firing: 60
-          throwing: 50
-          strength: 38
-          psiStrength: 97
-          psiSkill: 0
-          melee: 34
-          mana: 34
-        currentStats:
-          tu: 57
-          stamina: 64
-          health: 33
-          bravery: 10
-          reactions: 36
-          firing: 62
-          throwing: 50
-          strength: 42
-          psiStrength: 97
-          psiSkill: 0
-          melee: 35
-          mana: 55
-        rank: 1
-        gender: 0
-        look: 0
-        lookVariant: 36
-        missions: 6
-        kills: 2
-        stuns: 1
-        armor: STR_VEST_BUSINESS_SUIT_UC
-        improvement: 0
-        psiStrImprovement: 0
-        equipmentLayout:
-          - {itemType: STR_ELECTRO_FLARE, slot: STR_LEFT_LEG, fuseTimer: 0}
-          - {itemType: STR_ELECTRO_FLARE, slot: STR_LEFT_LEG, slotX: 1, fuseTimer: 0}
-          - {itemType: STR_HANDCUFFS, slot: STR_BELT, slotX: 2}
-          - {itemType: STR_MAG_LITE, slot: STR_LEFT_HAND, fuseTimer: 0}
-          - {itemType: STR_TASER, slot: STR_QD_SLOT, ammoItem: STR_TASER_CLIP, ammoItemSlots: [STR_TASER_CLIP]}
-          - {itemType: STR_MP, slot: STR_RIGHT_HAND, ammoItem: STR_MP_CLIP, ammoItemSlots: [STR_MP_CLIP]}
-          - {itemType: STR_MP_CLIP, slot: STR_BELT}
-          - {itemType: STR_MP_CLIP, slot: STR_BELT, slotX: 1}
-        personalEquipmentLayout:
-          - {itemType: STR_ELECTRO_FLARE, slot: STR_LEFT_LEG, fuseTimer: 0}
-          - {itemType: STR_ELECTRO_FLARE, slot: STR_LEFT_LEG, slotX: 1, fuseTimer: 0}
-          - {itemType: STR_HANDCUFFS, slot: STR_BELT, slotX: 2}
-          - {itemType: STR_MAG_LITE, slot: STR_LEFT_HAND, fuseTimer: 0}
-          - {itemType: STR_TASER, slot: STR_QD_SLOT, ammoItem: STR_TASER_CLIP, ammoItemSlots: [STR_TASER_CLIP]}
-          - {itemType: STR_MP, slot: STR_RIGHT_HAND, ammoItem: STR_MP_CLIP, ammoItemSlots: [STR_MP_CLIP]}
-          - {itemType: STR_MP_CLIP, slot: STR_BELT}
-          - {itemType: STR_MP_CLIP, slot: STR_BELT, slotX: 1}
-        personalEquipmentArmor: STR_VEST_BUSINESS_SUIT_UC
-        diary:
-          commendations:
-            - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
-            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
-          killList:
-            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 31, turn: 9303, side: 0, bodypart: 1, id: 1000000}
-            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_MAG_LITE, weaponAmmo: __GUNBUTT, status: 7, faction: 1, mission: 43, turn: 12903, side: 0, bodypart: 1, id: 1000000}
-            - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 80, turn: 24015, side: 1, bodypart: 3, id: 1000000}
-          missionIdList: [22, 25, 27, 31, 43, 80]
-          daysWoundedTotal: 27
-          monthsService: 6
-          shotAtCounterTotal: 11
-          hitCounterTotal: 4
-          shotsFiredCounterTotal: 15
-          shotsLandedCounterTotal: 15
-          timesWoundedTotal: 2
-          statGainTotal: 54
+          statGainTotal: 117
       - type: STR_SOLDIER
         id: 17
         name: Irina Jumayeva
@@ -3778,9 +4173,8 @@ bases:
         missions: 8
         kills: 10
         stuns: 1
-        recovery: 14
         armor: STR_VEST_BUSINESS_SUIT_UC
-        returnToTrainingWhenHealed: true
+        training: true
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
@@ -3822,7 +4216,7 @@ bases:
           missionIdList: [22, 25, 27, 31, 32, 38, 87, 90]
           daysWoundedTotal: 19
           loneSurvivorTotal: 1
-          monthsService: 6
+          monthsService: 7
           shotAtCounterTotal: 3
           hitCounterTotal: 1
           shotsFiredCounterTotal: 45
@@ -3847,41 +4241,41 @@ bases:
           melee: 23
           mana: 73
         currentStats:
-          tu: 59
-          stamina: 57
-          health: 36
+          tu: 61
+          stamina: 64
+          health: 38
           bravery: 30
-          reactions: 36
-          firing: 59
-          throwing: 37
+          reactions: 41
+          firing: 62
+          throwing: 38
           strength: 45
           psiStrength: 79
           psiSkill: 0
           melee: 26
-          mana: 79
+          mana: 86
         rank: 1
         craft:
-          lon: 4.6878180049063767
-          lat: -0.65988849038324626
+          lon: 2.6454859574785563
+          lat: -0.89150860077360505
           type: STR_HELICOPTER
           id: 1
         gender: 0
         look: 1
         lookVariant: 25
-        missions: 9
+        missions: 14
         kills: 1
-        stuns: 1
+        stuns: 2
         armor: STR_LEATHER_COAT_UC
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
-          - {itemType: STR_FLARE_PISTOL, slot: STR_LEFT_HAND, ammoItem: STR_FLARE_PISTOL_CLIP, ammoItemSlots: [STR_FLARE_PISTOL_CLIP]}
-          - {itemType: STR_SKORPION, slot: STR_RIGHT_HAND, ammoItem: STR_SKORPION_CLIP, ammoItemSlots: [STR_SKORPION_CLIP]}
           - {itemType: STR_TONFA, slot: STR_QD_SLOT}
-          - {itemType: STR_FLARE_PISTOL_CLIP, slot: STR_LEFT_LEG}
-          - {itemType: STR_FLARE_PISTOL_CLIP, slot: STR_LEFT_LEG, slotX: 1}
+          - {itemType: STR_SKORPION, slot: STR_RIGHT_HAND, ammoItem: STR_SKORPION_CLIP, ammoItemSlots: [STR_SKORPION_CLIP]}
+          - {itemType: STR_FLARE_PISTOL, slot: STR_LEFT_HAND, ammoItem: STR_FLARE_PISTOL_CLIP, ammoItemSlots: [STR_FLARE_PISTOL_CLIP]}
           - {itemType: STR_SKORPION_CLIP, slot: STR_BELT}
           - {itemType: STR_SKORPION_CLIP, slot: STR_BELT, slotX: 1}
+          - {itemType: STR_FLARE_PISTOL_CLIP, slot: STR_LEFT_LEG}
+          - {itemType: STR_FLARE_PISTOL_CLIP, slot: STR_LEFT_LEG, slotX: 1}
         personalEquipmentLayout:
           - {itemType: STR_FLARE_PISTOL, slot: STR_LEFT_HAND, ammoItem: STR_FLARE_PISTOL_CLIP, ammoItemSlots: [STR_FLARE_PISTOL_CLIP]}
           - {itemType: STR_SKORPION, slot: STR_RIGHT_HAND, ammoItem: STR_SKORPION_CLIP, ammoItemSlots: [STR_SKORPION_CLIP]}
@@ -3894,24 +4288,26 @@ bases:
         diary:
           commendations:
             - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_LUCKYSHOT_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SPELUNKER_NAME, decorationLevel: 0}
           killList:
             - {type: STR_HUMAN_FARMER, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_TONFA, weaponAmmo: STR_TONFA, status: 7, faction: 1, mission: 40, turn: 12024, side: 3, bodypart: 1, id: 1000000}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 6, faction: 1, mission: 93, turn: 27912, side: 4, bodypart: 1, id: 1000003}
-          missionIdList: [24, 26, 28, 29, 30, 40, 77, 83, 93]
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 7, faction: 1, mission: 101, turn: 30307, side: 0, bodypart: 1, id: 1000005}
+          missionIdList: [24, 26, 28, 29, 30, 40, 77, 83, 93, 95, 96, 100, 101, 104]
           daysWoundedTotal: 2
           totalShotFriendlyCounter: 1
-          monthsService: 6
+          monthsService: 7
           lowAccuracyHitCounterTotal: 2
-          shotsFiredCounterTotal: 23
-          shotsLandedCounterTotal: 3
+          shotsFiredCounterTotal: 68
+          shotsLandedCounterTotal: 13
           timesWoundedTotal: 1
           allAliensStunnedTotal: 1
-          statGainTotal: 44
+          statGainTotal: 71
       - type: STR_SOLDIER
         id: 3
         name: Anna Kendrick
@@ -3930,40 +4326,40 @@ bases:
           melee: 55
           mana: 57
         currentStats:
-          tu: 62
-          stamina: 74
-          health: 37
-          bravery: 50
+          tu: 66
+          stamina: 80
+          health: 43
+          bravery: 60
           reactions: 60
-          firing: 65
+          firing: 69
           throwing: 55
-          strength: 47
+          strength: 51
           psiStrength: 24
           psiSkill: 0
           melee: 61
-          mana: 74
+          mana: 92
         rank: 1
         craft:
-          lon: 4.6878180049063767
-          lat: -0.65988849038324626
+          lon: 2.6454859574785563
+          lat: -0.89150860077360505
           type: STR_HELICOPTER
           id: 1
         gender: 1
         look: 2
         lookVariant: 7
-        missions: 8
-        kills: 8
-        stuns: 6
+        missions: 13
+        kills: 12
+        stuns: 8
         armor: STR_VEST_BUSINESS_SUIT_UC
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
           - {itemType: STR_ELECTRIC_CLUB, slot: STR_QD_SLOT}
+          - {itemType: STR_DYNAMITE, slot: STR_LEFT_LEG}
+          - {itemType: STR_MP, slot: STR_RIGHT_HAND, ammoItem: STR_MP_CLIP, ammoItemSlots: [STR_MP_CLIP]}
           - {itemType: STR_MEDI_PACK, slot: STR_BELT, slotX: 2}
           - {itemType: STR_MAG_LITE, slot: STR_LEFT_HAND, fuseTimer: 0}
-          - {itemType: STR_MP, slot: STR_RIGHT_HAND, ammoItem: STR_MP_CLIP, ammoItemSlots: [STR_MP_CLIP]}
           - {itemType: STR_MP_CLIP, slot: STR_BELT}
-          - {itemType: STR_DYNAMITE, slot: STR_LEFT_LEG}
         personalEquipmentLayout:
           - {itemType: STR_ELECTRIC_CLUB, slot: STR_QD_SLOT}
           - {itemType: STR_MEDI_PACK, slot: STR_BELT, slotX: 2}
@@ -3979,12 +4375,16 @@ bases:
             - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_ASSAULTER_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_ASSAULTER_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_BETRAYER_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_MISSION_KILLS_5_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_REACTIONFIRE_NAME, decorationLevel: 1}
-            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SPELUNKER_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_STATGAIN_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_LUCKYSHOT_NAME, decorationLevel: 1}
           killList:
             - {type: STR_HUMAN_FARMER, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_GLOCK_18, weaponAmmo: STR_GLOCK_18_CLIP, status: 6, faction: 1, mission: 1, turn: 309, side: 3, bodypart: 1, id: 1000000}
             - {type: STR_HUMAN_FARMER, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_ELECTRIC_CLUB, weaponAmmo: STR_ELECTRIC_CLUB, status: 7, faction: 1, mission: 1, turn: 319, side: 0, bodypart: 1, id: 1000001}
@@ -4000,19 +4400,27 @@ bases:
             - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 74, turn: 22216, side: 3, bodypart: 1, id: 1000004}
             - {type: STR_HUMAN_FARMER, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_ELECTRIC_CLUB, weaponAmmo: STR_ELECTRIC_CLUB, status: 7, faction: 1, mission: 77, turn: 23106, side: 2, bodypart: 2, id: 1000000}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 93, turn: 27912, side: 4, bodypart: 1, id: 1000007}
-          missionIdList: [1, 4, 6, 74, 75, 77, 83, 93]
+            - {type: STR_GIANT_SPIDER_PURPLE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 96, turn: 28806, side: 0, bodypart: 1, id: 1000012}
+            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 100, turn: 30004, side: 1, bodypart: 3, id: 1000000}
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 7, faction: 1, mission: 101, turn: 30307, side: 0, bodypart: 1, id: 1000000}
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 101, turn: 30309, side: 0, bodypart: 1, id: 1000006}
+            - {type: STR_ZOMBIE_GRUBAS_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 7, faction: 1, mission: 101, turn: 30315, side: 0, bodypart: 1, id: 1000010}
+            - {type: STR_ZOMBIE_GRUBAS_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 101, turn: 30321, side: 2, bodypart: 2, id: 1000009}
+          missionIdList: [1, 4, 6, 74, 75, 77, 83, 93, 95, 96, 100, 101, 104]
           daysWoundedTotal: 27
           totalShotFriendlyCounter: 1
-          monthsService: 7
+          monthsService: 8
           shotAtCounterTotal: 4
           hitCounterTotal: 1
-          longDistanceHitCounterTotal: 2
-          lowAccuracyHitCounterTotal: 1
-          shotsFiredCounterTotal: 34
-          shotsLandedCounterTotal: 12
+          longDistanceHitCounterTotal: 4
+          lowAccuracyHitCounterTotal: 3
+          shotsFiredCounterTotal: 95
+          shotsLandedCounterTotal: 40
           timesWoundedTotal: 1
           allAliensKilledTotal: 1
-          statGainTotal: 105
+          woundsHealedTotal: 3
+          statGainTotal: 148
+          braveryGainTotal: 10
       - type: STR_SOLDIER
         id: 5
         name: Spencer Grear
@@ -4110,7 +4518,7 @@ bases:
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_AKM, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 79, turn: 23710, side: 0, bodypart: 1, id: 1000019}
           missionIdList: [4, 6, 9, 11, 19, 20, 42, 44, 46, 79]
           daysWoundedTotal: 32
-          monthsService: 7
+          monthsService: 8
           shotAtCounterTotal: 1
           hitCounterTotal: 1
           shotsFiredCounterTotal: 37
@@ -4151,23 +4559,28 @@ bases:
           melee: 33
           mana: 52
         rank: 1
+        craft:
+          lon: 4.9502422746449222
+          lat: -0.93051298207705857
+          type: STR_VAN
+          id: 1
         gender: 0
         look: 3
         lookVariant: 57
-        missions: 3
+        missions: 5
         kills: 3
         stuns: 2
         armor: STR_VEST_BUSINESS_SUIT_UC
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
-          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 1}
           - {itemType: STR_SKORPION, slot: STR_RIGHT_HAND, ammoItem: STR_SKORPION_CLIP, ammoItemSlots: [STR_SKORPION_CLIP]}
+          - {itemType: STR_SKORPION_CLIP, slot: STR_BELT}
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 1}
+          - {itemType: STR_SKORPION_CLIP, slot: STR_BELT, slotX: 2}
+          - {itemType: STR_HANDCUFFS, slot: STR_BELT, slotX: 3}
           - {itemType: STR_FIRST_AID, slot: STR_BELT, slotX: 2, slotY: 1}
           - {itemType: STR_PAINKILLER, slot: STR_RIGHT_LEG}
-          - {itemType: STR_HANDCUFFS, slot: STR_BELT, slotX: 3}
-          - {itemType: STR_SKORPION_CLIP, slot: STR_BELT}
-          - {itemType: STR_SKORPION_CLIP, slot: STR_BELT, slotX: 2}
         personalEquipmentLayout:
           - {itemType: STR_SKORPION, slot: STR_RIGHT_HAND, ammoItem: STR_SKORPION_CLIP, ammoItemSlots: [STR_SKORPION_CLIP]}
           - {itemType: STR_SKORPION_CLIP, slot: STR_BELT}
@@ -4182,15 +4595,17 @@ bases:
             - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
           killList:
             - {type: STR_HUMAN_FARMER, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_MAG_LITE, weaponAmmo: __GUNBUTT, status: 7, faction: 1, mission: 40, turn: 12018, side: 1, bodypart: 3, id: 1000001}
             - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 41, turn: 12309, side: 0, bodypart: 1, id: 1000000}
             - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 41, turn: 12309, side: 3, bodypart: 1, id: 1000001}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 7, faction: 1, mission: 76, turn: 22812, side: 0, bodypart: 1, id: 1000003}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_SKORPION, weaponAmmo: STR_SKORPION_CLIP, status: 6, faction: 1, mission: 76, turn: 22813, side: 0, bodypart: 1, id: 1000003}
-          missionIdList: [40, 41, 76]
+          missionIdList: [40, 41, 76, 98, 103]
           daysWoundedTotal: 22
-          monthsService: 3
+          monthsService: 4
           shotAtCounterTotal: 8
           hitCounterTotal: 4
           ironManTotal: 1
@@ -4237,7 +4652,7 @@ bases:
         missions: 5
         kills: 5
         stuns: 0
-        recovery: 27
+        recovery: 13
         armor: STR_VEST_BUSINESS_SUIT_UC
         returnToTrainingWhenHealed: true
         improvement: 0
@@ -4263,7 +4678,7 @@ bases:
             - {type: STR_MALE_CIVILIAN_HOOLIGAN, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_SMALL_SHOTGUN, weaponAmmo: STR_SMALL_SHOTGUN_SHELLS, status: 6, faction: 2, mission: 79, turn: 23709, side: 3, bodypart: 1, id: 1000065}
           missionIdList: [45, 79, 81, 83, 93]
           daysWoundedTotal: 29
-          monthsService: 3
+          monthsService: 4
           unconciousTotal: 1
           shotAtCounterTotal: 13
           hitCounterTotal: 6
@@ -4304,36 +4719,45 @@ bases:
           melee: 55
           mana: 76
         rank: 1
+        craft:
+          lon: 4.9502422746449222
+          lat: -0.93051298207705857
+          type: STR_VAN
+          id: 1
         gender: 1
         look: 0
         lookVariant: 8
-        missions: 3
+        missions: 5
         kills: 1
         stuns: 2
         armor: STR_VEST_BUSINESS_SUIT_UC
         improvement: 0
         psiStrImprovement: 0
         equipmentLayout:
-          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, fuseTimer: 0}
           - {itemType: STR_BILLHOOK, slot: STR_LEFT_HAND}
-          - {itemType: STR_MAC10, slot: STR_RIGHT_HAND, ammoItem: STR_MAC10_CLIP, ammoItemSlots: [STR_MAC10_CLIP]}
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, fuseTimer: 0}
+          - {itemType: STR_SKORPION, slot: STR_RIGHT_HAND, ammoItem: STR_SKORPION_CLIP, ammoItemSlots: [STR_SKORPION_CLIP]}
+          - {itemType: STR_SKORPION_CLIP, slot: STR_BELT, slotX: 1}
+          - {itemType: STR_GRENADE, slot: STR_BELT, slotX: 2}
         personalEquipmentLayout:
-          - {itemType: STR_MAC10, slot: STR_RIGHT_HAND, ammoItem: STR_MAC10_CLIP, ammoItemSlots: [STR_MAC10_CLIP]}
           - {itemType: STR_BILLHOOK, slot: STR_LEFT_HAND}
           - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, fuseTimer: 0}
+          - {itemType: STR_SKORPION, slot: STR_RIGHT_HAND, ammoItem: STR_SKORPION_CLIP, ammoItemSlots: [STR_SKORPION_CLIP]}
+          - {itemType: STR_SKORPION_CLIP, slot: STR_BELT, slotX: 1}
+          - {itemType: STR_GRENADE, slot: STR_BELT, slotX: 2}
         personalEquipmentArmor: STR_VEST_BUSINESS_SUIT_UC
         diary:
           commendations:
-            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
           killList:
             - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_MAC10, weaponAmmo: STR_MAC10_CLIP, status: 6, faction: 1, mission: 73, turn: 21903, side: 0, bodypart: 1, id: 1000004}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_MAC10, weaponAmmo: STR_MAC10_CLIP, status: 7, faction: 1, mission: 78, turn: 23403, side: 2, bodypart: 2, id: 1000001}
             - {type: STR_ZSRR_PIONEER_MALE, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_MAC10, weaponAmmo: STR_MAC10_CLIP, status: 7, faction: 1, mission: 78, turn: 23404, side: 4, bodypart: 1, id: 1000010}
-          missionIdList: [71, 73, 78]
+          missionIdList: [71, 73, 78, 98, 103]
           daysWoundedTotal: 18
-          monthsService: 2
+          monthsService: 3
           shotAtCounterTotal: 2
           hitCounterTotal: 1
           ironManTotal: 2
@@ -4343,6 +4767,72 @@ bases:
           allAliensKilledTotal: 1
           woundsHealedTotal: 1
           statGainTotal: 36
+      - type: STR_SOLDIER
+        id: 51
+        name: Mall Saagpakk
+        nationality: 26
+        initialStats:
+          tu: 45
+          stamina: 51
+          health: 31
+          bravery: 60
+          reactions: 45
+          firing: 59
+          throwing: 39
+          strength: 32
+          psiStrength: 53
+          psiSkill: 0
+          melee: 55
+          mana: 79
+        currentStats:
+          tu: 48
+          stamina: 56
+          health: 34
+          bravery: 60
+          reactions: 46
+          firing: 59
+          throwing: 42
+          strength: 33
+          psiStrength: 53
+          psiSkill: 0
+          melee: 55
+          mana: 85
+        rank: 1
+        gender: 1
+        look: 0
+        lookVariant: 10
+        missions: 1
+        kills: 1
+        stuns: 0
+        recovery: 4
+        armor: STR_LEATHER_COAT_UC
+        improvement: 0
+        psiStrImprovement: 0
+        equipmentLayout:
+          - {itemType: STR_AGRICULTURAL_FLAMER, slot: STR_RIGHT_HAND, slotX: 39, ammoItem: STR_FLAMETHROWER_CLIP, ammoItemSlots: [STR_FLAMETHROWER_CLIP]}
+          - {itemType: STR_FLAMETHROWER_CLIP, slot: STR_BELT}
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 2}
+          - {itemType: STR_INCENDIARY_GRENADE, slot: STR_BELT, slotX: 3}
+          - {itemType: STR_STIMS, slot: STR_BELT, slotX: 2, slotY: 1}
+        personalEquipmentLayout:
+          - {itemType: STR_AGRICULTURAL_FLAMER, slot: STR_RIGHT_HAND, slotX: 39, ammoItem: STR_FLAMETHROWER_CLIP, ammoItemSlots: [STR_FLAMETHROWER_CLIP]}
+          - {itemType: STR_FLAMETHROWER_CLIP, slot: STR_BELT}
+          - {itemType: STR_SMOKE_GRENADE, slot: STR_BELT, slotX: 2}
+          - {itemType: STR_INCENDIARY_GRENADE, slot: STR_BELT, slotX: 3}
+          - {itemType: STR_STIMS, slot: STR_BELT, slotX: 2, slotY: 1}
+        personalEquipmentArmor: STR_LEATHER_COAT_UC
+        diary:
+          commendations:
+            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
+          killList:
+            - {type: STR_ZOMBIE_STERILE_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_ZOMBIE, weapon: STR_AGRICULTURAL_FLAMER, weaponAmmo: STR_FLAMETHROWER_CLIP, status: 6, faction: 1, mission: 101, turn: 30321, side: 0, bodypart: 1, id: 1000003}
+          missionIdList: [101]
+          daysWoundedTotal: 13
+          monthsService: 1
+          shotsFiredCounterTotal: 14
+          shotsLandedCounterTotal: 5
+          timesWoundedTotal: 1
+          statGainTotal: 22
       - type: STR_SOLDIER
         id: 33
         name: Samira Hamza
@@ -4411,7 +4901,7 @@ bases:
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_RIFLE_M16, weaponAmmo: STR_RIFLE_M16_CLIP, status: 7, faction: 1, mission: 76, turn: 22812, side: 0, bodypart: 1, id: 1000002}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_RIFLE_M16, weaponAmmo: STR_RIFLE_M16_CLIP, status: 6, faction: 1, mission: 76, turn: 22813, side: 0, bodypart: 1, id: 1000002}
           missionIdList: [63, 69, 76]
-          monthsService: 3
+          monthsService: 4
           shotAtCounterTotal: 2
           shotsFiredCounterTotal: 29
           shotsLandedCounterTotal: 16
@@ -4434,24 +4924,29 @@ bases:
           melee: 21
           mana: 40
         currentStats:
-          tu: 56
-          stamina: 67
+          tu: 57
+          stamina: 69
           health: 39
           bravery: 60
           reactions: 60
-          firing: 67
+          firing: 69
           throwing: 42
-          strength: 49
+          strength: 50
           psiStrength: 58
           psiSkill: 0
           melee: 21
           mana: 67
         rank: 2
+        craft:
+          lon: 4.7446825547897546
+          lat: -0.70605821970387117
+          type: STR_VAN
+          id: 2
         gender: 0
         look: 1
         lookVariant: 46
-        missions: 14
-        kills: 11
+        missions: 15
+        kills: 13
         stuns: 1
         armor: STR_VEST_BUSINESS_SUIT_UC
         improvement: 0
@@ -4476,7 +4971,7 @@ bases:
         diary:
           commendations:
             - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 1}
-            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 2}
             - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_TROOPER_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
@@ -4494,18 +4989,20 @@ bases:
             - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 7, faction: 1, mission: 89, turn: 26709, side: 1, bodypart: 3, id: 1000001}
             - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 89, turn: 26709, side: 1, bodypart: 3, id: 1000000}
             - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 89, turn: 26710, side: 1, bodypart: 3, id: 1000001}
-          missionIdList: [60, 62, 64, 65, 66, 67, 68, 70, 72, 74, 75, 77, 88, 89]
+            - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 102, turn: 30606, side: 3, bodypart: 1, id: 1000005}
+            - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_AK47, weaponAmmo: STR_WP_7_62_CLIP, status: 6, faction: 1, mission: 102, turn: 30606, side: 3, bodypart: 1, id: 1000000}
+          missionIdList: [60, 62, 64, 65, 66, 67, 68, 70, 72, 74, 75, 77, 88, 89, 102]
           daysWoundedTotal: 6
           totalShotFriendlyCounter: 1
-          monthsService: 3
+          monthsService: 4
           shotAtCounterTotal: 4
           hitCounterTotal: 2
           lowAccuracyHitCounterTotal: 1
-          shotsFiredCounterTotal: 59
-          shotsLandedCounterTotal: 19
+          shotsFiredCounterTotal: 79
+          shotsLandedCounterTotal: 23
           timesWoundedTotal: 1
-          woundsHealedTotal: 1
-          statGainTotal: 82
+          woundsHealedTotal: 2
+          statGainTotal: 88
       - type: STR_SOLDIER
         id: 41
         name: Koesalah  
@@ -4575,7 +5072,7 @@ bases:
           missionIdList: [53, 60, 62, 64, 65, 66, 67, 68, 70, 72, 85, 86]
           daysWoundedTotal: 23
           totalShotByFriendlyCounter: 1
-          monthsService: 3
+          monthsService: 4
           shotAtCounterTotal: 5
           hitCounterTotal: 4
           ironManTotal: 1
@@ -4623,7 +5120,7 @@ bases:
         missions: 6
         kills: 4
         stuns: 4
-        recovery: 16
+        recovery: 2
         armor: STR_VEST_BUSINESS_SUIT_UC
         returnToTrainingWhenHealed: true
         improvement: 0
@@ -4662,7 +5159,7 @@ bases:
             - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_RIFLE_M16, weaponAmmo: STR_RIFLE_M16_CLIP, status: 6, faction: 1, mission: 90, turn: 27016, side: 1, bodypart: 3, id: 1000004}
           missionIdList: [33, 34, 43, 53, 87, 90]
           daysWoundedTotal: 21
-          monthsService: 6
+          monthsService: 7
           shotAtCounterTotal: 4
           hitCounterTotal: 1
           shotsFiredCounterTotal: 37
@@ -4706,7 +5203,7 @@ bases:
         missions: 16
         kills: 15
         stuns: 4
-        recovery: 32
+        recovery: 18
         armor: STR_SUIT_UC
         returnToTrainingWhenHealed: true
         improvement: 0
@@ -4773,7 +5270,7 @@ bases:
           missionIdList: [1, 2, 3, 5, 8, 10, 12, 14, 16, 17, 42, 44, 46, 47, 48, 79]
           daysWoundedTotal: 123
           loneSurvivorTotal: 1
-          monthsService: 7
+          monthsService: 8
           shotAtCounterTotal: 9
           hitCounterTotal: 3
           lowAccuracyHitCounterTotal: 1
@@ -4858,7 +5355,7 @@ bases:
           missionIdList: [7, 50, 71]
           daysWoundedTotal: 47
           loneSurvivorTotal: 1
-          monthsService: 6
+          monthsService: 7
           shotAtCounterTotal: 4
           hitCounterTotal: 3
           shotsFiredCounterTotal: 20
@@ -4884,28 +5381,23 @@ bases:
           mana: 23
         currentStats:
           tu: 65
-          stamina: 87
+          stamina: 89
           health: 45
           bravery: 60
-          reactions: 57
-          firing: 87
+          reactions: 59
+          firing: 88
           throwing: 53
           strength: 51
           psiStrength: 71
           psiSkill: 0
           melee: 60
-          mana: 87
+          mana: 92
         rank: 3
-        craft:
-          lon: 4.6878180049063767
-          lat: -0.65988849038324626
-          type: STR_HELICOPTER
-          id: 1
         gender: 0
         look: 1
         lookVariant: 59
-        missions: 21
-        kills: 11
+        missions: 22
+        kills: 12
         stuns: 9
         armor: STR_VEST_BUSINESS_SUIT_UC
         training: true
@@ -4934,7 +5426,7 @@ bases:
           commendations:
             - {commendationName: STR_MEDAL_TASEMASTER_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_LONESURVIVOR_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 3}
             - {commendationName: STR_MEDAL_INCAPACITATOR_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 2}
@@ -4942,6 +5434,7 @@ bases:
             - {commendationName: STR_MEDAL_TROOPER_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_REACTIONFIRE_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
           killList:
             - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_TASER, weaponAmmo: STR_TASER_CLIP, status: 7, faction: 1, mission: 13, turn: 3906, side: 3, bodypart: 1, id: 1000001}
             - {type: STR_BRAINWASHED_HUMAN_FARMER, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_TASER, weaponAmmo: STR_TASER_CLIP, status: 7, faction: 1, mission: 15, turn: 4503, side: 1, bodypart: 3, id: 1000004}
@@ -4963,20 +5456,21 @@ bases:
             - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 6, faction: 1, mission: 74, turn: 22219, side: 0, bodypart: 1, id: 1000013}
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 6, faction: 1, mission: 75, turn: 22503, side: 0, bodypart: 1, id: 1000000}
             - {type: STR_ZSRR_GANGER, rank: STR_LIVE_SOLDIER, race: STR_ZSRR, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 7, faction: 1, mission: 93, turn: 27910, side: 2, bodypart: 2, id: 1000005}
-          missionIdList: [13, 15, 18, 39, 45, 49, 51, 60, 62, 64, 65, 66, 67, 68, 70, 72, 74, 75, 77, 83, 93]
-          daysWoundedTotal: 14
+            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 6, faction: 1, mission: 95, turn: 28519, side: 0, bodypart: 1, id: 1000001}
+          missionIdList: [13, 15, 18, 39, 45, 49, 51, 60, 62, 64, 65, 66, 67, 68, 70, 72, 74, 75, 77, 83, 93, 95]
+          daysWoundedTotal: 16
           loneSurvivorTotal: 1
-          monthsService: 6
-          shotAtCounterTotal: 8
-          hitCounterTotal: 2
+          monthsService: 7
+          shotAtCounterTotal: 9
+          hitCounterTotal: 3
           longDistanceHitCounterTotal: 1
-          shotsFiredCounterTotal: 66
-          shotsLandedCounterTotal: 45
-          timesWoundedTotal: 1
+          shotsFiredCounterTotal: 67
+          shotsLandedCounterTotal: 46
+          timesWoundedTotal: 2
           allAliensKilledTotal: 1
           allAliensStunnedTotal: 2
           woundsHealedTotal: 1
-          statGainTotal: 203
+          statGainTotal: 213
       - type: STR_SOLDIER
         id: 9
         name: Lionel Meunier
@@ -4996,22 +5490,27 @@ bases:
           mana: 42
         currentStats:
           tu: 59
-          stamina: 70
+          stamina: 73
           health: 45
           bravery: 20
           reactions: 49
           firing: 76
-          throwing: 53
-          strength: 47
+          throwing: 54
+          strength: 49
           psiStrength: 81
           psiSkill: 0
           melee: 58
-          mana: 77
+          mana: 80
         rank: 3
+        craft:
+          lon: 4.9502422746449222
+          lat: -0.93051298207705857
+          type: STR_VAN
+          id: 1
         gender: 0
         look: 0
         lookVariant: 47
-        missions: 13
+        missions: 15
         kills: 6
         stuns: 5
         armor: STR_VEST_BUSINESS_SUIT_UC
@@ -5033,9 +5532,9 @@ bases:
         personalEquipmentArmor: STR_VEST_BUSINESS_SUIT_UC
         diary:
           commendations:
-            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_SAVEDALL_NAME, decorationLevel: 2}
             - {commendationName: STR_MEDAL_TASEMASTER_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 1}
+            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 2}
             - {commendationName: STR_MEDAL_STATGAIN_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 2}
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
@@ -5053,18 +5552,18 @@ bases:
             - {type: STR_FENRIR_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_FENRIR, weapon: STR_COLT45, weaponAmmo: STR_COLT45_CLIP, status: 6, faction: 1, mission: 49, turn: 14709, side: 0, bodypart: 1, id: 1000001}
             - {type: STR_MALE_CIVILIAN_HOOLIGAN, rank: STR_LIVE_SOLDIER, race: STR_HUMAN, weapon: STR_NITRO_EXPRESS, weaponAmmo: STR_NITRO_EXPRESS_CLIP, status: 6, faction: 2, mission: 79, turn: 23709, side: 2, bodypart: 2, id: 1000063}
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_NITRO_EXPRESS, weaponAmmo: STR_NITRO_EXPRESS_CLIP, status: 6, faction: 1, mission: 81, turn: 24303, side: 0, bodypart: 1, id: 1000008}
-          missionIdList: [8, 10, 12, 14, 16, 17, 19, 49, 51, 55, 59, 79, 81]
+          missionIdList: [8, 10, 12, 14, 16, 17, 19, 49, 51, 55, 59, 79, 81, 98, 103]
           daysWoundedTotal: 65
-          monthsService: 6
+          monthsService: 7
           unconciousTotal: 1
           shotAtCounterTotal: 7
           hitCounterTotal: 4
-          shotsFiredCounterTotal: 37
+          shotsFiredCounterTotal: 40
           shotsLandedCounterTotal: 46
           timesWoundedTotal: 2
           allAliensKilledTotal: 2
           allAliensStunnedTotal: 2
-          statGainTotal: 157
+          statGainTotal: 166
       - type: STR_SOLDIER
         id: 1
         name: Veronica Steele
@@ -5084,24 +5583,29 @@ bases:
           mana: 52
         currentStats:
           tu: 65
-          stamina: 84
+          stamina: 88
           health: 45
           bravery: 70
           reactions: 61
           firing: 91
-          throwing: 58
+          throwing: 59
           strength: 50
           psiStrength: 91
           psiSkill: 0
-          melee: 53
-          mana: 101
+          melee: 57
+          mana: 106
         rank: 4
+        craft:
+          lon: 2.6454859574785563
+          lat: -0.89150860077360505
+          type: STR_HELICOPTER
+          id: 1
         gender: 1
         look: 0
         lookVariant: 2
-        missions: 17
-        kills: 28
-        stuns: 10
+        missions: 22
+        kills: 31
+        stuns: 11
         armor: STR_VEST_BUSINESS_SUIT_UC
         training: true
         improvement: 0
@@ -5136,11 +5640,11 @@ bases:
             - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 2}
             - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 3}
             - {commendationName: STR_MEDAL_TASEMASTER_NAME, decorationLevel: 0}
-            - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 2}
-            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 2}
+            - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 3}
+            - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 3}
             - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_MISSION_KILLS_5_NAME, decorationLevel: 1}
-            - {commendationName: STR_MEDAL_STATGAIN_NAME, decorationLevel: 2}
+            - {commendationName: STR_MEDAL_STATGAIN_NAME, decorationLevel: 3}
             - {commendationName: STR_MEDAL_TROOPER_NAME, decorationLevel: 2}
             - {commendationName: STR_MEDAL_WEAPON_PROFICIENCY_NAME, noun: STR_SKS, decorationLevel: 1}
             - {commendationName: STR_MEDAL_INCAPACITATOR_NAME, decorationLevel: 0}
@@ -5148,6 +5652,8 @@ bases:
             - {commendationName: STR_MEDAL_CARREER_CAPTURES_NAME, decorationLevel: 0}
             - {commendationName: STR_MEDAL_REACTIONFIRE_NAME, decorationLevel: 1}
             - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_SPELUNKER_NAME, decorationLevel: 0}
+            - {commendationName: STR_MEDAL_CARREER_KILLS_NAME, decorationLevel: 0}
           killList:
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_GLOCK_18, weaponAmmo: STR_GLOCK_18_CLIP, status: 6, faction: 1, mission: 0, turn: 12, side: 0, bodypart: 1, id: 1000001}
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_GLOCK_18, weaponAmmo: STR_GLOCK_18_CLIP, status: 7, faction: 1, mission: 0, turn: 36, side: 3, bodypart: 1, id: 1000000}
@@ -5187,304 +5693,253 @@ bases:
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_FLARE_PISTOL, weaponAmmo: STR_FLARE_PISTOL_CLIP, status: 6, faction: 1, mission: 62, turn: 18613, side: 0, bodypart: 1, id: 1000006}
             - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 6, faction: 1, mission: 62, turn: 18613, side: 3, bodypart: 1, id: 1000008}
             - {type: STR_EXALT_GOON, rank: STR_LIVE_NAVIGATOR, race: STR_EXALT, weapon: STR_FLARE_PISTOL, weaponAmmo: STR_FLARE_PISTOL_CLIP, status: 6, faction: 1, mission: 62, turn: 18613, side: 0, bodypart: 1, id: 1000009}
-          missionIdList: [0, 2, 22, 25, 27, 31, 32, 35, 50, 52, 54, 56, 57, 58, 61, 62, 75]
+            - {type: STR_GIANT_SPIDER_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 7, faction: 1, mission: 96, turn: 28806, side: 0, bodypart: 1, id: 1000001}
+            - {type: STR_GIANT_SPIDER_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 6, faction: 1, mission: 96, turn: 28807, side: 0, bodypart: 1, id: 1000001}
+            - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_WEAPON_UNKNOWN, weaponAmmo: STR_WEAPON_UNKNOWN, status: 6, faction: 1, mission: 100, turn: 30004, side: 4, bodypart: 1, id: 1000002}
+            - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_SKS, weaponAmmo: STR_SKS_CLIP, status: 6, faction: 1, mission: 104, turn: 31203, side: 0, bodypart: 1, id: 1000000}
+          missionIdList: [0, 2, 22, 25, 27, 31, 32, 35, 50, 52, 54, 56, 57, 58, 61, 62, 75, 95, 96, 100, 101, 104]
           daysWoundedTotal: 116
           loneSurvivorTotal: 2
-          monthsService: 7
+          monthsService: 8
           unconciousTotal: 1
           shotAtCounterTotal: 33
           hitCounterTotal: 14
           ironManTotal: 3
-          shotsFiredCounterTotal: 100
-          shotsLandedCounterTotal: 56
+          longDistanceHitCounterTotal: 2
+          shotsFiredCounterTotal: 124
+          shotsLandedCounterTotal: 71
           shotAtCounter10in1Mission: 1
           timesWoundedTotal: 5
           allAliensKilledTotal: 5
           allAliensStunnedTotal: 3
           woundsHealedTotal: 5
-          statGainTotal: 197
+          statGainTotal: 211
           braveryGainTotal: 20
-      - type: STR_SOLDIER
-        id: 48
-        name: Yahav Malka
-        nationality: 43
-        initialStats:
-          tu: 53
-          stamina: 52
-          health: 27
-          bravery: 50
-          reactions: 49
-          firing: 57
-          throwing: 48
-          strength: 26
-          psiStrength: 20
-          psiSkill: 0
-          melee: 20
-          mana: 43
-        currentStats:
-          tu: 53
-          stamina: 52
-          health: 27
-          bravery: 50
-          reactions: 49
-          firing: 57
-          throwing: 48
-          strength: 26
-          psiStrength: 20
-          psiSkill: 0
-          melee: 20
-          mana: 43
-        rank: 0
-        gender: 0
-        look: 1
-        lookVariant: 56
-        missions: 0
-        kills: 0
-        stuns: 0
-        armor: STR_SUIT_UC
-        improvement: 0
-        psiStrImprovement: 0
-      - type: STR_SOLDIER
-        id: 49
-        name: Flor Torres
-        nationality: 58
-        initialStats:
-          tu: 47
-          stamina: 42
-          health: 29
-          bravery: 50
-          reactions: 59
-          firing: 51
-          throwing: 53
-          strength: 39
-          psiStrength: 3
-          psiSkill: 0
-          melee: 32
-          mana: 69
-        currentStats:
-          tu: 47
-          stamina: 42
-          health: 29
-          bravery: 50
-          reactions: 59
-          firing: 51
-          throwing: 53
-          strength: 39
-          psiStrength: 3
-          psiSkill: 0
-          melee: 32
-          mana: 69
-        rank: 0
-        gender: 1
-        look: 0
-        lookVariant: 59
-        missions: 0
-        kills: 0
-        stuns: 0
-        armor: STR_SUIT_UC
-        improvement: 0
-        psiStrImprovement: 0
     crafts:
-      - lon: 4.6878180049063767
-        lat: -0.65988849038324626
+      - lon: 4.9502422746449222
+        lat: -0.93051298207705857
         id: 1
-        speedLon: 0
-        speedLat: 0
-        speedRadian: 0
-        speed: 0
+        dest:
+          lon: 5.4111386380138855
+          lat: -1.125349864022809
+          type: STR_MONSTER_HUNT
+          id: 33
+        speedLon: 3.2492951033535377e-05
+        speedLat: -2.3266178458551001e-05
+        speedRadian: 3.0300855069345998e-05
+        speed: 75
         type: STR_VAN
         fuel: 9999
         damage: 0
         shield: 0
         items:
-          STR_AKM: 1
-          STR_PAINKILLER: 1
-          STR_SMOKE_GRENADE: 1
-          STR_WP_7_62_CLIP: 3
-        status: STR_READY
-        lonAuto: 0
-        latAuto: 0
-      - lon: 5.5201348831746522
-        lat: -1.0432874675985886
-        id: 1
-        dest:
-          lon: 0.60609227397090915
-          lat: -0.70247268343020453
-          type: STR_MONSTER_HUNT
-          id: 29
-        speedLon: 0.00034966293528668587
-        speedLat: -4.5520524521416241e-05
-        speedRadian: 0.00018180513041607597
-        speed: 450
-        type: STR_LUXURY_CAR
-        fuel: 9879
-        damage: 0
-        shield: 0
-        items:
-          STR_AK47: 1
-          STR_ELECTRIC_CLUB: 1
-          STR_ELECTRO_FLARE: 3
-          STR_FIRST_AID: 1
+          STR_BILLHOOK: 1
+          STR_FIRST_AID: 2
+          STR_GRENADE: 1
           STR_HANDCUFFS: 1
-          STR_MAG_LITE: 1
+          STR_NITRO_EXPRESS: 1
+          STR_NITRO_EXPRESS_CLIP: 3
           STR_PAINKILLER: 1
-          STR_SKORPION: 1
-          STR_SKORPION_CLIP: 2
-          STR_SMOKE_GRENADE: 1
-          STR_TASER: 1
-          STR_TASER_CLIP: 2
-          STR_WP_7_62_CLIP: 3
+          STR_SKORPION: 2
+          STR_SKORPION_CLIP: 5
+          STR_SMOKE_GRENADE: 3
         status: STR_OUT
         lonAuto: 0
         latAuto: 0
         pilots:
-          - 40
-      - lon: 4.6878180049063767
-        lat: -0.65988849038324626
+          - 9
+      - lon: 2.6454859574785563
+        lat: -0.89150860077360505
         id: 1
-        speedLon: 0
-        speedLat: 0
-        speedRadian: 0
-        speed: 0
+        dest:
+          lon: 4.6878180049063767
+          lat: -0.65988849038324626
+          type: STR_BASE
+          id: 0
+        speedLon: 0.00010755342918506729
+        speedLat: -6.3788781908554403e-05
+        speedRadian: 9.2922622212661076e-05
+        speed: 230
         type: STR_HELICOPTER
-        fuel: 160
+        fuel: 260
         damage: 0
         shield: 0
         items:
           STR_DYNAMITE: 1
-          STR_ELECTRIC_CLUB: 1
-          STR_FIRST_AID: 1
-          STR_FLARE_PISTOL: 1
-          STR_FLARE_PISTOL_CLIP: 3
-          STR_HANDCUFFS: 1
-          STR_MAG_LITE: 1
+          STR_ELECTRIC_CLUB: 2
+          STR_ELECTRO_FLARE: 1
+          STR_FIRST_AID: 3
+          STR_FLARE_PISTOL: 2
+          STR_FLARE_PISTOL_CLIP: 6
+          STR_FN_FAL: 1
+          STR_FN_FAL_CLIP: 2
+          STR_GOLDEN_DRAGONS: 1
+          STR_GRENADE: 1
+          STR_INCENDIARY_GRENADE: 1
+          STR_MAG_LITE: 2
           STR_MEDI_PACK: 1
           STR_MP: 2
           STR_MP_CLIP: 5
           STR_PAINKILLER: 2
-          STR_SKORPION: 2
-          STR_SKORPION_CLIP: 6
+          STR_PPSH: 1
+          STR_PPSH_CLIP: 2
+          STR_SKORPION: 1
+          STR_SKORPION_CLIP: 3
           STR_SKS: 1
-          STR_SKS_CLIP: 3
-          STR_SMOKE_GRENADE: 3
+          STR_SKS_CLIP: 2
+          STR_SMOKE_GRENADE: 5
           STR_STIMS: 2
           STR_TONFA: 1
-        status: STR_REFUELLING
+        status: STR_OUT
+        mission: true
         lonAuto: 0
         latAuto: 0
         pilots:
-          - 11
+          - 1
+      - lon: 4.7446825547897546
+        lat: -0.70605821970387117
+        id: 2
+        dest:
+          lon: 0.53581608036225914
+          lat: -0.64379960118314827
+          type: STR_CULT_APPREHENSION
+          id: 58
+        speedLon: 2.802517780522473e-05
+        speedLat: -2.152633891372668e-05
+        speedRadian: 3.0300855069345998e-05
+        speed: 75
+        type: STR_VAN
+        fuel: 9999
+        damage: 0
+        shield: 0
+        items:
+          STR_AK47: 1
+          STR_FIRST_AID: 1
+          STR_HANDCUFFS: 1
+          STR_PAINKILLER: 1
+          STR_SHOTGUN: 1
+          STR_SHOTGUN_SHELLS_AP: 2
+          STR_SHOTGUN_SHELLS_BATON: 1
+          STR_SMOKE_GRENADE: 2
+          STR_STIMS: 1
+          STR_WP_7_62_CLIP: 1
+        status: STR_OUT
+        lonAuto: 0
+        latAuto: 0
+        pilots:
+          - 42
     items:
       STR_AGRICULTURAL_FLAMER: 2
       STR_AK47: 5
-      STR_AKM: 11
+      STR_AKM: 12
       STR_ALENIUM_SHARD: 3
-      STR_AMMO_BOX: 11
+      STR_AMMO_BOX: 8
       STR_ARASAKA_3000_CLIP: 5
       STR_ASMODEAN_COBRA_CORPSE: 9
-      STR_BERETTA_92FS: 1
-      STR_BERETTA_92FS_CLIP: 15
-      STR_BILLHOOK: 3
+      STR_BIG_BONE: 3
+      STR_BILLHOOK: 2
       STR_BLACKOPS_AUTO_SNIPER_RIFLE_CLIP: 4
       STR_BLACK_LOTUS_FOOTMAN: 1
       STR_BLACK_LOTUS_WARRIOR: 1
       STR_BOLT_ACTION_CLIP: 3
-      STR_CALICO: 1
-      STR_CALICO_CLIP: 2
+      STR_BROKEN_LANTERN: 1
       STR_CAWS_CLIP_AP: 10
+      STR_CAWS_CLIP_BS: 10
+      STR_CELL_PHONE: 1
       STR_CHUPACABRA_CORPSE: 7
-      STR_COLT_COMMANDO: 1
+      STR_COLT_COMMANDO: 2
       STR_COMBAT_KNIFE: 8
       STR_CRIMINAL_RECORDS: 2
       STR_DESERT_EAGLE_CLIP: 16
-      STR_DOGE_COMBAT_VEST: 10
-      STR_DURATHREAD: 6
+      STR_DISCIPLE_OF_DAGON: 1
+      STR_DOGE_COMBAT_VEST: 9
+      STR_DULLED_PROMETHEUM: 1
+      STR_DURATHREAD: 5
       STR_DYNAMITE: 1
-      STR_ELECTRIC_CLUB: 13
-      STR_ELECTRO_FLARE: 19
-      STR_ENFIELD_REVOLVER_AMMO: 6
+      STR_ELECTRIC_CLUB: 16
+      STR_ELECTRO_FLARE: 18
       STR_ETRACE: 5
-      STR_EXALT_INFILTRATOR: 1
       STR_EXPLOSIVES_BOX_SIMPLE: 2
       STR_FENRIR_CORPSE: 2
       STR_FENRIR_TERRORIST: 1
       STR_FIRE_EXTINGUISHER: 6
-      STR_FIRST_AID: 11
-      STR_FLAMETHROWER_CLIP: 10
-      STR_FLARE_PISTOL: 9
-      STR_FLARE_PISTOL_CLIP: 57
+      STR_FIRST_AID: 7
+      STR_FLAMETHROWER_CLIP: 12
+      STR_FLARE_PISTOL: 8
+      STR_FLARE_PISTOL_CLIP: 52
       STR_FLASHBANG_GRENADE: 10
-      STR_FN_FAL: 1
-      STR_FN_FAL_CLIP: 8
+      STR_FN_FAL_CLIP: 5
       STR_FN_P90: 4
       STR_GIANT_BEETLE_CORPSE: 20
       STR_GIANT_RAT_CORPSE: 2
-      STR_GOLDEN_DRAGONS: 1
       STR_GOLF_STICK: 1
-      STR_GRENADE: 2
-      STR_HANDCUFFS: 13
+      STR_HANDCUFFS: 12
       STR_HAZMAT_ARMOR: 8
       STR_HMG_CLIP: 2
       STR_HUMAN_FARMER_CORPSE: 1
       STR_HUMAN_SACRIFICE_1: 1
       STR_HUMAN_SACRIFICE_2: 1
       STR_HUNTING_RIFLE: 9
-      STR_HUNTING_RIFLE_CLIP: 17
+      STR_HUNTING_RIFLE_CLIP: 22
       STR_HWP_MARKER_FOLDED: 5
-      STR_INCENDIARY_GRENADE: 3
-      STR_KUKRI: 1
+      STR_INCENDIARY_GRENADE: 12
+      STR_KATANA: 1
       STR_LAUNCHER_BEAN: 10
-      STR_LEATHER_COAT: 19
+      STR_LEATHER_COAT: 16
       STR_LUGER: 1
       STR_LUGER_CLIP: 11
       STR_MACHETE: 1
-      STR_MAG_LITE: 20
+      STR_MAGNUM_DRUM: 7
+      STR_MAG_LITE: 17
       STR_MAUSER_CLIP: 6
+      STR_MEDI_BAG: 1
       STR_MEDI_PACK: 4
       STR_MEGASCORPION_CORPSE: 18
       STR_MINEBEA_UZI: 8
       STR_MINIMI_CLIP: 4
-      STR_MONEY_5000: 30
-      STR_MONEY_BRIEFCASE: 8
+      STR_MONEY_5000: 32
+      STR_MONEY_BRIEFCASE: 11
       STR_MONGORN_ANZUG: 15
       STR_MOSIN_RIFLE: 1
-      STR_MP: 7
-      STR_MP40_CLIP: 13
-      STR_MP_CLIP: 26
+      STR_MP: 6
+      STR_MP40_CLIP: 16
+      STR_MP_CLIP: 21
+      STR_MUCKSTAR_CORPSE: 12
       STR_MUTANT_BLOOD_PLASMA: 26
-      STR_NITRO_EXPRESS: 2
-      STR_NITRO_EXPRESS_CLIP: 10
+      STR_NITRO_EXPRESS: 1
+      STR_NITRO_EXPRESS_CLIP: 6
       STR_PAINKILLER: 6
       STR_PPSH: 1
-      STR_PPSH_CLIP: 10
-      STR_PSG1_CLIP: 5
+      STR_PPSH_CLIP: 11
+      STR_PSG1_CLIP: 10
       STR_PSICLONE: 3
       STR_PUMP_ACTION: 7
       STR_PUMP_ACTION_SHELLS: 43
-      STR_QBU_88: 1
-      STR_QBU_88_CLIP: 2
+      STR_QBU_88: 2
+      STR_QBU_88_CLIP: 4
       STR_RIFLE_M16: 2
       STR_RIFLE_M16_CLIP: 4
       STR_S&W_610_CLIP: 5
-      STR_SHIV: 1
-      STR_SHOTGUN: 6
-      STR_SHOTGUN_SHELLS: 43
-      STR_SHOTGUN_SHELLS_AP: 22
-      STR_SHOTGUN_SHELLS_BATON: 21
+      STR_SHOGG_LANTERN: 1
+      STR_SHOTGUN: 4
+      STR_SHOTGUN_SHELLS: 64
+      STR_SHOTGUN_SHELLS_AP: 29
+      STR_SHOTGUN_SHELLS_BATON: 18
       STR_SKORPION: 8
-      STR_SKORPION_CLIP: 51
+      STR_SKORPION_CLIP: 49
       STR_SKS: 8
-      STR_SKS_CLIP: 32
+      STR_SKS_CLIP: 30
       STR_SMALL_SHOTGUN: 5
-      STR_SMALL_SHOTGUN_SHELLS: 31
+      STR_SMALL_SHOTGUN_SHELLS: 43
       STR_SMG_CLIP: 6
-      STR_SMOKE_GRENADE: 55
+      STR_SMOKE_GRENADE: 47
       STR_SPIDERWEB: 1
       STR_SPORT_PARAPHERNALIA: 22
       STR_STEN: 1
-      STR_STIMS: 10
+      STR_STIMS: 9
+      STR_STRANGE_ALUMINIUM_TABLET: 1
       STR_TASER: 7
-      STR_TASER_CLIP: 31
+      STR_TASER_CLIP: 40
       STR_TONFA: 9
       STR_TRACE_FLARE: 2
       STR_TRAUMA_PACK: 2
@@ -5493,462 +5948,538 @@ bases:
       STR_USAS_12: 1
       STR_USAS_12_DRUM: 3
       STR_VEST_BUSINESS_SUIT: 5
-      STR_WAKIZASHI: 1
-      STR_WEAPON_BOX: 1
-      STR_WEAPON_BOX_RAMSHACKLE: 2
+      STR_WEAPON_BOX_RAMSHACKLE: 1
       STR_WERECAT_CORPSE: 1
       STR_WEREWOLF_CORPSE: 2
-      STR_WEREWOLF_TERRORIST: 1
       STR_WP_5_45_CLIP: 5
-      STR_WP_7_62_CLIP: 49
+      STR_WP_7_62_CLIP: 54
       STR_WRENCH: 1
       STR_ZOMBIE_GRUBAS_CORPSE: 4
+      STR_ZOMBIE_GRUBAS_TERRORIST: 1
       STR_ZOMBIE_INFECTOR_CORPSE: 2
       STR_ZOMBIE_PARASITE: 10
       STR_ZOMBIE_STERILE_CORPSE: 2
-      STR_ZOMBIE_STERILE_TERRORIST: 7
+      STR_ZOMBIE_STERILE_TERRORIST: 1
     scientists: 0
     engineers: 8
-    transfers:
-      - hours: 52
-        soldier:
-          type: STR_SOLDIER
-          id: 50
-          name: Rahul Narayan
-          nationality: 34
-          initialStats:
-            tu: 47
-            stamina: 44
-            health: 33
-            bravery: 10
-            reactions: 34
-            firing: 54
-            throwing: 39
-            strength: 29
-            psiStrength: 35
-            psiSkill: 0
-            melee: 56
-            mana: 65
-          currentStats:
-            tu: 47
-            stamina: 44
-            health: 33
-            bravery: 10
-            reactions: 34
-            firing: 54
-            throwing: 39
-            strength: 29
-            psiStrength: 35
-            psiSkill: 0
-            melee: 56
-            mana: 65
-          rank: 0
-          gender: 0
-          look: 2
-          lookVariant: 34
-          missions: 0
-          kills: 0
-          stuns: 0
-          armor: STR_SUIT_UC
-          improvement: 0
-          psiStrImprovement: 0
-      - hours: 52
-        soldier:
-          type: STR_SOLDIER
-          id: 51
-          name: Mall Saagpakk
-          nationality: 26
-          initialStats:
-            tu: 45
-            stamina: 51
-            health: 31
-            bravery: 60
-            reactions: 45
-            firing: 59
-            throwing: 39
-            strength: 32
-            psiStrength: 53
-            psiSkill: 0
-            melee: 55
-            mana: 79
-          currentStats:
-            tu: 45
-            stamina: 51
-            health: 31
-            bravery: 60
-            reactions: 45
-            firing: 59
-            throwing: 39
-            strength: 32
-            psiStrength: 53
-            psiSkill: 0
-            melee: 55
-            mana: 79
-          rank: 0
-          gender: 1
-          look: 0
-          lookVariant: 10
-          missions: 0
-          kills: 0
-          stuns: 0
-          armor: STR_SUIT_UC
-          improvement: 0
-          psiStrImprovement: 0
     research:
       - project: STR_CHIEF_RESEARCHER_CONTACT
         assigned: 0
         spent: 0
         cost: 40
-      - project: STR_SICK_BAY
-        assigned: 4
-        spent: 43
-        cost: 63
-      - project: STR_EXPLOSIVES_BOX_SIMPLE
-        assigned: 0
-        spent: 0
-        cost: 2
-      - project: STR_FN_FAL
+      - project: STR_SHOGG_LANTERN
         assigned: 1
-        spent: 11
-        cost: 13
-      - project: STR_USAS_12
+        spent: 6
+        cost: 19
+      - project: STR_BROKEN_LANTERN
+        assigned: 1
+        spent: 5
+        cost: 22
+      - project: STR_DULLED_PROMETHEUM
+        assigned: 1
+        spent: 0
+        cost: 15
+      - project: STR_DURATHREAD
+        assigned: 1
+        spent: 6
+        cost: 64
+      - project: STR_MUCKSTAR_CORPSE
         assigned: 0
         spent: 0
-        cost: 3
+        cost: 8
+      - project: STR_GIANT_SPIDER_QUEEN_CORPSE
+        assigned: 1
+        spent: 6
+        cost: 9
+      - project: STR_WEREWOLF_TERRORIST
+        assigned: 0
+        spent: 0
+        cost: 32
+      - project: STR_WERECAT_TERRORIST
+        assigned: 0
+        spent: 0
+        cost: 30
+      - project: STR_BLACK_LOTUS_FOOTMAN
+        assigned: 0
+        spent: 0
+        cost: 8
+      - project: STR_BLACK_LOTUS_WARRIOR
+        assigned: 0
+        spent: 0
+        cost: 13
+      - project: STR_EXALT_INFILTRATOR
+        assigned: 0
+        spent: 0
+        cost: 11
 missionSites:
-  - lon: 0.60609227397090915
-    lat: -0.70247268343020453
-    id: 29
-    type: STR_MONSTERS_HUNT_PACK_TEMPERATE
-    deployment: STR_MONSTERS_HUNT_PACK_TEMPERATE
+  - lon: 5.4111386380138855
+    lat: -1.125349864022809
+    id: 33
+    type: STR_MONSTERS_HUNT_FEW_COLD
+    deployment: STR_MONSTERS_HUNT_FEW_COLD
     texture: 0
-    secondsRemaining: 264600
-    race: STR_MUCKSTAR
+    secondsRemaining: 244800
+    race: STR_MONGORN
+    detected: true
+  - lon: 0.53581608036225914
+    lat: -0.64379960118314827
+    id: 58
+    type: STR_CULT_BAND_CHURCH_OF_DAGON
+    deployment: STR_CULT_BAND_CHURCH_OF_DAGON
+    texture: -1
+    secondsRemaining: 311400
+    race: STR_CHURCH_OF_DAGON
     detected: true
 alienMissions:
   - type: STR_CULT_APPREHENSION_EXALT
-    region: STR_SOUTH_AMERICA
+    region: STR_NORTH_AMERICA
     race: STR_EXALT
     nextWave: 0
     nextUfoCounter: 0
-    spawnCountdown: 453
+    spawnCountdown: 2149
     liveUfos: 0
-    uniqueID: 101
-    missionSiteZone: 19
+    uniqueID: 120
+    missionSiteZone: 47
+  - type: STR_CULT_APPREHENSION_CHURCH_OF_DAGON
+    region: STR_SOUTHERN_AFRICA
+    race: STR_CHURCH_OF_DAGON
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 1307
+    liveUfos: 0
+    uniqueID: 121
+    missionSiteZone: 16
+  - type: STR_CULT_APPREHENSION_ZSRR
+    region: STR_SIBERIA
+    race: STR_ZSRR
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 15084
+    liveUfos: 0
+    uniqueID: 122
+    missionSiteZone: 5
+  - type: STR_CULT_BAND_BLACK_LOTUS
+    region: STR_SOUTH_EAST_ASIA
+    race: STR_BLACK_LOTUS
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 14680
+    liveUfos: 0
+    uniqueID: 123
+    missionSiteZone: 10
+  - type: STR_CULT_BAND_BLACK_LOTUS
+    region: STR_AUSTRALASIA
+    race: STR_BLACK_LOTUS
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 24115
+    liveUfos: 0
+    uniqueID: 124
+    missionSiteZone: 1
+  - type: STR_CULT_BAND_CHURCH_OF_DAGON
+    region: STR_SOUTHERN_AFRICA
+    race: STR_CHURCH_OF_DAGON
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 17338
+    liveUfos: 0
+    uniqueID: 126
+    missionSiteZone: 3
   - type: STR_CULT_BAND_EXALT
     region: STR_SOUTH_AMERICA
     race: STR_EXALT
     nextWave: 0
     nextUfoCounter: 0
-    spawnCountdown: 3924
+    spawnCountdown: 22465
     liveUfos: 0
-    uniqueID: 102
-    missionSiteZone: 3
-  - type: STR_MONSTERS_HUNT_FEW_JUNGLE
-    region: STR_SOUTH_AMERICA
-    race: STR_WERECAT
+    uniqueID: 127
+    missionSiteZone: 16
+  - type: STR_CULT_BAND_ZSRR
+    region: STR_ARCTIC
+    race: STR_ZSRR
     nextWave: 0
     nextUfoCounter: 0
-    spawnCountdown: 2261
+    spawnCountdown: 20266
     liveUfos: 0
-    uniqueID: 108
-    missionSiteZone: 14
-  - type: STR_MONSTERS_HUNT_SINGLE_COLD
-    region: STR_EUROPE
-    race: STR_WEREWOLF
+    uniqueID: 128
+    missionSiteZone: 1
+  - type: STR_CULT_SUPPRESSION_ZSRR
+    region: STR_SIBERIA
+    race: STR_ZSRR
     nextWave: 0
     nextUfoCounter: 0
-    spawnCountdown: 663
+    spawnCountdown: 17444
     liveUfos: 0
-    uniqueID: 109
+    uniqueID: 129
+    missionSiteZone: 2
+  - type: STR_CULT_INVESTIGATION_ZSRR
+    region: STR_ARCTIC
+    race: STR_ZSRR
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 21663
+    liveUfos: 0
+    uniqueID: 130
     missionSiteZone: 4
+  - type: STR_MONSTERS_HUNT_SEVERAL_TEMPERATE
+    region: STR_SOUTH_EAST_ASIA
+    race: STR_GIANT_BEETLE
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 23882
+    liveUfos: 0
+    uniqueID: 131
+    missionSiteZone: 13
+  - type: STR_MONSTERS_HUNT_SEVERAL_COLD
+    region: STR_ARCTIC
+    race: STR_ZOMBIE_STERILE
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 14120
+    liveUfos: 0
+    uniqueID: 132
+    missionSiteZone: 14
+  - type: STR_MONSTERS_HUNT_LOTS_JUNGLE
+    region: STR_SOUTH_AMERICA
+    race: STR_ASMODEAN_COBRA
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 28597
+    liveUfos: 0
+    uniqueID: 133
+    missionSiteZone: 1
   - type: STR_CULT_INVESTIGATION_CHURCH_OF_DAGON
     region: STR_EUROPE
     race: STR_CHURCH_OF_DAGON
     nextWave: 0
     nextUfoCounter: 0
-    spawnCountdown: 8308
+    spawnCountdown: 21331
     liveUfos: 0
-    uniqueID: 112
-    missionSiteZone: 10
-  - type: STR_CULT_INVESTIGATION_BLACK_LOTUS
-    region: STR_AUSTRALASIA
-    race: STR_BLACK_LOTUS
-    nextWave: 0
-    nextUfoCounter: 0
-    spawnCountdown: 6597
-    liveUfos: 0
-    uniqueID: 115
-    missionSiteZone: 2
-  - type: STR_MONSTERS_HUNT_SEVERAL_TEMPERATE
-    region: STR_SOUTH_EAST_ASIA
-    race: STR_GIANT_RAT
-    nextWave: 0
-    nextUfoCounter: 0
-    spawnCountdown: 3422
-    liveUfos: 0
-    uniqueID: 116
-    missionSiteZone: 11
+    uniqueID: 135
+    missionSiteZone: 3
   - type: STR_ZOMBIE_INFESTATION_BASIC
     region: STR_NORTH_AFRICA
     race: STR_ZOMBIE_STERILE
     nextWave: 0
     nextUfoCounter: 0
-    spawnCountdown: 6555
+    spawnCountdown: 28465
     liveUfos: 0
-    uniqueID: 117
+    uniqueID: 136
     missionSiteZone: 15
-  - type: STR_ARACHNOQUAKE
-    region: STR_NORTH_AMERICA
-    race: STR_GIANT_SPIDER
+  - type: STR_ZOMBIE_INFESTATION_BASIC
+    region: STR_NORTH_ATLANTIC
+    race: STR_ZOMBIE_STERILE
     nextWave: 0
     nextUfoCounter: 0
-    spawnCountdown: 2074
+    spawnCountdown: 27538
     liveUfos: 0
-    uniqueID: 118
-    missionSiteZone: 32
+    uniqueID: 137
+    missionSiteZone: 25
+  - type: STR_CROP_CIRCLES_MIB
+    region: STR_EUROPE
+    race: STR_MIB
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 159
+    liveUfos: 0
+    uniqueID: 138
+    missionSiteZone: 4
+  - type: STR_CROP_CIRCLES_ZOMBIE
+    region: STR_SOUTH_EAST_ASIA
+    race: STR_ZOMBIE_STERILE
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 10696
+    liveUfos: 0
+    uniqueID: 139
+    missionSiteZone: 2
+  - type: STR_CROP_CIRCLES
+    region: STR_SOUTH_AMERICA
+    race: STR_FARMER
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 9535
+    liveUfos: 0
+    uniqueID: 140
+    missionSiteZone: 9
+  - type: STR_LEAGUE_APPREHENSION
+    region: STR_CENTRAL_ASIA
+    race: STR_LEAGUE
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 11202
+    liveUfos: 0
+    uniqueID: 141
+    missionSiteZone: 7
+  - type: STR_DIMENSION_X_PARTY
+    region: STR_SOUTH_EAST_ASIA
+    race: STR_ANTHROPOD
+    nextWave: 0
+    nextUfoCounter: 0
+    spawnCountdown: 13625
+    liveUfos: 0
+    uniqueID: 142
+    missionSiteZone: 18
+geoscapeEvents:
+  - name: STR_UNTANGLING_THE_RED_TAPE
+    spawnCountdown: 9750
+  - name: STR_MONEY_PRIZE
+    spawnCountdown: 27240
 discovered:
   - STR_EXPEDITION_PLANET_SURVEY
-  - STR_MONEY_BRIEFCASE
   - STR_MONEY_5000
-  - STR_MALE_CIVILIAN_HOOLIGAN_ARMOR
-  - STR_COUNCIL_OF_EARTH_CLUE
-  - STR_MALE_CIVILIAN_WORKER_ARMOR
-  - STR_MONGORN_ARMOR
-  - STR_GIANT_SPIDER_ARMOR
-  - STR_REAPER_ARMOR
-  - STR_GIANT_RAT_ARMOR
-  - STR_HUMAN_FARMER_ARMOR
-  - STR_SHADOWBAT_ARMOR
-  - STR_WEREWOLF_ARMOR
-  - STR_CHUPACABRA_ARMOR
-  - STR_MEGASCORPION_ARMOR
-  - STR_COW_ARMOR
-  - STR_GIANT_BEETLE_ARMOR
-  - STR_WERECAT_ARMOR
-  - STR_ASMODEAN_COBRA_ARMOR
-  - STR_FENRIR_ARMOR
-  - STR_SHEEP_ARMOR
+  - STR_MONEY_BRIEFCASE
   - STR_CHICKEN_ARMOR
+  - STR_SHEEP_ARMOR
   - STR_MUGGLE_AI
   - STR_GANG_LUCHADORES
   - STR_UAC_PISTOL
   - STR_UAC_HEAVY_NAILGUN
-  - STR_DOGE_BITE
-  - STR_DOG_RECRUITMENT
-  - STR_BASIC_FLIGHT_TRAINING
   - STR_DOGE_TRACK
-  - STR_XCOM_FLYERS
-  - STR_ETRACE
   - STR_ADVANCED_MEDICINE
+  - STR_DOG_RECRUITMENT
+  - STR_XCOM_FLYERS
+  - STR_BASIC_FLIGHT_TRAINING
+  - STR_ETRACE
+  - STR_DOGE_BITE
   - STR_ANIMAL_RECRUITMENT
+  - STR_SECRET_FILES_1
   - STR_REAPER_TERRORIST
   - STR_REAPER
-  - STR_SECRET_FILES_1
   - STR_MONGORN_TERRORIST
-  - STR_FENRIR_TERRORIST
+  - STR_WERECAT_CORPSE
   - STR_ASMODEAN_COBRA_TERRORIST
+  - STR_FENRIR_TERRORIST
   - STR_MEGASCORPION_TERRORIST
   - STR_MONGORN_CORPSE
   - STR_WEREWOLF_CORPSE
-  - STR_WERECAT_CORPSE
-  - STR_CHUPACABRA_CORPSE
   - STR_GIANT_RAT_CORPSE
   - STR_GIANT_BEETLE_CORPSE
-  - STR_ALIEN_LIFEFORMS
-  - STR_MEGASCORPION_CORPSE
-  - STR_SHADOWBAT_CORPSE
-  - STR_MONGORN_AUTOPSY
   - STR_GIANT_SPIDER_CORPSE
-  - STR_FENRIR_CORPSE
-  - STR_ASMODEAN_COBRA_CORPSE
-  - STR_WEREWOLF_AUTOPSY
   - STR_WERECAT_AUTOPSY
-  - STR_GIANT_SPIDER_AUTOPSY
+  - STR_FENRIR_CORPSE
+  - STR_CHUPACABRA_CORPSE
+  - STR_ASMODEAN_COBRA_CORPSE
+  - STR_MEGASCORPION_CORPSE
+  - STR_MONGORN_AUTOPSY
+  - STR_ALIEN_LIFEFORMS
+  - STR_SHADOWBAT_CORPSE
+  - STR_WEREWOLF_AUTOPSY
   - STR_CHUPACABRA_AUTOPSY
-  - STR_FENRIR_AUTOPSY
-  - STR_ASMODEAN_COBRA_AUTOPSY
-  - STR_GIANT_BEETLE_AUTOPSY
-  - STR_MEGASCORPION_AUTOPSY
-  - STR_SHADOWBAT_AUTOPSY
+  - STR_GIANT_SPIDER_AUTOPSY
   - STR_GIANT_RAT_AUTOPSY
-  - STR_WEAPON_BOX
-  - STR_AMMO_BOX
-  - STR_WEAPON_BOX_RAMSHACKLE
+  - STR_ASMODEAN_COBRA_AUTOPSY
+  - STR_FENRIR_AUTOPSY
+  - STR_MEGASCORPION_AUTOPSY
+  - STR_GIANT_BEETLE_AUTOPSY
+  - STR_SHADOWBAT_AUTOPSY
+  - STR_MALE_CIVILIAN_WORKER_ARMOR
+  - STR_MALE_CIVILIAN_HOOLIGAN_ARMOR
+  - STR_COUNCIL_OF_EARTH_CLUE
+  - STR_HOSTESS_ARMOR
+  - STR_SUPPORTER_OF_DAGON_ARMOR
+  - STR_ZSRR_PIONEER_MALE_ARMOR
+  - STR_ZSRR_PIONEER_FEMALE_ARMOR
+  - STR_BLACK_LOTUS_FOLLOWER_ARMOR
+  - STR_ZSRR_GANGER_ARMOR
+  - STR_EXALT_INFILTRATOR_ARMOR
+  - STR_FEMALE_DOCTOR_ARMOR
   - STR_LUCHADOR_ARMOR
   - STR_ZOMBIE_STERILE_ARMOR
   - STR_ZOMBIE_GRUBAS_ARMOR
-  - STR_SUPPORTER_OF_DAGON_ARMOR
-  - STR_BLACK_LOTUS_FOLLOWER_ARMOR
-  - STR_ZSRR_PIONEER_FEMALE_ARMOR
-  - STR_EXALT_INFILTRATOR_ARMOR
-  - STR_ZSRR_PIONEER_MALE_ARMOR
-  - STR_ZSRR_GANGER_ARMOR
-  - STR_HWP_MARKER_FOLDED
+  - STR_GIANT_SPIDER_ARMOR
+  - STR_MONGORN_ARMOR
+  - STR_REAPER_ARMOR
+  - STR_FENRIR_ARMOR
+  - STR_HUMAN_FARMER_ARMOR
+  - STR_GIANT_BEETLE_ARMOR
+  - STR_CHUPACABRA_ARMOR
+  - STR_GIANT_RAT_ARMOR
+  - STR_MEGASCORPION_ARMOR
+  - STR_ASMODEAN_COBRA_ARMOR
+  - STR_WEREWOLF_ARMOR
+  - STR_WERECAT_ARMOR
+  - STR_COW_ARMOR
+  - STR_SHADOWBAT_ARMOR
+  - STR_WEAPON_BOX
+  - STR_EXPLOSIVES_BOX_SIMPLE
+  - STR_AMMO_BOX
+  - STR_WEAPON_BOX_RAMSHACKLE
   - STR_BIOLOGICAL_WARFARE_PREQ
-  - STR_MILESTONE_1_PREQ
-  - STR_BASIC_OPERATIONS
-  - STR_HEALING_SPRAY
+  - STR_HWP_MARKER_FOLDED
+  - STR_SICK_BAY
   - STR_MEDICINE
+  - STR_NONSTANDARD_WEAPONS
+  - STR_CULTIST_INTERROGATED
   - STR_MILESTONE_1
   - STR_MILESTONE_1_SUMMARY
-  - STR_CULTIST_INTERROGATED
   - STR_TRAUMA_PACK
-  - STR_NONSTANDARD_WEAPONS
+  - STR_HEALING_SPRAY
+  - STR_MILESTONE_1_PREQ
   - STR_PERSONAL_PROTECTION
+  - STR_BASIC_OPERATIONS
   - STR_COVER_WORKERS
   - STR_COVER_SPORTSMEN
-  - STR_GLOCK_18_LARGE_CLIP
-  - STR_NITRO_EXPRESS_BUY
-  - STR_LEATHER_COAT
   - STR_NITRO_EXPRESS
-  - STR_KIRYU_KAI
   - STR_LOGISTICS
-  - STR_VAN
   - STR_PRIVATE_TRANSPORT
-  - STR_WHAT_DO_NOW_MILESTONE_0
-  - STR_WHAT_DO_NOW_MILESTONE_1
+  - STR_VAN
+  - STR_KIRYU_KAI
   - STR_TRANSPORT_ALTERNATIVE
-  - STR_VEST_BUSINESS_SUIT
-  - STR_SKS
+  - STR_LEATHER_COAT
   - STR_SKS_BUY
   - STR_SHOTGUN
   - STR_SHOTGUN_BUY
-  - STR_RIFLE_M16_CLIP
-  - STR_DOUBLE_BARRELED_BUCKSHOT
-  - STR_MP40_CLIP
+  - STR_WHAT_DO_NOW_MILESTONE_0
+  - STR_WHAT_DO_NOW_MILESTONE_1
+  - STR_VEST_BUSINESS_SUIT
+  - STR_NITRO_EXPRESS_BUY
+  - STR_SKS
+  - STR_GLOCK_18_LARGE_CLIP
+  - STR_USAS_12
+  - STR_QBU_88
   - STR_RIFLE_M16
+  - STR_RIFLE_M16_CLIP
+  - STR_MP40_CLIP
+  - STR_FN_FAL
+  - STR_DOUBLE_BARRELED_BUCKSHOT
+  - STR_AKSU74
+  - STR_AK47
+  - STR_GRENADE
+  - STR_BOLT_ACTION_CLIP
+  - STR_WP_7_62_CLIP
   - STR_AKM
   - STR_MOSIN_RIFLE
-  - STR_BOLT_ACTION_CLIP
-  - STR_AKSU74
   - STR_WP_5_45_CLIP
-  - STR_AK47
-  - STR_WP_7_62_CLIP
-  - STR_GRENADE
   - STR_DYNAMITE
   - STR_INCENDIARY_GRENADE
   - STR_TRACE_FLARE
-  - STR_INTELLIGENCE_OFFICER_INTRODUCTION
-  - STR_CHIEF_MEDICAL_OFFICER_INTRODUCTION
-  - STR_CHURCH_OF_DAGON
-  - STR_ALIEN_ENGINEERING_PREQ
-  - STR_XENOLOGIST_CONTACT
-  - STR_CHIEF_ACCOUNTANT_INTRODUCTION
-  - STR_QUARTERMASTER_INTRODUCTION
   - STR_CHIEF_ENGINEER_CONTACT
+  - STR_ALIEN_ENGINEERING_PREQ
+  - STR_CHURCH_OF_DAGON
+  - STR_CHIEF_ACCOUNTANT_INTRODUCTION
+  - STR_INTELLIGENCE_OFFICER_INTRODUCTION
+  - STR_QUARTERMASTER_INTRODUCTION
+  - STR_CHIEF_MEDICAL_OFFICER_INTRODUCTION
+  - STR_XENOLOGIST_CONTACT
   - STR_EXALT
   - STR_BLACK_LOTUS
   - STR_ZSRR
   - STR_ZSRR_NETWORK_PREREQUISITE
-  - STR_ZOMBIE_STERILE_TERRORIST
   - STR_ZOMBIE_PARASITE
-  - STR_ZOMBIE_STERILE
-  - STR_ZOMBIE_GRUBAS_AUTOPSY
-  - STR_ZOMBIE_STERILE_AUTOPSY
-  - STR_ZOMBIE_STERILE_CORPSE
   - STR_ZOMBIE_GRUBAS_CORPSE
+  - STR_ZOMBIE_STERILE_TERRORIST
+  - STR_ZOMBIE_STERILE_AUTOPSY
+  - STR_ZOMBIE_STERILE
+  - STR_ZOMBIE_STERILE_CORPSE
+  - STR_ZOMBIE_GRUBAS_AUTOPSY
   - STR_COOL_ALIEN_GADGET
-  - STR_TOUGH_CREATURE_AUTOPSY
   - STR_STRANGE_CREATURE
   - STR_MUTANT_PHYSIOLOGY
   - STR_STRANGE_CREATURE_AUTOPSY
-  - STR_UZI
+  - STR_TOUGH_CREATURE_AUTOPSY
   - STR_MINEBEA_UZI
   - STR_UZI_CLIP
+  - STR_UZI
   - STR_SPORTING_BOW
-  - STR_POLAR_SUIT
-  - STR_SMOKE_GRENADE
   - STR_FLARE_PISTOL
-  - STR_FLARE_PISTOL_BUY
-  - STR_SHOTGUN_SHELLS
-  - STR_SPORTING_RIFLE
-  - STR_WORKSUIT
-  - STR_FLASHBANG_GRENADE
-  - STR_SHOTGUN_SHELLS_BUY
   - STR_HUNTING_RIFLE
+  - STR_SHOTGUN_SHELLS_BUY
+  - STR_SPORTING_RIFLE
+  - STR_FLARE_PISTOL_BUY
+  - STR_SMOKE_GRENADE
+  - STR_POLAR_SUIT
+  - STR_WORKSUIT
+  - STR_SHOTGUN_SHELLS
+  - STR_FLASHBANG_GRENADE
   - STR_AGRICULTURAL_FLAMER_BUY
-  - STR_AGRICULTURAL_FLAMER
   - STR_FLAMETHROWER_CLIP
+  - STR_AGRICULTURAL_FLAMER
   - STR_HELICOPTER
   - STR_PSICLONE
-  - STR_FENRIR
+  - STR_FARMER
+  - STR_SUPPORTER_OF_DAGON
+  - STR_SENTIENT_ALGORYTHMS
+  - STR_BRAINWASHED_HUMAN_FARMER
+  - STR_HUMAN_FARMER
   - STR_MONGORN
-  - STR_MEGASCORPION
+  - STR_FENRIR
   - STR_ASMODEAN_COBRA
+  - STR_MEGASCORPION
   - STR_ZSRR_BIO_ENHANCEMENT
   - STR_ALENIUM_SHARD
   - STR_LUCHADOR
-  - STR_ZSRR_PIONEER_MALE
-  - STR_BLACK_LOTUS_FOLLOWER
-  - STR_ZSRR_PIONEER_FEMALE
+  - STR_ZSRR_PIONEER
   - STR_ZSRR_GANGER
   - STR_EXALT_INFILTRATOR
-  - STR_ZSRR_PIONEER
-  - STR_BRAINWASHED_HUMAN_FARMER
-  - STR_FARMER
-  - STR_SUPPORTER_OF_DAGON
-  - STR_HUMAN_FARMER
-  - STR_SENTIENT_ALGORYTHMS
-  - STR_DOSSIER_MONICA_GRUMMANN
-  - STR_DOSSIER_RICHTER_TWINS
-  - STR_DOSSIER_HARRIE_LENSSEN
-  - STR_STAFF_001
-  - STR_DOSSIER_MARTIN_JAKUBKO
-  - STR_DOSSIER_MCGUINNESS_ELLIOTT_COOKE
-  - STR_DOSSIER_SHANE_BARTON
-  - STR_STAFF_007
-  - STR_STAFF_008
-  - STR_STAFF_011
-  - STR_STAFF_012
-  - STR_MP_BUY
-  - STR_SKORPION
-  - STR_HOE
-  - STR_MAC10
-  - STR_CALICO
-  - STR_MP_BUY_PREQ_B
-  - STR_RAK
-  - STR_MP
-  - STR_LUGER
+  - STR_ZSRR_PIONEER_FEMALE
+  - STR_ZSRR_PIONEER_MALE
+  - STR_BLACK_LOTUS_FOLLOWER
   - STR_FN_P90
-  - STR_CROSSBOW
-  - STR_PPSH
-  - STR_TOKAREV
-  - STR_ENFIELD_REVOLVER
-  - STR_STEN
-  - STR_STEN_BUY
-  - STR_HEAVY_CROSSBOW
-  - STR_WAKIZASHI
-  - STR_COLT_COMMANDO
+  - STR_CALICO
   - STR_MAKAROV
-  - STR_SAWED_OFF
+  - STR_MAC10
+  - STR_SKORPION
+  - STR_MP_BUY_PREQ_B
+  - STR_STEN
+  - STR_MP
+  - STR_STEN_BUY
+  - STR_COLT_COMMANDO
+  - STR_PPSH
+  - STR_KUKRI
+  - STR_SWITCHBLADE
+  - STR_SHIV
+  - STR_GOLF_STICK
   - STR_THROWING_KNIVES
+  - STR_MP_BUY
+  - STR_TOKAREV
+  - STR_RAK
+  - STR_SAWED_OFF
+  - STR_LUGER
+  - STR_CROSSBOW
+  - STR_WAKIZASHI
   - STR_PIPE
   - STR_WOODEN_CLUB
   - STR_TONFA
-  - STR_GOLF_STICK
+  - STR_ENFIELD_REVOLVER
   - STR_PITCHFORK
+  - STR_HEAVY_CROSSBOW
+  - STR_HOE
   - STR_AXE
-  - STR_SHIV
   - STR_MACHETE
-  - STR_KUKRI
   - STR_KNIFE
-  - STR_SWITCHBLADE
-  - STR_WRENCH
-  - STR_CROWBAR_BUY
-  - STR_FLASHLIGHT_BUY
   - STR_BILLHOOK
+  - STR_FLASHLIGHT_BUY
+  - STR_MEDICAL_LICENSE
+  - STR_BIG_BONE
+  - STR_CROWBAR_BUY
   - STR_SPORT_PARAPHERNALIA
-  - STR_BONE
-  - STR_SPIDERWEB
-  - STR_CROWBAR
+  - STR_WRENCH
+  - STR_HOSTESS_ACCESS_CARD
   - STR_FLASHLIGHT
+  - STR_CROWBAR
+  - STR_BONE
+  - STR_CELL_PHONE
+  - STR_SPIDERWEB
+  - STR_STRANGE_ALUMINIUM_TABLET
+  - STR_INTO_THE_DARK_PREQ
   - STR_MONGORN_ANZUG
   - STR_HAZMAT_ARMOR
-  - STR_STAFF_019
-  - STR_STAFF_032
+  - STR_DOSSIER_RICHTER_TWINS
+  - STR_DOSSIER_SHANE_BARTON
+  - STR_STAFF_001
+  - STR_DOSSIER_MARTIN_JAKUBKO
+  - STR_STAFF_008
+  - STR_DOSSIER_MONICA_GRUMMANN
+  - STR_DOSSIER_MCGUINNESS_ELLIOTT_COOKE
+  - STR_DOSSIER_HARRIE_LENSSEN
+  - STR_STAFF_007
+  - STR_STAFF_011
   - STR_STAFF_026
+  - STR_STAFF_019
   - STR_STAFF_021
+  - STR_STAFF_032
+  - STR_STAFF_012
 poppedResearch:
   - STR_MAGNUM_BUY
   - STR_UZI_BUY
@@ -5965,7 +6496,6 @@ poppedResearch:
   - STR_CHIEF_RESEARCHER_CONTACT
   - STR_SCOUT_DRONE
   - STR_BIO_LABORATORY
-  - STR_SICK_BAY
   - STR_BIG_HEALING_SPRAY
   - STR_WORKSHOP
   - STR_HEAVY_STUN_WEAPONS
@@ -5986,7 +6516,7 @@ generatedEvents:
   STR_ITS_ALL_PROFESSIONAL: 1
   STR_LEAGUE_THE_IMMORTALIST: 1
   STR_LOOSE_LIPS: 1
-  STR_MONEY_PRIZE: 1
+  STR_MONEY_PRIZE: 2
   STR_NIGHT_HOWLERS: 2
   STR_NO_REST_FOR_THE_WICKED: 1
   STR_QUARTERMASTER_INTRODUCTION: 1
@@ -5994,7 +6524,7 @@ generatedEvents:
   STR_TLETH_BEACH_SIGHTINGS: 1
   STR_TLETH_DEEP_SEA_HORROR: 1
   STR_TLETH_GHOST_SHIP: 1
-  STR_UNTANGLING_THE_RED_TAPE: 1
+  STR_UNTANGLING_THE_RED_TAPE: 2
   STR_ZOMBIES_ITS_THE_ZOMBIES: 1
   STR_ZOMBIES_PATIENT_ZERO: 2
 ufopediaRuleStatus:
@@ -6016,6 +6546,7 @@ ufopediaRuleStatus:
   STR_AXE: 1
   STR_BASIC_OPERATIONS: 1
   STR_BERETTA_92FS: 1
+  STR_BIG_BONE: 1
   STR_BILLHOOK: 1
   STR_BLACK_LOTUS: 1
   STR_BLACK_LOTUS_FOLLOWER: 1
@@ -6025,6 +6556,7 @@ ufopediaRuleStatus:
   STR_CAMERA_ARMOR: 0
   STR_CAMO: 0
   STR_CANNONS: 1
+  STR_CELL_PHONE: 1
   STR_CHICKEN_ARMOR: 1
   STR_CHIEF_ACCOUNTANT_INTRODUCTION: 1
   STR_CHIEF_ENGINEER_CONTACT: 1
@@ -6076,10 +6608,12 @@ ufopediaRuleStatus:
   STR_EXALT_INFILTRATOR: 1
   STR_EXALT_INFILTRATOR_ARMOR: 0
   STR_EXPEDITION_PLANET_SURVEY: 1
+  STR_EXPLOSIVES_BOX_SIMPLE: 1
   STR_FARMER: 0
   STR_FEMALE_CIVILIAN_ARAB_ARMOR: 0
   STR_FEMALE_CIVILIAN_CITY_GIRL_ARMOR: 0
   STR_FEMALE_CIVILIAN_POLARNIK_ARMOR: 0
+  STR_FEMALE_DOCTOR_ARMOR: 1
   STR_FENRIR: 1
   STR_FENRIR_ARMOR: 1
   STR_FENRIR_AUTOPSY: 1
@@ -6091,6 +6625,7 @@ ufopediaRuleStatus:
   STR_FLARE_PISTOL: 1
   STR_FLASHBANG_GRENADE: 1
   STR_FLASHLIGHT: 1
+  STR_FN_FAL: 1
   STR_FN_P90: 1
   STR_FOUND_ITEMS: 0
   STR_FRIENDS_ON_THE_COUNCIL_01: 1
@@ -6116,6 +6651,8 @@ ufopediaRuleStatus:
   STR_HEAVY_CROSSBOW: 1
   STR_HELICOPTER: 1
   STR_HOE: 1
+  STR_HOSTESS_ACCESS_CARD: 1
+  STR_HOSTESS_ARMOR: 0
   STR_HOTKEYS_BATTLESCAPE: 1
   STR_HOTKEYS_GEOSCAPE: 1
   STR_HQ: 0
@@ -6207,7 +6744,7 @@ ufopediaRuleStatus:
   STR_MEDAL_SNIPER_NAME: 0
   STR_MEDAL_SORCERER_NAME: 0
   STR_MEDAL_SPACER_NAME: 0
-  STR_MEDAL_SPELUNKER_NAME: 0
+  STR_MEDAL_SPELUNKER_NAME: 1
   STR_MEDAL_STATGAIN_NAME: 1
   STR_MEDAL_SUPPRESSOR_NAME: 1
   STR_MEDAL_TASEMASTER_NAME: 1
@@ -6217,6 +6754,7 @@ ufopediaRuleStatus:
   STR_MEDAL_WARRIOR_NAME: 0
   STR_MEDAL_WEAPON_PROFICIENCY_NAME: 0
   STR_MEDAL_WRESTLER_NAME: 0
+  STR_MEDICAL_LICENSE: 1
   STR_MEDICINE: 1
   STR_MEDI_BAG: 1
   STR_MEDI_PACK: 1
@@ -6261,6 +6799,7 @@ ufopediaRuleStatus:
   STR_PSICLONE: 1
   STR_PUBLIC_TRANSPORT: 0
   STR_PUMP_ACTION: 1
+  STR_QBU_88: 1
   STR_QUARTERMASTER_INTRODUCTION: 1
   STR_RAK: 1
   STR_READINESS: 0
@@ -6279,6 +6818,7 @@ ufopediaRuleStatus:
   STR_SHIV: 1
   STR_SHOTGUN: 1
   STR_SHOTGUNS: 1
+  STR_SICK_BAY: 1
   STR_SKORPION: 1
   STR_SKS: 1
   STR_SMALL_SHOTGUN: 1
@@ -6303,6 +6843,7 @@ ufopediaRuleStatus:
   STR_STAFF_032: 1
   STR_STEN: 1
   STR_STIMS: 0
+  STR_STRANGE_ALUMINIUM_TABLET: 1
   STR_SUIT_UC: 0
   STR_SUPPORTER_OF_DAGON: 1
   STR_SUPPORTER_OF_DAGON_ARMOR: 0
@@ -6329,6 +6870,7 @@ ufopediaRuleStatus:
   STR_UNARMED_SUIT: 0
   STR_UNARMED_SUIT_VEST: 0
   STR_UNARMED_THUG: 1
+  STR_USAS_12: 1
   STR_UZI: 1
   STR_VAN: 0
   STR_VEST_BUSINESS_SUIT_UC: 1
@@ -6366,6 +6908,7 @@ ufopediaRuleStatus:
 manufactureRuleStatus:
   STR_AMMO_BOX_OPENING: 1
   STR_EXPEDITION_PLANET_SURVEY_OPENING: 1
+  STR_EXPLOSIVES_BOX_SIMPLE_OPENING: 1
   STR_MONGORN_ANZUG: 1
   STR_TRACE_FLARE: 1
   STR_WEAPON_BOX_OPENING: 1
@@ -6384,13 +6927,18 @@ researchRuleStatus:
   STR_AXE: 1
   STR_BASIC_FLIGHT_TRAINING: 1
   STR_BASIC_OPERATIONS: 1
+  STR_BIG_BONE: 1
   STR_BILLHOOK: 1
   STR_BLACK_LOTUS: 1
   STR_BLACK_LOTUS_FOLLOWER: 1
+  STR_BLACK_LOTUS_FOOTMAN: 1
+  STR_BLACK_LOTUS_WARRIOR: 1
   STR_BONE: 1
   STR_BRAINWASHED_HUMAN_FARMER: 1
+  STR_BROKEN_LANTERN: 1
   STR_CALICO: 1
   STR_CALICO_BUY: 3
+  STR_CELL_PHONE: 1
   STR_CHIEF_ENGINEER_CONTACT: 1
   STR_CHIEF_RESEARCHER_CONTACT: 1
   STR_CHUPACABRA_CORPSE: 1
@@ -6400,6 +6948,8 @@ researchRuleStatus:
   STR_CROSSBOW: 1
   STR_CROWBAR_BUY: 1
   STR_DOG_RECRUITMENT: 1
+  STR_DULLED_PROMETHEUM: 1
+  STR_DURATHREAD: 1
   STR_DYNAMITE: 1
   STR_ENFIELD_REVOLVER: 1
   STR_ETRACE: 1
@@ -6416,10 +6966,12 @@ researchRuleStatus:
   STR_GIANT_BEETLE_CORPSE: 1
   STR_GIANT_RAT_CORPSE: 1
   STR_GIANT_SPIDER_CORPSE: 1
+  STR_GIANT_SPIDER_QUEEN_CORPSE: 1
   STR_GLOCK_18_LARGE_CLIP: 1
   STR_GOLF_STICK: 1
   STR_GRENADE: 1
   STR_HOE: 1
+  STR_HOSTESS_ACCESS_CARD: 1
   STR_HUMAN_FARMER: 1
   STR_HUNTING_RIFLE: 1
   STR_HUNTING_RIFLE_BUY: 3
@@ -6436,6 +6988,7 @@ researchRuleStatus:
   STR_MACHETE: 1
   STR_MAGNUM_BUY: 3
   STR_MAKAROV: 1
+  STR_MEDICAL_LICENSE: 1
   STR_MEDICINE: 1
   STR_MEGASCORPION_CORPSE: 1
   STR_MEGASCORPION_TERRORIST: 1
@@ -6448,6 +7001,7 @@ researchRuleStatus:
   STR_MONGORN_TERRORIST: 1
   STR_MOSIN_RIFLE: 1
   STR_MP_BUY: 1
+  STR_MUCKSTAR_CORPSE: 1
   STR_MUTANT_PHYSIOLOGY: 1
   STR_NITRO_EXPRESS_BUY: 1
   STR_NONSTANDARD_WEAPONS: 1
@@ -6456,6 +7010,7 @@ researchRuleStatus:
   STR_PITCHFORK: 1
   STR_PPSH: 1
   STR_PSICLONE: 1
+  STR_QBU_88: 1
   STR_RAK: 1
   STR_REAPER_TERRORIST: 1
   STR_RIFLE_M16: 1
@@ -6464,6 +7019,7 @@ researchRuleStatus:
   STR_SENTIENT_ALGORYTHMS: 1
   STR_SHADOWBAT_CORPSE: 1
   STR_SHIV: 1
+  STR_SHOGG_LANTERN: 1
   STR_SHOTGUN_BUY: 1
   STR_SICK_BAY: 1
   STR_SKORPION: 1
@@ -6474,6 +7030,7 @@ researchRuleStatus:
   STR_SPORT_PARAPHERNALIA: 1
   STR_STEN: 1
   STR_STEN_BUY: 1
+  STR_STRANGE_ALUMINIUM_TABLET: 1
   STR_SUPPORTER_OF_DAGON: 1
   STR_SWITCHBLADE: 1
   STR_THROWING_KNIVES: 1
@@ -6491,7 +7048,9 @@ researchRuleStatus:
   STR_WEAPON_BOX: 1
   STR_WEAPON_BOX_RAMSHACKLE: 1
   STR_WERECAT_CORPSE: 1
+  STR_WERECAT_TERRORIST: 1
   STR_WEREWOLF_CORPSE: 1
+  STR_WEREWOLF_TERRORIST: 1
   STR_WHAT_DO_NOW_MILESTONE_0: 1
   STR_WHAT_DO_NOW_MILESTONE_1: 1
   STR_WOODEN_CLUB: 1
@@ -7724,8 +8283,255 @@ deadSoldiers:
       killedInAction: 1
       statGainTotal: 19
       bestOfRank: 482
-      bestSoldier: 482
       postMortemKills: 1
+    corpseRecovered: true
+  - type: STR_SOLDIER
+    id: 48
+    name: Yahav Malka
+    nationality: 43
+    initialStats:
+      tu: 53
+      stamina: 52
+      health: 27
+      bravery: 50
+      reactions: 49
+      firing: 57
+      throwing: 48
+      strength: 26
+      psiStrength: 20
+      psiSkill: 0
+      melee: 20
+      mana: 43
+    currentStats:
+      tu: 56
+      stamina: 57
+      health: 29
+      bravery: 50
+      reactions: 50
+      firing: 58
+      throwing: 48
+      strength: 26
+      psiStrength: 20
+      psiSkill: 0
+      melee: 20
+      mana: 51
+    rank: 1
+    gender: 0
+    look: 1
+    lookVariant: 56
+    missions: 2
+    kills: 2
+    stuns: 0
+    armor: STR_SUIT_UC
+    improvement: 0
+    psiStrImprovement: 0
+    personalEquipmentArmor: STR_SUIT_UC
+    death:
+      time: {second: 30, minute: 13, hour: 20, weekday: 3, day: 22, month: 7, year: 1997}
+      cause: {type: STR_GIANT_SPIDER_GREEN_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_GIANT_SPIDER_WEAPON, weaponAmmo: STR_GIANT_SPIDER_WEAPON, status: 6, faction: 1, mission: 96, turn: 7, side: 0, bodypart: 1, id: 48}
+    diary:
+      commendations:
+        - {commendationName: STR_MEDAL_SPELUNKER_NAME, decorationLevel: 0}
+      killList:
+        - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_FN_FAL, weaponAmmo: STR_FN_FAL_CLIP, status: 6, faction: 1, mission: 95, turn: 28513, side: 1, bodypart: 3, id: 1000000}
+        - {type: STR_GIANT_SPIDER_RED_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_SPIDER, weapon: STR_FN_FAL, weaponAmmo: STR_FN_FAL_CLIP, status: 6, faction: 1, mission: 96, turn: 28806, side: 0, bodypart: 1, id: 1000017}
+      missionIdList: [95, 96]
+      shotAtCounterTotal: 1
+      hitCounterTotal: 1
+      shotsFiredCounterTotal: 11
+      shotsLandedCounterTotal: 7
+      killedInAction: 1
+      statGainTotal: 20
+      bestOfRank: 482
+    corpseRecovered: true
+  - type: STR_SOLDIER
+    id: 23
+    name: Gaspar Vega
+    nationality: 15
+    initialStats:
+      tu: 49
+      stamina: 41
+      health: 27
+      bravery: 60
+      reactions: 51
+      firing: 58
+      throwing: 37
+      strength: 38
+      psiStrength: 61
+      psiSkill: 0
+      melee: 37
+      mana: 57
+    currentStats:
+      tu: 56
+      stamina: 56
+      health: 32
+      bravery: 60
+      reactions: 55
+      firing: 61
+      throwing: 37
+      strength: 38
+      psiStrength: 61
+      psiSkill: 0
+      melee: 37
+      mana: 72
+    rank: 1
+    gender: 0
+    look: 2
+    lookVariant: 25
+    missions: 4
+    kills: 5
+    stuns: 0
+    armor: STR_SUIT_UC
+    improvement: 0
+    psiStrImprovement: 0
+    personalEquipmentArmor: STR_SUIT_UC
+    death:
+      time: {second: 35, minute: 7, hour: 3, weekday: 5, day: 24, month: 7, year: 1997}
+      cause: {type: STR_GIANT_RAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_RAT, weapon: STR_GIANT_RAT_WEAPON, weaponAmmo: STR_GIANT_RAT_WEAPON, status: 6, faction: 1, mission: 99, turn: 13, side: 4, bodypart: 1, id: 23}
+    diary:
+      commendations:
+        - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
+        - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
+        - {commendationName: STR_MEDAL_SHOTGUN_SURGEON_NAME, decorationLevel: 0}
+      killList:
+        - {type: STR_SHADOWBAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_SHADOWBAT, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS, status: 6, faction: 1, mission: 37, turn: 11109, side: 0, bodypart: 4, id: 1000003}
+        - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS, status: 6, faction: 1, mission: 88, turn: 26406, side: 1, bodypart: 3, id: 1000001}
+        - {type: STR_WERECAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_WERECAT, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS, status: 6, faction: 1, mission: 97, turn: 29106, side: 0, bodypart: 1, id: 1000000}
+        - {type: STR_GIANT_RAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_RAT, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS, status: 6, faction: 1, mission: 99, turn: 29709, side: 2, bodypart: 2, id: 1000002}
+        - {type: STR_GIANT_RAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_RAT, weapon: STR_SHOTGUN, weaponAmmo: STR_SHOTGUN_SHELLS, status: 6, faction: 1, mission: 99, turn: 29712, side: 0, bodypart: 1, id: 1000001}
+      missionIdList: [37, 88, 97, 99]
+      daysWoundedTotal: 26
+      monthsService: 5
+      shotAtCounterTotal: 1
+      hitCounterTotal: 1
+      shotsFiredCounterTotal: 10
+      shotsLandedCounterTotal: 45
+      timesWoundedTotal: 2
+      killedInAction: 1
+      statGainTotal: 49
+      bestOfRank: 482
+  - type: STR_SOLDIER
+    id: 16
+    name: Vim van der Veen
+    nationality: 23
+    initialStats:
+      tu: 54
+      stamina: 50
+      health: 25
+      bravery: 10
+      reactions: 35
+      firing: 60
+      throwing: 50
+      strength: 38
+      psiStrength: 97
+      psiSkill: 0
+      melee: 34
+      mana: 34
+    currentStats:
+      tu: 59
+      stamina: 67
+      health: 33
+      bravery: 10
+      reactions: 37
+      firing: 65
+      throwing: 50
+      strength: 42
+      psiStrength: 97
+      psiSkill: 0
+      melee: 35
+      mana: 57
+    rank: 1
+    gender: 0
+    look: 0
+    lookVariant: 36
+    missions: 8
+    kills: 2
+    stuns: 2
+    armor: STR_SUIT_UC
+    improvement: 0
+    psiStrImprovement: 0
+    personalEquipmentArmor: STR_VEST_BUSINESS_SUIT_UC
+    death:
+      time: {second: 35, minute: 7, hour: 3, weekday: 5, day: 24, month: 7, year: 1997}
+      cause: {type: STR_GIANT_RAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_GIANT_RAT, weapon: STR_GIANT_RAT_WEAPON, weaponAmmo: STR_GIANT_RAT_WEAPON, status: 6, faction: 1, mission: 99, turn: 13, side: 4, bodypart: 1, id: 16}
+    diary:
+      commendations:
+        - {commendationName: STR_MEDAL_NIGHTOPS_NAME, decorationLevel: 0}
+        - {commendationName: STR_MEDAL_PURPLE_HEART_NAME, decorationLevel: 1}
+        - {commendationName: STR_MEDAL_CARREER_MISSIONS_NAME, decorationLevel: 0}
+        - {commendationName: STR_MEDAL_CRIMSON_HEART_NAME, decorationLevel: 0}
+        - {commendationName: STR_MEDAL_SERVICE_TIME_NAME, decorationLevel: 0}
+      killList:
+        - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 31, turn: 9303, side: 0, bodypart: 1, id: 1000000}
+        - {type: STR_EXALT_INFILTRATOR, rank: STR_LIVE_SOLDIER, race: STR_EXALT, weapon: STR_MAG_LITE, weaponAmmo: __GUNBUTT, status: 7, faction: 1, mission: 43, turn: 12903, side: 0, bodypart: 1, id: 1000000}
+        - {type: STR_BLACK_LOTUS_FOLLOWER, rank: STR_LIVE_SOLDIER, race: STR_BLACK_LOTUS, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 6, faction: 1, mission: 80, turn: 24015, side: 1, bodypart: 3, id: 1000000}
+        - {type: STR_WERECAT_TERRORIST, rank: STR_LIVE_TERRORIST, race: STR_WERECAT, weapon: STR_MP, weaponAmmo: STR_MP_CLIP, status: 7, faction: 1, mission: 97, turn: 29106, side: 3, bodypart: 1, id: 1000001}
+      missionIdList: [22, 25, 27, 31, 43, 80, 97, 99]
+      daysWoundedTotal: 27
+      monthsService: 6
+      shotAtCounterTotal: 11
+      hitCounterTotal: 4
+      shotsFiredCounterTotal: 25
+      shotsLandedCounterTotal: 19
+      timesWoundedTotal: 2
+      killedInAction: 1
+      statGainTotal: 65
+  - type: STR_DOG
+    id: 25
+    name: Haruitike
+    nationality: 0
+    initialStats:
+      tu: 62
+      stamina: 82
+      health: 28
+      bravery: 10
+      reactions: 63
+      firing: 0
+      throwing: 0
+      strength: 1
+      psiStrength: 40
+      psiSkill: 0
+      melee: 85
+      mana: 123
+    currentStats:
+      tu: 63
+      stamina: 82
+      health: 29
+      bravery: 10
+      reactions: 63
+      firing: 0
+      throwing: 0
+      strength: 1
+      psiStrength: 40
+      psiSkill: 0
+      melee: 87
+      mana: 123
+    rank: 0
+    gender: 0
+    look: 0
+    lookVariant: 35
+    missions: 1
+    kills: 2
+    stuns: 0
+    armor: STR_DOGE_ARMOR
+    improvement: 0
+    psiStrImprovement: 0
+    personalEquipmentArmor: STR_DOGE_COMBAT_VEST_ARMOR
+    death:
+      time: {second: 40, minute: 22, hour: 20, weekday: 2, day: 28, month: 7, year: 1997}
+      cause: {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_STEN, weaponAmmo: STR_MP40_CLIP, status: 6, faction: 1, mission: 102, turn: 7, side: 0, bodypart: 1, id: 25}
+    diary:
+      commendations:
+        - {commendationName: STR_MEDAL_DBLKILL_NAME, decorationLevel: 0}
+      killList:
+        - {type: STR_DISCIPLE_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 102, turn: 30606, side: 1, bodypart: 3, id: 1000008}
+        - {type: STR_SUPPORTER_OF_DAGON, rank: STR_LIVE_SOLDIER, race: STR_CHURCH_OF_DAGON, weapon: STR_DOGE_BITE, weaponAmmo: STR_DOGE_BITE, status: 6, faction: 1, mission: 102, turn: 30606, side: 3, bodypart: 1, id: 1000001}
+      missionIdList: [102]
+      monthsService: 5
+      shotAtCounterTotal: 4
+      hitCounterTotal: 2
+      killedInAction: 1
+      statGainTotal: 4
     corpseRecovered: true
 globalCraftLoadout0:
   STR_ELECTRIC_CLUB: 2
@@ -9151,57 +9957,225 @@ missionStatistics:
     injuryList:
       31: 28
     lootValue: -500
+  - id: 94
+    markerName: STR_MONSTER_HUNT
+    markerId: 29
+    time: {second: 30, minute: 46, hour: 6, weekday: 2, day: 21, month: 7, year: 1997}
+    region: STR_EUROPE
+    country: STR_TURKEY
+    type: STR_MONSTERS_HUNT_PACK_TEMPERATE
+    ufo: NO_UFO
+    success: true
+    score: 169
+    rating: STR_MS_RATING_150
+    alienRace: STR_MUCKSTAR
+    daylight: 0
+    injuryList:
+      14: 23
+      40: 35
+    valiantCrux: true
+    lootValue: -500
+  - id: 95
+    markerName: STR_CULT_APPREHENSION
+    markerId: 55
+    time: {second: 0, minute: 12, hour: 23, weekday: 2, day: 21, month: 7, year: 1997}
+    region: STR_SOUTH_AMERICA
+    country: STR_BRAZIL
+    type: STR_CULT_APPREHENSION_EXALT
+    ufo: NO_UFO
+    success: true
+    score: 8
+    rating: STR_MS_RATING_0
+    alienRace: STR_EXALT
+    daylight: 15
+    injuryList:
+      11: 2
+    lootValue: -500
+  - id: 96
+    markerName: STR_ARACHNOQUAKE
+    markerId: 1
+    time: {second: 30, minute: 13, hour: 20, weekday: 3, day: 22, month: 7, year: 1997}
+    region: STR_NORTH_AMERICA
+    country: STR_USA
+    type: STR_ARACHNOQUAKE_UNDERGROUND
+    ufo: NO_UFO
+    success: true
+    score: 436
+    rating: STR_MS_RATING_350
+    alienRace: STR_GIANT_SPIDER
+    daylight: 9
+    lootValue: -500
+  - id: 97
+    markerName: STR_MONSTER_HUNT
+    markerId: 31
+    time: {second: 10, minute: 41, hour: 21, weekday: 3, day: 22, month: 7, year: 1997}
+    region: STR_SOUTH_AMERICA
+    country: STR_BRAZIL
+    type: STR_MONSTERS_HUNT_FEW_JUNGLE
+    ufo: NO_UFO
+    success: true
+    score: 50
+    rating: STR_MS_RATING_0
+    alienRace: STR_WERECAT
+    daylight: 0
+    lootValue: -500
+  - id: 98
+    markerName: STR_MONSTER_HUNT
+    markerId: 30
+    time: {second: 50, minute: 10, hour: 13, weekday: 4, day: 23, month: 7, year: 1997}
+    region: STR_EUROPE
+    country: STR_NORWAY
+    type: STR_MONSTERS_HUNT_SINGLE_COLD
+    ufo: NO_UFO
+    success: true
+    score: 50
+    rating: STR_MS_RATING_0
+    alienRace: STR_WEREWOLF
+    daylight: 0
+    valiantCrux: true
+    lootValue: -500
+  - id: 99
+    markerName: STR_MONSTER_HUNT
+    markerId: 32
+    time: {second: 35, minute: 7, hour: 3, weekday: 5, day: 24, month: 7, year: 1997}
+    region: STR_SOUTH_EAST_ASIA
+    country: STR_VIETNAM
+    type: STR_MONSTERS_HUNT_SEVERAL_TEMPERATE
+    ufo: NO_UFO
+    success: false
+    score: -115
+    rating: STR_MS_RATING_BAD
+    alienRace: STR_GIANT_RAT
+    daylight: 0
+    lootValue: -500
+  - id: 100
+    markerName: STR_CULT_APPREHENSION
+    markerId: 56
+    time: {second: 35, minute: 19, hour: 13, weekday: 5, day: 24, month: 7, year: 1997}
+    region: STR_SOUTH_AMERICA
+    country: STR_CHILE
+    type: STR_CULT_BAND_EXALT
+    ufo: NO_UFO
+    success: true
+    score: 20
+    rating: STR_MS_RATING_0
+    alienRace: STR_EXALT
+    daylight: 0
+    injuryList:
+      49: 17
+    lootValue: -500
+  - id: 101
+    markerName: STR_ZOMBIE_INFESTATION
+    markerId: 3
+    time: {second: 15, minute: 48, hour: 9, weekday: 7, day: 26, month: 7, year: 1997}
+    region: STR_NORTH_AFRICA
+    country: STR_UNKNOWN
+    type: STR_ZOMBIE_INFESTATION_BASIC
+    ufo: NO_UFO
+    success: true
+    score: 64
+    rating: STR_MS_RATING_0
+    alienRace: STR_ZOMBIE_STERILE
+    daylight: 0
+    injuryList:
+      51: 13
+    lootValue: -500
+  - id: 102
+    markerName: STR_CULT_INVESTIGATION
+    markerId: 11
+    time: {second: 40, minute: 22, hour: 20, weekday: 2, day: 28, month: 7, year: 1997}
+    region: STR_EUROPE
+    country: STR_NORWAY
+    type: STR_CULT_INVESTIGATION_CHURCH_OF_DAGON
+    ufo: NO_UFO
+    success: true
+    score: 42
+    rating: STR_MS_RATING_0
+    alienRace: STR_CHURCH_OF_DAGON
+    daylight: 10
+    injuryList:
+      45: 10
+    lootValue: -500
+  - id: 103
+    markerName: STR_CULT_INVESTIGATION
+    markerId: 10
+    time: {second: 20, minute: 12, hour: 10, weekday: 3, day: 29, month: 7, year: 1997}
+    region: STR_AUSTRALASIA
+    country: STR_NEW_ZEALAND
+    type: STR_CULT_INVESTIGATION_BLACK_LOTUS
+    ufo: NO_UFO
+    success: true
+    score: 118
+    rating: STR_MS_RATING_75
+    alienRace: STR_BLACK_LOTUS
+    daylight: 15
+    lootValue: -500
+  - id: 104
+    markerName: STR_CULT_APPREHENSION
+    markerId: 57
+    time: {second: 10, minute: 23, hour: 21, weekday: 1, day: 3, month: 8, year: 1997}
+    region: STR_SOUTH_EAST_ASIA
+    country: STR_JAPAN
+    type: STR_CULT_APPREHENSION_BLACK_LOTUS
+    ufo: NO_UFO
+    success: true
+    score: 8
+    rating: STR_MS_RATING_0
+    alienRace: STR_BLACK_LOTUS
+    daylight: 0
+    lootValue: -500
 autoSales:
   - STR_MACHETE
   - STR_KUKRI
+  - STR_SHIV
   - STR_SWITCHBLADE
+  - STR_COMBAT_KNIFE
   - STR_PITCHFORK
   - STR_AXE
-  - STR_KNIFE
-  - STR_COMBAT_KNIFE
   - STR_HOE
+  - STR_KNIFE
   - STR_HATCHET
   - STR_BILLHOOK
-  - STR_WOODEN_CLUB
-  - STR_BASEBALL_BAT
   - STR_WAKIZASHI
+  - STR_WOODEN_CLUB
   - STR_PIPE
   - STR_TONFA
+  - STR_BASEBALL_BAT
   - STR_GOLF_STICK
-  - STR_SNUBNOSE_PISTOL
   - STR_SNUBNOSE_PISTOL_CLIP
   - STR_JUDGE_BS_CLIP
+  - STR_SNUBNOSE_PISTOL
+  - STR_BERETTA_92FS
   - STR_COLT45_CLIP
   - STR_COLT45
-  - STR_BERETTA_92FS
   - STR_BERETTA_92FS_CLIP
-  - STR_MAKAROV
+  - STR_MAKAROV_CLIP
+  - STR_GLOCK_18
   - STR_GLOCK_18_CLIP
+  - STR_MAKAROV
+  - STR_TOKAREV
   - STR_TOKAREV_CLIP
   - STR_CALICO
-  - STR_MAKAROV_CLIP
-  - STR_TOKAREV
-  - STR_GLOCK_18
   - STR_CALICO_CLIP
-  - STR_ENFIELD_REVOLVER
-  - STR_PISTOL_LT
   - STR_PISTOL_LT_CLIP
+  - STR_ENFIELD_REVOLVER
   - STR_ENFIELD_REVOLVER_AMMO
+  - STR_PISTOL_LT
   - STR_PUMP_ACTION_SHELLS
   - STR_PUMP_ACTION
-  - STR_SAWED_OFF
   - STR_DOUBLE_BARRELED
   - STR_DOUBLE_BARRELED_BUCKSHOT
-  - STR_UZI
-  - STR_SKS
+  - STR_SAWED_OFF
   - STR_AK47
+  - STR_SKS
+  - STR_UZI
   - STR_SKORPION
   - STR_UZI_CLIP
-  - STR_MP40_CLIP
   - STR_STEN
+  - STR_MP40_CLIP
   - STR_THROWING_KNIVES
-  - STR_CROSSBOW
   - STR_CROSSBOW_BOLTS
+  - STR_CROSSBOW
   - STR_CROWBAR
   - STR_HUMAN_FARMER_CORPSE
   - STR_HUMAN_FARMER
@@ -9210,8 +10184,11 @@ autoSales:
   - STR_SUPPORTER_OF_DAGON
   - STR_ZOMBIE_STERILE_TERRORIST
   - STR_ZOMBIE_STERILE_CORPSE
-  - STR_SHADOWBAT_CORPSE
+  - STR_ZOMBIE_GRUBAS_CORPSE
+  - STR_WEREWOLF_CORPSE
+  - STR_WERECAT_CORPSE
   - STR_GIANT_SPIDER_CORPSE
+  - STR_SHADOWBAT_CORPSE
 options:
   displayWidth: 2560
   displayHeight: 1600
