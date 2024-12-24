@@ -84,7 +84,7 @@ def make_csv(soldiers_):
     return csvlist
 
 
-def get_file_path():
+def get_file_path(args):
     if os.name == 'posix':
         # Linux
         ROOTDIR = os.path.abspath(os.curdir).replace(';', '')
@@ -94,21 +94,18 @@ def get_file_path():
 
     USERDIR = os.path.join(ROOTDIR, 'user')
 
-    # TODO: Make debugmode and jsondump command line arguments
-    debugmode = True
-    jsondump = True
-
-    if debugmode is True:
-        file_path = os.path.join(ROOTDIR, 'user', 'x-com-files', '_quick_.asav')
+    if args.file:
+        file_path = os.path.join(ROOTDIR, args.file)
+    elif args.debug is True:
+        file_path = os.path.join(ROOTDIR, 'test', 'Test Save.sav')
     else:
         root = tk.Tk()
         root.withdraw()
-
         file_path = filedialog.askopenfilename(initialdir=USERDIR)
     return file_path
 
 
-def load_data_from_yaml(file_path, jsondump=True, return_csv=False):
+def load_data_from_yaml(file_path, args, return_csv=False):
     data = ''
     soldiers = []
     soldiercsv = []
@@ -122,7 +119,7 @@ def load_data_from_yaml(file_path, jsondump=True, return_csv=False):
             except KeyError:
                 pass
 
-    if jsondump is True:
+    if args.json_dump is True:
         print('Writing converted json data to "data.json"...')
         with open('data.json', 'w') as outfile:
             json.dump(data, outfile)
