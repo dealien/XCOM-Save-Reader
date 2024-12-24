@@ -97,7 +97,7 @@ def get_file_path(args):
     if args.file:
         file_path = os.path.join(ROOTDIR, args.file)
     elif args.debug is True:
-        file_path = os.path.join(ROOTDIR, 'user', 'x-com-files', '_quick_.asav')
+        file_path = os.path.join(ROOTDIR, 'test', 'Test Save.sav')
     else:
         root = tk.Tk()
         root.withdraw()
