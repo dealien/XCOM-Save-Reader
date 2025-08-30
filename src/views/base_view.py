@@ -5,6 +5,7 @@ class BaseView(ctk.CTkFrame):
         super().__init__(parent)
         self.controller = controller
 
+        # This is just a placeholder for the moment
         label = ctk.CTkLabel(self, text="Base View (Not Implemented)", font=ctk.CTkFont(size=20, weight="bold"))
         label.pack(pady=20, padx=20, expand=True)
 
