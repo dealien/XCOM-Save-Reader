@@ -44,7 +44,7 @@ class App(ctk.CTk):
 
     def load_save_file(self):
         # In a real scenario, we'd use a file dialog.
-        # For this headless environment, we'll hardcode the path.
+        # For development and testing purposes, we'll hardcode the path.
         # initial_dir = os.path.join(os.getcwd(), 'user')
         # file_path = filedialog.askopenfilename(initialdir=initial_dir)
 
