@@ -6,6 +6,8 @@ class SoldierListView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
+        self.sort_column = "Name" # Default sort column
+        self.sort_reverse = False
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
@@ -68,7 +70,7 @@ class SoldierListView(ctk.CTkFrame):
 
         # Configure columns
         for col in columns:
-            self.tree.heading(col, text=col, anchor="w")
+            self.tree.heading(col, text=col, anchor="w", command=lambda c=col: self.sort_by_column(c))
             # Set stretch=False for all columns except 'Name'
             if col == 'Name':
                 self.tree.column(col, anchor="w", stretch=True, minwidth=150)
@@ -82,6 +84,28 @@ class SoldierListView(ctk.CTkFrame):
 
         # Add event handler for row selection
         self.tree.bind('<<TreeviewSelect>>', self.on_soldier_select)
+
+    def sort_by_column(self, col):
+        # Determine sort order
+        if self.sort_column == col:
+            self.sort_reverse = not self.sort_reverse
+        else:
+            self.sort_reverse = False
+        self.sort_column = col
+
+        # Get data from treeview
+        data = [(self.tree.set(child, col), child) for child in self.tree.get_children('')]
+
+        # Sort data
+        # Attempt to convert to a number for sorting, otherwise use string
+        try:
+            data.sort(key=lambda t: float(t[0]), reverse=self.sort_reverse)
+        except ValueError:
+            data.sort(key=lambda t: t[0], reverse=self.sort_reverse)
+
+        # Repopulate treeview
+        for index, (val, child) in enumerate(data):
+            self.tree.move(child, '', index)
 
     def on_soldier_select(self, event):
         selected_item = self.tree.selection()
