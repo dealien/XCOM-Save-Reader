@@ -39,7 +39,7 @@ class SoldierView(ctk.CTkFrame):
         back_button.grid(row=2, column=0, columnspan=2, padx=20, pady=20)
 
     def back_to_list(self):
-        from src.views.soldier_list import SoldierListView
+        from views.soldier_list import SoldierListView
         self.controller.show_frame(SoldierListView)
 
     def update_view(self, soldier_id):

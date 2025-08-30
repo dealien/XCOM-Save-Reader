@@ -24,9 +24,9 @@ class MainMenu(ctk.CTkFrame):
         self.controller.load_save_file()
 
     def show_soldiers(self):
-        from src.views.soldier_list import SoldierListView
+        from views.soldier_list import SoldierListView
         self.controller.show_frame(SoldierListView)
 
     def show_bases(self):
-        from src.views.base_view import BaseView
+        from views.base_view import BaseView
         self.controller.show_frame(BaseView)

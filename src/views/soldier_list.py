@@ -49,7 +49,7 @@ class SoldierListView(ctk.CTkFrame):
         return tree
 
     def back_to_menu(self):
-        from src.views.main_menu import MainMenu
+        from views.main_menu import MainMenu
         self.controller.show_frame(MainMenu)
 
     def update_view(self):
