@@ -59,25 +59,26 @@ class SoldierListView(ctk.CTkFrame):
 
         # Get data from controller
         soldiers = self.controller.soldiers
+        if not soldiers:
+            return
 
         # Define columns
         columns = ['ID', 'Name', 'Rank', 'Missions', 'Kills', 'Base']
         self.tree["columns"] = columns
 
+        # Configure columns
         for col in columns:
             self.tree.heading(col, text=col, anchor="w")
-            self.tree.column(col, anchor="w", width=tkFont.Font().measure(col.upper()))
+            # Set stretch=False for all columns except 'Name'
+            if col == 'Name':
+                self.tree.column(col, anchor="w", stretch=True, minwidth=150)
+            else:
+                self.tree.column(col, anchor="center", stretch=False, width=80, minwidth=60)
 
         # Insert data
         for soldier in soldiers:
             values = [soldier.id, soldier.name, soldier.rank, soldier.missions, soldier.kills, soldier.base]
             self.tree.insert("", "end", values=values, iid=soldier.id)
-
-            # Adjust column width
-            for i, val in enumerate(values):
-                col_width = tkFont.Font().measure(val)
-                if self.tree.column(columns[i],width=None) < col_width:
-                    self.tree.column(columns[i], width=col_width)
 
         # Add event handler for row selection
         self.tree.bind('<<TreeviewSelect>>', self.on_soldier_select)
