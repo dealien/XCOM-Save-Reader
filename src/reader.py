@@ -1,11 +1,6 @@
 import csv
 import json
 import os
-import tkinter as tk
-import tkinter.ttk as ttk
-from tkinter import *
-from tkinter import filedialog
-from tkinter import font as tkFont
 import yaml
 
 
@@ -84,32 +79,8 @@ def make_csv(soldiers_):
     return csvlist
 
 
-def get_file_path(args):
-    if os.name == 'posix':
-        # Linux
-        ROOTDIR = os.path.abspath(os.curdir).replace(';', '')
-    else:
-        # Windows
-        ROOTDIR = os.getcwd().replace(';', '')
-
-    USERDIR = os.path.join(ROOTDIR, 'user')
-
-    if args.file:
-        file_path = os.path.join(ROOTDIR, args.file)
-    elif args.debug is True:
-        file_path = os.path.join(ROOTDIR, 'test', 'Test Save.sav')
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        file_path = filedialog.askopenfilename(initialdir=USERDIR)
-    return file_path
-
-
-def load_data_from_yaml(file_path, args, return_csv=False):
+def load_data_from_yaml(file_path, json_dump=False):
     data = ''
-    soldiers = []
-    soldiercsv = []
-
     print(f'Loading data from "{os.path.basename(file_path)}"...')
     with open(file_path, 'r') as file:
         for y in yaml.load_all(file, Loader=yaml.FullLoader):
@@ -119,75 +90,9 @@ def load_data_from_yaml(file_path, args, return_csv=False):
             except KeyError:
                 pass
 
-    if args.json_dump is True:
+    if json_dump:
         print('Writing converted json data to "data.json"...')
         with open('data.json', 'w') as outfile:
             json.dump(data, outfile)
 
-    soldiers = read_soldiers(data)
-    soldiercsv = make_csv(soldiers)
-
-    print('Writing CSV soldier list to "soldiers.csv"...')
-    with open('soldiers.csv', 'w', newline='') as csvfile:
-        wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        wr.writerows(soldiercsv)
-    if return_csv:
-        return soldiercsv
-    else:
-        return data
-
-
-def load_csv(tree, data):
-    # Define columns
-    tree["columns"] = data[0]
-
-    # Format columns
-    for col in data[0]:
-        tree.column(col, anchor="center")
-        tree.heading(col, text=col, anchor="center")
-
-    # Insert rows
-    for row in data[1:]:
-        tree.insert("", tk.END, values=row)
-
-
-def create_treeview(root, data):
-    columns = data[0]
-    tree = ttk.Treeview(root, columns=columns, show="headings")
-
-    # Set column headings
-    for col in columns:
-        tree.heading(col, text=col.upper())
-
-    # Insert data into the Treeview
-    for row in data[1:]:
-        tree.insert("", tk.END, values=row)
-
-    return tree
-
-
-def resize_columns(tree):
-    for col in tree["columns"]:
-        tree.column(col, width=tkFont.Font().measure(tree.heading(col, "text")))
-        for item in tree.get_children():
-            width = tkFont.Font().measure(tree.set(item, col))
-            if tree.column(col, 'width') < width:
-                tree.column(col, width=width)
-
-
-class TableWindow:
-    def __init__(self, root, data):
-        width = 1600
-        height = 900
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
-        x = (screen_width / 2) - (width / 2)
-        y = (screen_height / 2) - (height / 2)
-        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-        root.resizable(0, 0)
-
-        tframe = Frame(root)
-        tframe.pack(fill=tk.BOTH, expand=True)
-        tree = create_treeview(tframe, data)
-        resize_columns(tree)
-        tree.pack(fill=tk.BOTH, expand=True)
+    return data
