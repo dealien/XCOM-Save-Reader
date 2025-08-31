@@ -5,11 +5,7 @@ A tool to read OpenXCOM save files and display statistics about your soldiers an
 ## Setup
 
 1.  Ensure you have Python 3.10+ installed.
-2.  Install the required dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *(Note: The requirements.txt file may have encoding issues. If you have trouble, install the dependencies manually: `pip install customtkinter pyyaml`)*
+2.  Install the required dependencies: `pip install customtkinter pyyaml`
 
 ## Running the Application
 

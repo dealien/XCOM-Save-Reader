@@ -4,7 +4,7 @@ import sys
 # Add src directory to path to allow import of reader
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from src.reader import *
+from reader import *
 
 TEST_SAVE_FILE = os.path.join(os.path.dirname(__file__), '..', 'test', 'Test Save.sav')
 

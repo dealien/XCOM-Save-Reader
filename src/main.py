@@ -3,10 +3,10 @@ from tkinter import filedialog
 import os
 
 from views.main_menu import MainMenu
-import reader
 from views.soldier_list import SoldierListView
 from views.soldier_view import SoldierView
 from views.base_view import BaseView
+import reader
 
 class App(ctk.CTk):
     def __init__(self):
@@ -28,7 +28,7 @@ class App(ctk.CTk):
 
         self.frames = {}
 
-        # Initialize frames (will be uncommented as they are created)
+        # Initialize frames
         for F in (MainMenu, SoldierListView, SoldierView, BaseView):
             frame = F(container, self)
             self.frames[F] = frame
@@ -58,7 +58,7 @@ class App(ctk.CTk):
             # Enable buttons on main menu
             main_menu_frame = self.frames[MainMenu]
             main_menu_frame.soldiers_button.configure(state="normal")
-            main_menu_frame.bases_button.configure(state="normal") # Will be a placeholder
+            main_menu_frame.bases_button.configure(state="normal")
             print(f"Loaded {len(self.soldiers)} soldiers.")
 
     def get_soldier_by_id(self, soldier_id):
