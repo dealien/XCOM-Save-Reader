@@ -2,13 +2,15 @@ import customtkinter as ctk
 from tkinter import ttk
 from tkinter import font as tkFont
 
+
 class SoldierListView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.sort_column = "Name" # Default sort column
+        self.sort_column = "Name"  # Default sort column
         self.sort_reverse = False
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
 
         # Title
         label = ctk.CTkLabel(self, text="Soldier List", font=ctk.CTkFont(size=20, weight="bold"))
