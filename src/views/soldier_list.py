@@ -75,7 +75,7 @@ class SoldierListView(ctk.CTkFrame):
             elif col == 'Base':
                 self.tree.column(col, anchor="w", stretch=True, minwidth=100)
             else:
-                self.tree.column(col, anchor="center", stretch=False, width=80, minwidth=60)
+                self.tree.column(col, anchor="w", stretch=False, width=80, minwidth=60)
 
         # Insert data
         for soldier in soldiers:
