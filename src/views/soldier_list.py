@@ -70,9 +70,10 @@ class SoldierListView(ctk.CTkFrame):
         # Configure columns
         for col in columns:
             self.tree.heading(col, text=col, anchor="w", command=lambda c=col: self.sort_by_column(c))
-            # Set stretch=False for all columns except 'Name'
             if col == 'Name':
                 self.tree.column(col, anchor="w", stretch=True, minwidth=150)
+            elif col == 'Base':
+                self.tree.column(col, anchor="w", stretch=True, minwidth=100)
             else:
                 self.tree.column(col, anchor="center", stretch=False, width=80, minwidth=60)
 
