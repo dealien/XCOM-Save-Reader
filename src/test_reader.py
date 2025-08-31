@@ -18,7 +18,8 @@ class TestReader:
     def test_read_soldiers(self):
         """ Test the soldier reading functions """
         yaml_data = load_data_from_yaml(TEST_SAVE_FILE)
-        soldier_list, _ = read_soldiers(yaml_data)
+        mission_data = read_missions(yaml_data)
+        soldier_list, _ = read_soldiers(yaml_data, mission_data)
         assert isinstance(soldier_list, list)
         assert len(soldier_list) > 0
         assert isinstance(soldier_list[0], Soldier)
@@ -27,7 +28,8 @@ class TestReader:
     def test_read_soldiers_with_json_write(self):
         """ Test the soldier reading functions with json write enabled """
         yaml_data = load_data_from_yaml(TEST_SAVE_FILE, json_dump=True)
-        soldier_list, _ = read_soldiers(yaml_data)
+        mission_data = read_missions(yaml_data)
+        soldier_list, _ = read_soldiers(yaml_data, mission_data)
         assert isinstance(soldier_list, list)
         assert len(soldier_list) > 0
         assert os.path.exists('data.json')
@@ -36,7 +38,8 @@ class TestReader:
 
     def test_make_csv(self):
         yaml_data = load_data_from_yaml(TEST_SAVE_FILE)
-        soldier_list, _ = read_soldiers(yaml_data)
+        mission_data = read_missions(yaml_data)
+        soldier_list, _ = read_soldiers(yaml_data, mission_data)
         csv_data = make_csv(soldier_list)
         assert isinstance(csv_data, list)
         assert len(csv_data) > 1 # Header + at least one soldier
@@ -45,7 +48,8 @@ class TestReader:
     def test_read_service_record(self):
         """ Test that service record data is read correctly """
         yaml_data = load_data_from_yaml(TEST_SAVE_FILE)
-        soldier_list, _ = read_soldiers(yaml_data)
+        mission_data = read_missions(yaml_data)
+        soldier_list, _ = read_soldiers(yaml_data, mission_data)
         veronica = None
         for soldier in soldier_list:
             if soldier.name == "Veronica Steele":
@@ -64,7 +68,8 @@ class TestReader:
     def test_mission_participants(self):
         """ Test that the mission participants map is created correctly """
         yaml_data = load_data_from_yaml(TEST_SAVE_FILE)
-        _, mission_participants = read_soldiers(yaml_data)
+        mission_data = read_missions(yaml_data)
+        _, mission_participants = read_soldiers(yaml_data, mission_data)
 
         assert isinstance(mission_participants, dict)
 
