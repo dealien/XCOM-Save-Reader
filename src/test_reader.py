@@ -40,3 +40,22 @@ class TestReader:
         assert isinstance(csv_data, list)
         assert len(csv_data) > 1 # Header + at least one soldier
         assert len(csv_data[0]) == 27 # Check for correct number of columns
+
+    def test_read_service_record(self):
+        """ Test that service record data is read correctly """
+        yaml_data = load_data_from_yaml(TEST_SAVE_FILE)
+        soldier_list = read_soldiers(yaml_data)
+        veronica = None
+        for soldier in soldier_list:
+            if soldier.name == "Veronica Steele":
+                veronica = soldier
+                break
+
+        assert veronica is not None, "Veronica Steele not found in soldier list"
+
+        sr = veronica.service_record
+        assert isinstance(sr, ServiceRecord)
+        assert len(sr.missions) == 22
+        assert len(sr.commendations) == 19
+        assert len(sr.kill_list) > 0
+        assert sr.days_wounded_total == 116

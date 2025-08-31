@@ -34,9 +34,28 @@ class SoldierView(ctk.CTkFrame):
         inventory_label = ctk.CTkLabel(inventory_frame, text="Inventory (Not Implemented)", font=ctk.CTkFont(size=16))
         inventory_label.pack(expand=True)
 
+        # Service Record Frame (Bottom, spanning both columns)
+        service_record_frame = ctk.CTkFrame(self)
+        service_record_frame.grid(row=2, column=0, columnspan=2, padx=20, pady=10, sticky="nsew")
+        service_record_frame.grid_columnconfigure(0, weight=1)
+
+        service_record_label = ctk.CTkLabel(service_record_frame, text="Service Record", font=ctk.CTkFont(size=16, weight="bold"))
+        service_record_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+
+        self.service_record_summary_label = ctk.CTkLabel(service_record_frame, text="", justify="left")
+        self.service_record_summary_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+
+        self.commendations_label = ctk.CTkLabel(service_record_frame, text="", justify="left")
+        self.commendations_label.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+
+        self.mission_history_textbox = ctk.CTkTextbox(service_record_frame, height=200)
+        self.mission_history_textbox.grid(row=3, column=0, padx=10, pady=5, sticky="nsew")
+        self.mission_history_textbox.configure(state="disabled")
+
+
         # Back Button
         back_button = ctk.CTkButton(self, text="Back to Soldier List", command=self.back_to_list)
-        back_button.grid(row=2, column=0, columnspan=2, padx=20, pady=20)
+        back_button.grid(row=3, column=0, columnspan=2, padx=20, pady=20)
 
     def back_to_list(self):
         from views.soldier_list import SoldierListView
@@ -63,3 +82,39 @@ class SoldierView(ctk.CTkFrame):
         self.stats_labels["Strength"].configure(text=current_stats.strength)
         self.stats_labels["Psi Strength"].configure(text=current_stats.psistrength)
         self.stats_labels["Psi Skill"].configure(text=current_stats.psiskill)
+
+        # Service Record
+        sr = soldier.service_record
+        summary = (
+            f"Months of Service: {sr.months_service}\n"
+            f"Days Wounded: {sr.days_wounded_total} (Wounded {sr.times_wounded_total} times)\n"
+            f"Times Unconscious: {sr.unconscious_total}\n"
+            f"Shots Fired: {sr.shots_fired_counter_total} | Shots Landed: {sr.shots_landed_counter_total}\n"
+            f"Times Shot At: {sr.shot_at_counter_total} | Times Hit: {sr.hit_counter_total}"
+        )
+        self.service_record_summary_label.configure(text=summary)
+
+        commendations_text = "Commendations:\n" + "\n".join([c['commendationName'] for c in sr.commendations]) if sr.commendations else "No commendations."
+        self.commendations_label.configure(text=commendations_text)
+
+        self.mission_history_textbox.configure(state="normal")
+        self.mission_history_textbox.delete("1.0", "end")
+        if sr.missions:
+            history_text = ""
+            for mission in sr.missions:
+                history_text += f"Mission: {mission.name} ({mission.time})\n"
+                history_text += f"  Type: {mission.type}\n"
+                history_text += f"  Region: {mission.region}\n"
+                history_text += f"  Result: {'Success' if mission.success else 'Failure'}\n"
+                history_text += "  Kills on this mission:\n"
+                kills_on_mission = [k for k in sr.kill_list if k['mission'] == mission.id]
+                if kills_on_mission:
+                    for kill in kills_on_mission:
+                        history_text += f"    - {kill['type']} with {kill['weapon']}\n"
+                else:
+                    history_text += "    - None\n"
+                history_text += "\n"
+            self.mission_history_textbox.insert("1.0", history_text)
+        else:
+            self.mission_history_textbox.insert("1.0", "No mission history.")
+        self.mission_history_textbox.configure(state="disabled")
