@@ -43,13 +43,13 @@ class SoldierView(ctk.CTkFrame):
         service_record_label = ctk.CTkLabel(service_record_frame, text="Service Record", font=ctk.CTkFont(size=16, weight="bold"))
         service_record_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="w")
 
-        # Mission History (Left Column)
-        self.mission_history_frame = ctk.CTkScrollableFrame(service_record_frame, height=200, label_text="Mission History")
-        self.mission_history_frame.grid(row=1, column=0, padx=10, pady=5, sticky="nsew")
-
-        # Service Record Info (Right Column)
+        # Service Record Info (Left Column)
         service_record_info_frame = ctk.CTkFrame(service_record_frame)
-        service_record_info_frame.grid(row=1, column=1, padx=10, pady=5, sticky="nsew")
+        service_record_info_frame.grid(row=1, column=0, padx=10, pady=5, sticky="nsew")
+
+        # Mission History (Right Column)
+        self.mission_history_frame = ctk.CTkScrollableFrame(service_record_frame, height=200, label_text="Mission History")
+        self.mission_history_frame.grid(row=1, column=1, padx=10, pady=5, sticky="nsew")
 
         self.service_record_summary_label = ctk.CTkLabel(service_record_info_frame, text="", justify="left")
         self.service_record_summary_label.pack(anchor="w", padx=10, pady=5)
