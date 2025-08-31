@@ -85,9 +85,9 @@ def read_missions(data_):
             missions_[m['id']] = Mission(m)
     return missions_
 
-def read_soldiers(data_):
+def read_soldiers(data_, mission_data):
     soldiers_ = []
-    mission_data = read_missions(data_)
+    mission_participants = {}
     print('Reading soldier data...')
     for base in data_['bases']:
         try:
@@ -97,7 +97,21 @@ def read_soldiers(data_):
                 soldiers_.append(soldier_)
         except KeyError:
             pass
-    return soldiers_
+
+    if 'deadSoldiers' in data_:
+        for s in data_['deadSoldiers']:
+            soldier_ = Soldier(s['type'], s['id'], s['name'], s['initialStats'], s['currentStats'], s['rank'],
+                               s['missions'], s['kills'], "KIA", s.get('diary', {}), mission_data)
+            soldiers_.append(soldier_)
+
+    # Create a map of mission IDs to participating soldiers
+    for soldier in soldiers_:
+        for mission_id in soldier.service_record.mission_id_list:
+            if mission_id not in mission_participants:
+                mission_participants[mission_id] = []
+            mission_participants[mission_id].append(soldier)
+
+    return soldiers_, mission_participants
 
 
 def make_csv(soldiers_):

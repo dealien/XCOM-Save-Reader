@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from functools import partial
 
 class SoldierView(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -48,10 +49,8 @@ class SoldierView(ctk.CTkFrame):
         self.commendations_label = ctk.CTkLabel(service_record_frame, text="", justify="left")
         self.commendations_label.grid(row=2, column=0, padx=10, pady=5, sticky="w")
 
-        self.mission_history_textbox = ctk.CTkTextbox(service_record_frame, height=200)
-        self.mission_history_textbox.grid(row=3, column=0, padx=10, pady=5, sticky="nsew")
-        self.mission_history_textbox.configure(state="disabled")
-
+        self.mission_history_frame = ctk.CTkScrollableFrame(service_record_frame, height=200)
+        self.mission_history_frame.grid(row=3, column=0, padx=10, pady=5, sticky="nsew")
 
         # Back Button
         back_button = ctk.CTkButton(self, text="Back to Soldier List", command=self.back_to_list)
@@ -60,6 +59,9 @@ class SoldierView(ctk.CTkFrame):
     def back_to_list(self):
         from views.soldier_list import SoldierListView
         self.controller.show_frame(SoldierListView)
+
+    def on_mission_card_click(self, mission_id, soldier_id, event):
+        self.controller.show_mission_view(mission_id, soldier_id)
 
     def update_view(self, soldier_id):
         soldier = self.controller.get_soldier_by_id(soldier_id)
@@ -97,24 +99,36 @@ class SoldierView(ctk.CTkFrame):
         commendations_text = "Commendations:\n" + "\n".join([f"{c['commendationName']} (Level: {c['decorationLevel']})" for c in sr.commendations]) if sr.commendations else "No commendations."
         self.commendations_label.configure(text=commendations_text)
 
-        self.mission_history_textbox.configure(state="normal")
-        self.mission_history_textbox.delete("1.0", "end")
+        # Clear old mission cards
+        for widget in self.mission_history_frame.winfo_children():
+            widget.destroy()
+
         if sr.missions:
-            history_text = ""
             for mission in sr.missions:
-                history_text += f"Mission: {mission.name} ({mission.time})\n"
-                history_text += f"  Type: {mission.type}\n"
-                history_text += f"  Region: {mission.region}\n"
-                history_text += f"  Result: {'Success' if mission.success else 'Failure'}\n"
-                history_text += "  Kills on this mission:\n"
-                kills_on_mission = [k for k in sr.kill_list if k['mission'] == mission.id]
-                if kills_on_mission:
-                    for kill in kills_on_mission:
-                        history_text += f"    - {kill['type']} with {kill['weapon']}\n"
-                else:
-                    history_text += "    - None\n"
-                history_text += "\n"
-            self.mission_history_textbox.insert("1.0", history_text)
+                card = ctk.CTkFrame(self.mission_history_frame, border_width=1)
+                card.pack(fill="x", expand=True, padx=5, pady=5)
+
+                kill_count = len([k for k in sr.kill_list if k['mission'] == mission.id])
+
+                card_title = f"{mission.name} - {mission.time}"
+                card_result = f"Result: {'Success' if mission.success else 'Failure'}"
+                card_kills = f"Kills: {kill_count}"
+
+                title_label = ctk.CTkLabel(card, text=card_title, font=ctk.CTkFont(weight="bold"))
+                title_label.pack(anchor="w", padx=10, pady=(5, 0))
+
+                result_label = ctk.CTkLabel(card, text=card_result)
+                result_label.pack(anchor="w", padx=10)
+
+                kills_label = ctk.CTkLabel(card, text=card_kills)
+                kills_label.pack(anchor="w", padx=10, pady=(0, 5))
+
+                # Bind click event to the card and its labels
+                click_handler = partial(self.on_mission_card_click, mission.id, soldier.id)
+                card.bind("<Button-1>", click_handler)
+                title_label.bind("<Button-1>", click_handler)
+                result_label.bind("<Button-1>", click_handler)
+                kills_label.bind("<Button-1>", click_handler)
         else:
-            self.mission_history_textbox.insert("1.0", "No mission history.")
-        self.mission_history_textbox.configure(state="disabled")
+            no_missions_label = ctk.CTkLabel(self.mission_history_frame, text="No mission history.")
+            no_missions_label.pack(padx=10, pady=10)
