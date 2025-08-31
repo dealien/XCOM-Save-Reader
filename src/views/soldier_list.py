@@ -9,7 +9,6 @@ class SoldierListView(ctk.CTkFrame):
         self.sort_column = "Name" # Default sort column
         self.sort_reverse = False
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
 
         # Title
         label = ctk.CTkLabel(self, text="Soldier List", font=ctk.CTkFont(size=20, weight="bold"))
