@@ -52,7 +52,7 @@ class App(ctk.CTk):
             print(f"Loading save file: {file_path}")
             self.save_data = reader.load_data_from_yaml(file_path)
             self.missions = reader.read_missions(self.save_data)
-            self.soldiers, self.mission_participants = reader.read_soldiers(self.save_data)
+            self.soldiers, self.mission_participants = reader.read_soldiers(self.save_data, self.missions)
 
             # Enable buttons on main menu
             main_menu_frame = self.frames[MainMenu]
