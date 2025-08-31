@@ -94,7 +94,7 @@ class SoldierView(ctk.CTkFrame):
         )
         self.service_record_summary_label.configure(text=summary)
 
-        commendations_text = "Commendations:\n" + "\n".join([c['commendationName'] for c in sr.commendations]) if sr.commendations else "No commendations."
+        commendations_text = "Commendations:\n" + "\n".join([f"{c['commendationName']} (Level: {c['decorationLevel']})" for c in sr.commendations]) if sr.commendations else "No commendations."
         self.commendations_label.configure(text=commendations_text)
 
         self.mission_history_textbox.configure(state="normal")
