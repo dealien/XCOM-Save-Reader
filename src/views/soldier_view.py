@@ -38,19 +38,24 @@ class SoldierView(ctk.CTkFrame):
         # Service Record Frame (Bottom, spanning both columns)
         service_record_frame = ctk.CTkFrame(self)
         service_record_frame.grid(row=2, column=0, columnspan=2, padx=20, pady=10, sticky="nsew")
-        service_record_frame.grid_columnconfigure(0, weight=1)
+        service_record_frame.grid_columnconfigure((0, 1), weight=1)
 
         service_record_label = ctk.CTkLabel(service_record_frame, text="Service Record", font=ctk.CTkFont(size=16, weight="bold"))
-        service_record_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        service_record_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="w")
 
-        self.service_record_summary_label = ctk.CTkLabel(service_record_frame, text="", justify="left")
-        self.service_record_summary_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        # Mission History (Left Column)
+        self.mission_history_frame = ctk.CTkScrollableFrame(service_record_frame, height=200, label_text="Mission History")
+        self.mission_history_frame.grid(row=1, column=0, padx=10, pady=5, sticky="nsew")
 
-        self.commendations_label = ctk.CTkLabel(service_record_frame, text="", justify="left")
-        self.commendations_label.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+        # Service Record Info (Right Column)
+        service_record_info_frame = ctk.CTkFrame(service_record_frame)
+        service_record_info_frame.grid(row=1, column=1, padx=10, pady=5, sticky="nsew")
 
-        self.mission_history_frame = ctk.CTkScrollableFrame(service_record_frame, height=200)
-        self.mission_history_frame.grid(row=3, column=0, padx=10, pady=5, sticky="nsew")
+        self.service_record_summary_label = ctk.CTkLabel(service_record_info_frame, text="", justify="left")
+        self.service_record_summary_label.pack(anchor="w", padx=10, pady=5)
+
+        self.commendations_label = ctk.CTkLabel(service_record_info_frame, text="", justify="left")
+        self.commendations_label.pack(anchor="w", padx=10, pady=5)
 
         # Back Button
         back_button = ctk.CTkButton(self, text="Back to Soldier List", command=self.back_to_list)
