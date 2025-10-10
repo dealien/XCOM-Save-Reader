@@ -29,11 +29,9 @@ class SoldierView(ctk.CTkFrame):
             self.stats_labels[stat] = value
 
         # Inventory Frame (Right)
-        inventory_frame = ctk.CTkFrame(self)
-        inventory_frame.grid(row=1, column=1, padx=20, pady=10, sticky="nsew")
-
-        inventory_label = ctk.CTkLabel(inventory_frame, text="Inventory (Not Implemented)", font=ctk.CTkFont(size=16))
-        inventory_label.pack(expand=True)
+        self.inventory_frame = ctk.CTkFrame(self)
+        self.inventory_frame.grid(row=1, column=1, padx=20, pady=10, sticky="nsew")
+        self.inventory_frame.grid_columnconfigure(0, weight=1)
 
         # Service Record Frame (Bottom, spanning both columns)
         service_record_frame = ctk.CTkFrame(self)
@@ -103,6 +101,45 @@ class SoldierView(ctk.CTkFrame):
 
         commendations_text = "Commendations:\n" + "\n".join([f"{c['commendationName']} (Level: {c['decorationLevel']})" for c in sr.commendations]) if sr.commendations else "No commendations."
         self.commendations_label.configure(text=commendations_text)
+
+        # Update inventory
+        for widget in self.inventory_frame.winfo_children():
+            widget.destroy()
+
+        inventory_label = ctk.CTkLabel(self.inventory_frame, text="Inventory", font=ctk.CTkFont(size=16, weight="bold"))
+        inventory_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+
+        if soldier.equipmentLayout:
+            inventory_by_slot = {}
+            for item in soldier.equipmentLayout:
+                slot = item.get("slot", "Unslotted")
+                if slot not in inventory_by_slot:
+                    inventory_by_slot[slot] = []
+                inventory_by_slot[slot].append(item)
+
+            row = 1
+            for slot, items in sorted(inventory_by_slot.items()):
+                slot_label = ctk.CTkLabel(self.inventory_frame, text=slot, font=ctk.CTkFont(size=14, weight="bold"))
+                slot_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
+                row += 1
+                for item in items:
+                    item_text = f"  - {item['itemType']}"
+                    if "ammoItemSlots" in item and isinstance(item["ammoItemSlots"], list):
+                        ammo_text = ", ".join(item["ammoItemSlots"])
+                        item_text += f" (Loaded with: {ammo_text})"
+                    elif "ammoItem" in item:
+                        item_text += f" (Loaded with: {item['ammoItem']})"
+
+                    if "fuseTimer" in item and item['fuseTimer'] is not None:
+                        item_text += f" Active ({item['fuseTimer']})"
+
+                    item_label = ctk.CTkLabel(self.inventory_frame, text=item_text)
+                    item_label.grid(row=row, column=0, padx=20, pady=2, sticky="w")
+                    row += 1
+        else:
+            no_inventory_label = ctk.CTkLabel(self.inventory_frame, text="No inventory.")
+            no_inventory_label.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+
 
         # Clear old mission cards
         for widget in self.mission_history_frame.winfo_children():
