@@ -56,7 +56,7 @@ class ServiceRecord:
         self.mission_id_list = diary_data.get('missionIdList', [])
         self.days_wounded_total = diary_data.get('daysWoundedTotal', 0)
         self.months_service = diary_data.get('monthsService', 0)
-        self.unconscious_total = diary_data.get('unconciousTotal', 0)
+        self.unconscious_total = diary_data.get('unconciousTotal', 0)  # "unconciousTotal" misspelled in XCOM save files
         self.shot_at_counter_total = diary_data.get('shotAtCounterTotal', 0)
         self.hit_counter_total = diary_data.get('hitCounterTotal', 0)
         self.shots_fired_counter_total = diary_data.get('shotsFiredCounterTotal', 0)
