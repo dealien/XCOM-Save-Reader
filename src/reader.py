@@ -66,6 +66,7 @@ class ServiceRecord:
 
         self.missions = [mission_data[mid] for mid in self.mission_id_list if mid in mission_data]
 
+
 class Mission:
     def __init__(self, mission_data):
         self.id = mission_data.get('id')
@@ -77,6 +78,7 @@ class Mission:
         self.success = mission_data.get('success')
         self.alien_race = mission_data.get('alienRace')
 
+
 def read_missions(data_):
     missions_ = {}
     print("Reading mission data...")
@@ -84,6 +86,7 @@ def read_missions(data_):
         for m in data_['missionStatistics']:
             missions_[m['id']] = Mission(m)
     return missions_
+
 
 def read_soldiers(data_, mission_data):
     soldiers_ = []
