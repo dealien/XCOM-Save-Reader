@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from functools import partial
+from inventory_formatter import format_inventory_for_display
 
 class SoldierView(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -109,30 +110,15 @@ class SoldierView(ctk.CTkFrame):
         inventory_label = ctk.CTkLabel(self.inventory_frame, text="Inventory", font=ctk.CTkFont(size=16, weight="bold"))
         inventory_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
-        if hasattr(soldier, "equipmentLayout") and soldier.equipmentLayout:
-            inventory_by_slot = {}
-            for item in soldier.equipmentLayout:
-                slot = item.get("slot", "Unslotted")
-                if slot not in inventory_by_slot:
-                    inventory_by_slot[slot] = []
-                inventory_by_slot[slot].append(item)
+        inventory_data = format_inventory_for_display(getattr(soldier, 'equipmentLayout', None))
 
+        if inventory_data:
             row = 1
-            for slot, items in sorted(inventory_by_slot.items()):
+            for slot, items in sorted(inventory_data.items()):
                 slot_label = ctk.CTkLabel(self.inventory_frame, text=slot, font=ctk.CTkFont(size=14, weight="bold"))
                 slot_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
                 row += 1
-                for item in items:
-                    item_text = f"  - {item['itemType']}"
-                    if "ammoItemSlots" in item and isinstance(item["ammoItemSlots"], list):
-                        ammo_text = ", ".join(item["ammoItemSlots"])
-                        item_text += f" (Loaded with: {ammo_text})"
-                    elif "ammoItem" in item:
-                        item_text += f" (Loaded with: {item['ammoItem']})"
-
-                    if "fuseTimer" in item and item['fuseTimer'] is not None:
-                        item_text += f" Active ({item['fuseTimer']})"
-
+                for item_text in items:
                     item_label = ctk.CTkLabel(self.inventory_frame, text=item_text)
                     item_label.grid(row=row, column=0, padx=20, pady=2, sticky="w")
                     row += 1
