@@ -21,8 +21,8 @@ def test_format_inventory_for_display_full():
         'STR_RIGHT_HAND': ['  - STR_NITRO_EXPRESS (Loaded with: STR_NITRO_EXPRESS_CLIP)'],
         'STR_BELT': [
             '  - STR_NITRO_EXPRESS_CLIP',
-            '  - STR_SMOKE_GRENADE Active (5)',
-            '  - STR_GRENADE Active (0)'
+            '  - STR_SMOKE_GRENADE | Active[5]',
+            '  - STR_GRENADE | Active[0]'
         ],
         'STR_LEFT_HAND': ['  - STR_PLASMA_RIFLE (Loaded with: STR_PLASMA_RIFLE_CLIP)'],
     }
@@ -40,5 +40,5 @@ def test_format_inventory_for_display_none():
 def test_format_inventory_fuse_timer_zero():
     """Test that fuseTimer: 0 is correctly formatted."""
     equipment_layout = [{'itemType': 'STR_GRENADE', 'slot': 'STR_BELT', 'fuseTimer': 0}]
-    expected_output = {'STR_BELT': ['  - STR_GRENADE Active (0)']}
+    expected_output = {'STR_BELT': ['  - STR_GRENADE | Active[0]']}
     assert format_inventory_for_display(equipment_layout) == expected_output
