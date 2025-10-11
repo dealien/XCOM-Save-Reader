@@ -6,15 +6,15 @@ class SoldierView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.grid_columnconfigure(1, weight=1) # Make the right column expandable
+        self.grid_columnconfigure(1, weight=1) # Make the title column expandable
 
         # Back Button
         back_button = ctk.CTkButton(self, text="←", command=self.back_to_list, width=30)
-        back_button.grid(row=0, column=0, padx=(20, 0), pady=10, sticky="w")
+        back_button.grid(row=0, column=0, padx=(20, 0), pady=20, sticky="w")
 
         # Name Banner (Top Left)
         self.name_label = ctk.CTkLabel(self, text="", font=ctk.CTkFont(size=24, weight="bold"))
-        self.name_label.grid(row=0, column=1, columnspan=1, padx=20, pady=10, sticky="w")
+        self.name_label.grid(row=0, column=1, padx=20, pady=20, sticky="w")
 
         # Stats Frame (Left)
         stats_frame = ctk.CTkFrame(self)
