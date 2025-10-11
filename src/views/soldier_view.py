@@ -8,9 +8,13 @@ class SoldierView(ctk.CTkFrame):
         self.controller = controller
         self.grid_columnconfigure(1, weight=1) # Make the right column expandable
 
+        # Back Button
+        back_button = ctk.CTkButton(self, text="←", command=self.back_to_list, width=30)
+        back_button.grid(row=0, column=0, padx=(20, 0), pady=10, sticky="w")
+
         # Name Banner (Top Left)
         self.name_label = ctk.CTkLabel(self, text="", font=ctk.CTkFont(size=24, weight="bold"))
-        self.name_label.grid(row=0, column=0, columnspan=2, padx=20, pady=10, sticky="w")
+        self.name_label.grid(row=0, column=1, columnspan=1, padx=20, pady=10, sticky="w")
 
         # Stats Frame (Left)
         stats_frame = ctk.CTkFrame(self)
@@ -55,10 +59,6 @@ class SoldierView(ctk.CTkFrame):
 
         self.commendations_label = ctk.CTkLabel(service_record_info_frame, text="", justify="left")
         self.commendations_label.pack(anchor="w", padx=10, pady=5)
-
-        # Back Button
-        back_button = ctk.CTkButton(self, text="Back to Soldier List", command=self.back_to_list)
-        back_button.grid(row=3, column=0, columnspan=2, padx=20, pady=20)
 
     def back_to_list(self):
         from views.soldier_list import SoldierListView
