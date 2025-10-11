@@ -5,17 +5,18 @@ import yaml
 
 
 class Soldier:
-    def __init__(self, type, id, name, initialstats, currentstats, rank, missions, kills, base, diary, mission_data):
-        self.type = type
-        self.id = id
-        self.name = name
-        self.initialstats = Stats(initialstats)
-        self.currentstats = Stats(currentstats)
-        self.rank = rank
-        self.missions = missions
-        self.kills = kills
-        self.base = base
-        self.service_record = ServiceRecord(diary, mission_data)
+    def __init__(self, data, base_name, mission_data):
+        self.type = data['type']
+        self.id = data['id']
+        self.name = data['name']
+        self.initialstats = Stats(data['initialStats'])
+        self.currentstats = Stats(data['currentStats'])
+        self.rank = data['rank']
+        self.missions = data.get('missions', 0)
+        self.kills = data.get('kills', 0)
+        self.base = base_name
+        self.service_record = ServiceRecord(data.get('diary', {}), mission_data)
+        self.equipmentLayout = data.get('equipmentLayout')
 
 
 class Stats:
@@ -95,16 +96,14 @@ def read_soldiers(data_, mission_data):
     for base in data_['bases']:
         try:
             for s in base['soldiers']:
-                soldier_ = Soldier(s['type'], s['id'], s['name'], s['initialStats'], s['currentStats'], s['rank'],
-                                   s['missions'], s['kills'], base['name'], s.get('diary', {}), mission_data)
+                soldier_ = Soldier(s, base['name'], mission_data)
                 soldiers_.append(soldier_)
         except KeyError:
             pass
 
     if 'deadSoldiers' in data_:
         for s in data_['deadSoldiers']:
-            soldier_ = Soldier(s['type'], s['id'], s['name'], s['initialStats'], s['currentStats'], s['rank'],
-                               s['missions'], s['kills'], "KIA", s.get('diary', {}), mission_data)
+            soldier_ = Soldier(s, "KIA", mission_data)
             soldiers_.append(soldier_)
 
     # Create a map of mission IDs to participating soldiers
