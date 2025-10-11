@@ -109,7 +109,7 @@ class SoldierView(ctk.CTkFrame):
         inventory_label = ctk.CTkLabel(self.inventory_frame, text="Inventory", font=ctk.CTkFont(size=16, weight="bold"))
         inventory_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
-        if soldier.equipmentLayout:
+        if hasattr(soldier, "equipmentLayout") and soldier.equipmentLayout:
             inventory_by_slot = {}
             for item in soldier.equipmentLayout:
                 slot = item.get("slot", "Unslotted")
