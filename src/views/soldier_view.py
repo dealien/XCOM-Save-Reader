@@ -1,15 +1,20 @@
 import customtkinter as ctk
 from functools import partial
+from inventory_formatter import format_inventory_for_display
 
 class SoldierView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.grid_columnconfigure(1, weight=1) # Make the right column expandable
+        self.grid_columnconfigure(1, weight=1) # Make the title column expandable
+
+        # Back Button
+        back_button = ctk.CTkButton(self, text="←", command=self.back_to_list, width=30)
+        back_button.grid(row=0, column=0, padx=(20, 0), pady=20, sticky="w")
 
         # Name Banner (Top Left)
         self.name_label = ctk.CTkLabel(self, text="", font=ctk.CTkFont(size=24, weight="bold"))
-        self.name_label.grid(row=0, column=0, columnspan=2, padx=20, pady=10, sticky="w")
+        self.name_label.grid(row=0, column=1, padx=20, pady=20, sticky="w")
 
         # Stats Frame (Left)
         stats_frame = ctk.CTkFrame(self)
@@ -29,11 +34,9 @@ class SoldierView(ctk.CTkFrame):
             self.stats_labels[stat] = value
 
         # Inventory Frame (Right)
-        inventory_frame = ctk.CTkFrame(self)
-        inventory_frame.grid(row=1, column=1, padx=20, pady=10, sticky="nsew")
-
-        inventory_label = ctk.CTkLabel(inventory_frame, text="Inventory (Not Implemented)", font=ctk.CTkFont(size=16))
-        inventory_label.pack(expand=True)
+        self.inventory_frame = ctk.CTkScrollableFrame(self, label_text="Inventory")
+        self.inventory_frame.grid(row=1, column=1, padx=20, pady=10, sticky="nsew")
+        self.inventory_frame.grid_columnconfigure(0, weight=1)
 
         # Service Record Frame (Bottom, spanning both columns)
         service_record_frame = ctk.CTkFrame(self)
@@ -56,10 +59,6 @@ class SoldierView(ctk.CTkFrame):
 
         self.commendations_label = ctk.CTkLabel(service_record_info_frame, text="", justify="left")
         self.commendations_label.pack(anchor="w", padx=10, pady=5)
-
-        # Back Button
-        back_button = ctk.CTkButton(self, text="Back to Soldier List", command=self.back_to_list)
-        back_button.grid(row=3, column=0, columnspan=2, padx=20, pady=20)
 
     def back_to_list(self):
         from views.soldier_list import SoldierListView
@@ -103,6 +102,28 @@ class SoldierView(ctk.CTkFrame):
 
         commendations_text = "Commendations:\n" + "\n".join([f"{c['commendationName']} (Level: {c['decorationLevel']})" for c in sr.commendations]) if sr.commendations else "No commendations."
         self.commendations_label.configure(text=commendations_text)
+
+        # Update inventory
+        # Clear old inventory items
+        for widget in self.inventory_frame.winfo_children():
+            widget.destroy()
+
+        inventory_data = format_inventory_for_display(getattr(soldier, 'equipmentLayout', None))
+
+        if inventory_data:
+            row = 0
+            for slot, items in sorted(inventory_data.items()):
+                slot_label = ctk.CTkLabel(self.inventory_frame, text=slot, font=ctk.CTkFont(size=14, weight="bold"))
+                slot_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
+                row += 1
+                for item_text in items:
+                    item_label = ctk.CTkLabel(self.inventory_frame, text=item_text)
+                    item_label.grid(row=row, column=0, padx=20, pady=2, sticky="w")
+                    row += 1
+        else:
+            no_inventory_label = ctk.CTkLabel(self.inventory_frame, text="No inventory.")
+            no_inventory_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+
 
         # Clear old mission cards
         for widget in self.mission_history_frame.winfo_children():

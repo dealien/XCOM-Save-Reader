@@ -9,21 +9,21 @@ class SoldierListView(ctk.CTkFrame):
         self.controller = controller
         self.sort_column = "Name"  # Default sort column
         self.sort_reverse = False
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)
+
+        # Back button
+        back_button = ctk.CTkButton(self, text="←", command=self.back_to_menu, width=30)
+        back_button.grid(row=0, column=0, padx=(20, 0), pady=20, sticky="w")
 
         # Title
         label = ctk.CTkLabel(self, text="Soldier List", font=ctk.CTkFont(size=20, weight="bold"))
-        label.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
+        label.grid(row=0, column=1, padx=20, pady=20, sticky="w")
 
         # Treeview for soldier data
         self.tree = self.create_treeview()
-        self.tree.grid(row=1, column=0, padx=20, pady=10, sticky="nsew")
+        self.tree.grid(row=1, column=0, columnspan=2, padx=20, pady=10, sticky="nsew")
         self.grid_rowconfigure(1, weight=1)
-
-        # Back Button
-        back_button = ctk.CTkButton(self, text="Back to Main Menu", command=self.back_to_menu)
-        back_button.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
 
     def create_treeview(self):
         # Using ttk.Treeview, need to style it for dark theme
