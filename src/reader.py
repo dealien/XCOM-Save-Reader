@@ -149,7 +149,7 @@ def make_csv(soldiers_):
 def load_data_from_yaml(file_path, json_dump=False):
     data = ''
     print(f'Loading data from "{os.path.basename(file_path)}"...')
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         for y in yaml.load_all(file, Loader=yaml.FullLoader):
             try:
                 type(y['difficulty'])
