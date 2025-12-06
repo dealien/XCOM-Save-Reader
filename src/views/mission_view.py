@@ -73,8 +73,22 @@ class MissionView(ctk.CTkFrame):
         self.participants_textbox.delete("1.0", "end")
 
         if participants:
-            participant_names = [p.name for p in participants]
-            self.participants_textbox.insert("1.0", "\n".join(participant_names))
+            participant_info = []
+            for p in participants:
+                status = "Survived"
+                # Check for injuries (key in injuries dict is soldier id)
+                if mission.injuries and p.id in mission.injuries:
+                    days = mission.injuries[p.id]
+                    status = f"Wounded ({days} days)"
+                
+                # Check for death
+                if p.death_info and p.death_info.get('cause', {}).get('mission') == mission.id:
+                    cause = p.death_info.get('cause', {})
+                    status = f"KIA ({cause.get('weapon', 'Unknown')} [{cause.get('race', 'Unknown')}])"
+                
+                participant_info.append(f"{p.name} - {status}")
+
+            self.participants_textbox.insert("1.0", "\n".join(participant_info))
         else:
             self.participants_textbox.insert("1.0", "No participant data found.")
 

@@ -99,6 +99,19 @@ class SoldierView(ctk.CTkFrame):
             f"Times Shot At: {sr.shot_at_counter_total} | Times Hit: {sr.hit_counter_total}"
         )
         self.service_record_summary_label.configure(text=summary)
+        
+        # Cause of death
+        if soldier.death_info:
+            cause = soldier.death_info.get('cause', {})
+            death_text = (
+                f"\n--- KIA ---\n"
+                f"Date: {soldier.death_info.get('time')}\n"
+                f"Killed by: {cause.get('race', 'Unknown')} ({cause.get('rank', 'Unknown')})\n"
+                f"Weapon: {cause.get('weapon', 'Unknown')} ({cause.get('weaponAmmo', 'Unknown')})"
+            )
+            # Append to summary or show in a new label? Appending to summary for now as it sits in the service record info frame
+            current_text = self.service_record_summary_label.cget("text")
+            self.service_record_summary_label.configure(text=current_text + death_text)
 
         commendations_text = "Commendations:\n" + "\n".join([f"{c['commendationName']} (Level: {c['decorationLevel']})" for c in sr.commendations]) if sr.commendations else "No commendations."
         self.commendations_label.configure(text=commendations_text)
@@ -149,12 +162,22 @@ class SoldierView(ctk.CTkFrame):
                 kills_label = ctk.CTkLabel(card, text=card_kills)
                 kills_label.pack(anchor="w", padx=10, pady=(0, 5))
 
+                # Check for death in this mission
+                death_label = None
+                if soldier.death_info and soldier.death_info.get('cause', {}).get('mission') == mission.id:
+                    cause = soldier.death_info.get('cause', {})
+                    death_detail = f"KIA: {cause.get('weapon', 'Unknown')} ({cause.get('race', 'Unknown')})"
+                    death_label = ctk.CTkLabel(card, text=death_detail, text_color="#ff5555")
+                    death_label.pack(anchor="w", padx=10, pady=(0, 5))
+
                 # Bind click event to the card and its labels
                 click_handler = partial(self.on_mission_card_click, mission.id, soldier.id)
                 card.bind("<Button-1>", click_handler)
                 title_label.bind("<Button-1>", click_handler)
                 result_label.bind("<Button-1>", click_handler)
                 kills_label.bind("<Button-1>", click_handler)
+                if death_label:
+                    death_label.bind("<Button-1>", click_handler)
         else:
             no_missions_label = ctk.CTkLabel(self.mission_history_frame, text="No mission history.")
             no_missions_label.pack(padx=10, pady=10)

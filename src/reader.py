@@ -17,6 +17,18 @@ class Soldier:
         self.base = base_name
         self.service_record = ServiceRecord(data.get('diary', {}), mission_data)
         self.equipmentLayout = data.get('equipmentLayout')
+        
+        # Death info
+        self.death_info = None
+        if 'death' in data:
+            self.death_info = data['death']
+            # Format time if it's a dictionary
+            if 'time' in self.death_info and isinstance(self.death_info['time'], dict):
+                t = self.death_info['time']
+                self.death_info['time'] = f"{t.get('day', 0):02d}/{t.get('month', 0):02d}/{t.get('year', 0)}"
+            # If date is missing from death info (it happens), try to infer or leave generic
+            elif 'time' not in self.death_info:
+                 self.death_info['time'] = "Unknown"
 
 
 class Stats:
@@ -78,6 +90,7 @@ class Mission:
         self.type = mission_data.get('type')
         self.success = mission_data.get('success')
         self.alien_race = mission_data.get('alienRace')
+        self.injuries = mission_data.get('injuryList', {})
 
 
 def read_missions(data_):
