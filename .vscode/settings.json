@@ -9,5 +9,9 @@
             ]
         }
     },
-    "terminal.integrated.defaultProfile.windows": "PowerShell"
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "files.associations": {
+        "*.asav": "yaml",
+        "*.sav": "yaml"
+    }
 }
