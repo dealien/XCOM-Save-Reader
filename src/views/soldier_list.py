@@ -9,6 +9,7 @@ class SoldierListView(ctk.CTkFrame):
         self.controller = controller
         self.sort_column = "Name"  # Default sort column
         self.sort_reverse = False
+        self.show_kia = ctk.BooleanVar(value=False)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
@@ -20,9 +21,13 @@ class SoldierListView(ctk.CTkFrame):
         label = ctk.CTkLabel(self, text="Soldier List", font=ctk.CTkFont(size=20, weight="bold"))
         label.grid(row=0, column=1, padx=20, pady=20, sticky="w")
 
+        # Kia Toggle
+        kia_switch = ctk.CTkSwitch(self, text="Show KIA", variable=self.show_kia, command=self.update_view)
+        kia_switch.grid(row=0, column=2, padx=20, pady=20, sticky="e")
+
         # Treeview for soldier data
         self.tree = self.create_treeview()
-        self.tree.grid(row=1, column=0, columnspan=2, padx=20, pady=10, sticky="nsew")
+        self.tree.grid(row=1, column=0, columnspan=3, padx=20, pady=10, sticky="nsew")
         self.grid_rowconfigure(1, weight=1)
 
     def create_treeview(self):
@@ -84,6 +89,15 @@ class SoldierListView(ctk.CTkFrame):
         soldiers = self.controller.soldiers
         if not soldiers:
             return
+            
+        # Filter logic
+        filtered_soldiers = []
+        for s in soldiers:
+            if not self.show_kia.get() and s.base == "KIA":
+                continue
+            filtered_soldiers.append(s)
+        
+        soldiers = filtered_soldiers
 
         # Define columns
         columns = ['ID', 'Name', 'Rank', 'Missions', 'Kills', 'Base']
@@ -129,6 +143,9 @@ class SoldierListView(ctk.CTkFrame):
         # Repopulate treeview
         for index, (val, child) in enumerate(data):
             self.tree.move(child, '', index)
+            # Re-stripe
+            tag = 'even' if index % 2 == 0 else 'odd'
+            self.tree.item(child, tags=(tag,))
 
     def on_soldier_select(self, event):
         selected_item = self.tree.selection()
