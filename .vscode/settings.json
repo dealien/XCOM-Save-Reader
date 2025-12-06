@@ -13,5 +13,10 @@
     "files.associations": {
         "*.asav": "yaml",
         "*.sav": "yaml"
-    }
+    },
+    "python.testing.pytestArgs": [
+        "test"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
