@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Copy Saves",
+            "type": "shell",
+            "command": "& '${workspaceFolder}/Copy Current Saves.bat'",
+            "problemMatcher": []
+        }
+    ]
+}

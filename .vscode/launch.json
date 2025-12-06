@@ -14,7 +14,8 @@
                 "user/x-com-files/_quick_.asav",
                 "-d",
                 "-j"
-            ]
+            ],
+            "preLaunchTask": "Copy Saves"
         },
         {
             "name": "Python: Pytest",
