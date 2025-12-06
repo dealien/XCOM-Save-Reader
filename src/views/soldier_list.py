@@ -30,25 +30,45 @@ class SoldierListView(ctk.CTkFrame):
         style = ttk.Style()
         style.theme_use("default")
 
+        # Colors
+        bg_color = "#2b2b2b"
+        fg_color = "white"
+        selected_color = "#1f538d"
+        header_bg = "#3a3d42"
+        header_fg = "white"
+        
         # Style for Treeview
+        # Increase row height and use a larger font
         style.configure("Treeview",
-                        background="#2a2d2e",
-                        foreground="white",
-                        rowheight=25,
-                        fieldbackground="#343638",
-                        bordercolor="#343638",
-                        borderwidth=0)
-        style.map('Treeview', background=[('selected', '#22559b')])
+                        background=bg_color,
+                        foreground=fg_color,
+                        rowheight=35,
+                        fieldbackground=bg_color,
+                        bordercolor=bg_color,
+                        borderwidth=0,
+                        font=("Roboto", 11))
+        
+        style.map('Treeview', 
+                  background=[('selected', selected_color)],
+                  foreground=[('selected', 'white')])
 
         # Style for Treeview Heading
         style.configure("Treeview.Heading",
-                        background="#565b5e",
-                        foreground="white",
-                        relief="flat")
+                        background=header_bg,
+                        foreground=header_fg,
+                        relief="flat",
+                        font=("Roboto", 11, "bold"),
+                        padding=(10, 5))
+                        
         style.map("Treeview.Heading",
-                  background=[('active', '#3484F0')])
+                  background=[('active', '#4a4e54')])
 
         tree = ttk.Treeview(self, show='headings')
+        
+        # Configure alternating row colors
+        tree.tag_configure('odd', background='#2b2b2b')
+        tree.tag_configure('even', background='#323538')
+        
         return tree
 
     def back_to_menu(self):
@@ -79,10 +99,11 @@ class SoldierListView(ctk.CTkFrame):
             else:
                 self.tree.column(col, anchor="w", stretch=False, width=80, minwidth=60)
 
-        # Insert data
-        for soldier in soldiers:
+        # Insert data with striped rows
+        for i, soldier in enumerate(soldiers):
             values = [soldier.id, soldier.name, soldier.rank, soldier.missions, soldier.kills, soldier.base]
-            self.tree.insert("", "end", values=values, iid=soldier.id)
+            tag = 'even' if i % 2 == 0 else 'odd'
+            self.tree.insert("", "end", values=values, iid=soldier.id, tags=(tag,))
 
         # Add event handler for row selection
         self.tree.bind('<<TreeviewSelect>>', self.on_soldier_select)
