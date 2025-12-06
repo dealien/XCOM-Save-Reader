@@ -25,7 +25,7 @@ class Soldier:
             # Format time if it's a dictionary
             if 'time' in self.death_info and isinstance(self.death_info['time'], dict):
                 t = self.death_info['time']
-                self.death_info['time'] = f"{t.get('day', 0):02d}/{t.get('month', 0):02d}/{t.get('year', 0)}"
+                self.death_info['time'] = f"{t.get('day', 0):02d}/{t.get('month', 0):02d}/{t.get('year', 0)} {t.get('hour', 0):02d}:{t.get('minute', 0):02d}"
             # If date is missing from death info (it happens), try to infer or leave generic
             elif 'time' not in self.death_info:
                  self.death_info['time'] = "Unknown"
