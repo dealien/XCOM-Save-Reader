@@ -48,7 +48,7 @@ class SoldierListView(ctk.CTkFrame):
         style.map("Treeview.Heading",
                   background=[('active', '#3484F0')])
 
-        tree = ttk.Treeview(self)
+        tree = ttk.Treeview(self, show='headings')
         return tree
 
     def back_to_menu(self):
