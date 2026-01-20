@@ -60,7 +60,7 @@ class TranslationManager:
             # metadata.yml for that mod has id: x-com-files.
             # So the save string STARTS with the ID.
 
-            mod_id = mod_entry.split(" ver:")[0].strip()
+            mod_id = mod_entry.split(" ver:", 1)[0].strip()
 
             if mod_id in self.mod_map:
                 try:
@@ -69,8 +69,8 @@ class TranslationManager:
                         metadata = yaml.safe_load(f)
                         if metadata and metadata.get("isMaster"):
                             return metadata.get("master", "xcom1")
-                except Exception:
-                    pass
+                except Exception as e:
+                    print(f"Error determining master for {mod_id}: {e}")
         return "xcom1"
 
     def load_all(self, save_mod_list):
@@ -97,7 +97,7 @@ class TranslationManager:
         # 3. Load Mods
         print("Loading mod translations...")
         for mod_entry in save_mod_list:
-            mod_id = mod_entry.split(" ver:")[0].strip()
+            mod_id = mod_entry.split(" ver:", 1)[0].strip()
             if mod_id in self.mod_map:
                 print(f"  - Loading translations for: {mod_id}")
                 mod_lang = os.path.join(
