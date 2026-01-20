@@ -72,14 +72,16 @@ class MissionView(ctk.CTkFrame):
             self.back_to_soldier()
             return
 
-        self.mission_name_label.configure(text=mission.name)
+        tr = self.controller.translation_manager.get
+
+        self.mission_name_label.configure(text=tr(mission.name))
         self.mission_date_label.configure(text=f"Date: {mission.time}")
-        self.mission_type_label.configure(text=f"Type: {mission.type}")
-        self.mission_region_label.configure(text=f"Region: {mission.region}")
+        self.mission_type_label.configure(text=f"Type: {tr(mission.type)}")
+        self.mission_region_label.configure(text=f"Region: {tr(mission.region)}")
         self.mission_result_label.configure(
             text=f"Result: {'Success' if mission.success else 'Failure'}"
         )
-        self.alien_race_label.configure(text=f"Enemy: {mission.alien_race}")
+        self.alien_race_label.configure(text=f"Enemy: {tr(mission.alien_race)}")
 
         self.participants_textbox.configure(state="normal")
         self.participants_textbox.delete("1.0", "end")
@@ -100,8 +102,8 @@ class MissionView(ctk.CTkFrame):
                 ):
                     cause = p.death_info.get("cause", {})
                     status = (
-                        f"KIA ({cause.get('weapon', 'Unknown')} "
-                        f"[{cause.get('race', 'Unknown')}])"
+                        f"KIA ({tr(cause.get('weapon', 'Unknown'))} "
+                        f"[{tr(cause.get('race', 'Unknown'))}])"
                     )
 
                 participant_info.append(f"{p.name} - {status}")

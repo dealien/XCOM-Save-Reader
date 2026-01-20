@@ -207,7 +207,7 @@ class SoldierView(ctk.CTkFrame):
                     [k for k in sr.kill_list if k["mission"] == mission.id]
                 )
 
-                card_title = f"{mission.name} - {mission.time}"
+                card_title = f"{tr(mission.name)} - {mission.time}"
                 card_result = f"Result: {'Success' if mission.success else 'Failure'}"
                 card_kills = f"Kills: {kill_count}"
 
@@ -229,10 +229,7 @@ class SoldierView(ctk.CTkFrame):
                     and soldier.death_info.get("cause", {}).get("mission") == mission.id
                 ):
                     cause = soldier.death_info.get("cause", {})
-                    death_detail = (
-                        f"KIA: {cause.get('weapon', 'Unknown')} "
-                        f"({cause.get('race', 'Unknown')})"
-                    )
+                    death_detail = f"KIA: {weapon} ({race})"
                     death_label = ctk.CTkLabel(
                         card, text=death_detail, text_color="#ff5555"
                     )
