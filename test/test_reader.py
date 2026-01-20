@@ -89,3 +89,26 @@ class TestReader:
         assert "Valentin Makarov" in participant_names
         assert "Ethan Ferguson" in participant_names
         assert "Haruitike" in participant_names
+
+    def test_load_data_sections(self):
+        """Test loading specific sections from YAML"""
+        # Test Save.sav has both metadata (first doc) and game data (second doc)
+
+        # Test loading metadata
+        meta = load_data_from_yaml(TEST_SAVE_FILE, section="meta")
+        assert isinstance(meta, dict)
+        assert "name" in meta
+        assert "mods" in meta
+
+        # Test loading game data
+        game = load_data_from_yaml(TEST_SAVE_FILE, section="game")
+        assert isinstance(game, dict)
+        assert "difficulty" in game
+        assert "bases" in game
+
+        # Test invalid section
+        try:
+            load_data_from_yaml(TEST_SAVE_FILE, section="invalid")
+            assert False, "Should have raised ValueError"
+        except ValueError:
+            pass

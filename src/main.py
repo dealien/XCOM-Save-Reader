@@ -1,3 +1,4 @@
+import os
 import customtkinter as ctk
 
 
@@ -7,6 +8,7 @@ from views.soldier_list import SoldierListView
 from views.soldier_view import SoldierView
 from views.mission_view import MissionView
 from views.base_view import BaseView
+from translation_manager import TranslationManager
 
 
 class App(ctk.CTk):
@@ -19,6 +21,13 @@ class App(ctk.CTk):
         self.soldiers = []
         self.missions = {}
         self.mission_participants = {}
+
+        # Initialize TranslationManager using the reference directory
+        # Assuming reference is in the project root
+        project_root = os.path.dirname(os.path.abspath(__file__))
+        reference_path = os.path.join(os.path.dirname(project_root), "reference")
+        self.translation_manager = TranslationManager(reference_path)
+        self.translation_manager.index_mods()
 
         # Set appearance mode
         ctk.set_appearance_mode("dark")
@@ -33,6 +42,10 @@ class App(ctk.CTk):
 
         # Initialize frames
         for F in (MainMenu, SoldierListView, SoldierView, MissionView, BaseView):
+            # Pass translation_manager to all views
+            # (Requires views to accept **kwargs or specific arg)
+            # Modifying views to accept app as main controller,
+            # so accessing app.translation_manager is cleaner
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -50,7 +63,18 @@ class App(ctk.CTk):
 
         if file_path:
             print(f"Loading save file: {file_path}")
-            self.save_data = reader.load_data_from_yaml(file_path)
+
+            # Load metadata to get mods list
+            try:
+                metadata = reader.load_data_from_yaml(file_path, section="meta")
+                mod_list = metadata.get("mods", [])
+                print(f"Index found {len(mod_list)} mods. Loading translations...")
+                self.translation_manager.load_all(mod_list)
+            except Exception as e:
+                print(f"Error loading metadata/translations: {e}")
+
+            # Load game data
+            self.save_data = reader.load_data_from_yaml(file_path, section="game")
             self.missions = reader.read_missions(self.save_data)
             self.soldiers, self.mission_participants = reader.read_soldiers(
                 self.save_data, self.missions

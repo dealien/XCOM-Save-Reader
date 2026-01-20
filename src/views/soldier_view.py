@@ -100,7 +100,9 @@ class SoldierView(ctk.CTkFrame):
             self.back_to_list()
             return
 
-        self.name_label.configure(text=f"{soldier.name} ({soldier.rank})")
+        tr = self.controller.translation_manager.get
+
+        self.name_label.configure(text=f"{soldier.name} ({tr(soldier.rank)})")
 
         # Current Stats
         current_stats = soldier.currentstats
@@ -132,13 +134,18 @@ class SoldierView(ctk.CTkFrame):
         # Cause of death
         if soldier.death_info:
             cause = soldier.death_info.get("cause", {})
+            # Translate death fields
+            race = tr(cause.get("race", "Unknown"))
+            rank = tr(cause.get("rank", "Unknown"))
+            weapon = tr(cause.get("weapon", "Unknown"))
+            ammo_key = cause.get("weaponAmmo")
+            ammo = tr(ammo_key) if ammo_key else "Unknown"
+
             death_text = (
                 f"\n--- KIA ---\n"
                 f"Date: {soldier.death_info.get('time')}\n"
-                f"Killed by: {cause.get('race', 'Unknown')} "
-                f"({cause.get('rank', 'Unknown')})\n"
-                f"Weapon: {cause.get('weapon', 'Unknown')} "
-                f"({cause.get('weaponAmmo', 'Unknown')})"
+                f"Killed by: {race} ({rank})\n"
+                f"Weapon: {weapon} ({ammo})"
             )
             # Append to summary or show in a new label?
             # Appending to summary for now as it sits in the service record info frame
@@ -149,7 +156,7 @@ class SoldierView(ctk.CTkFrame):
             "Commendations:\n"
             + "\n".join(
                 [
-                    f"{c['commendationName']} (Level: {c['decorationLevel']})"
+                    f"{tr(c['commendationName'])} (Level: {c['decorationLevel']})"
                     for c in sr.commendations
                 ]
             )
@@ -164,7 +171,7 @@ class SoldierView(ctk.CTkFrame):
             widget.destroy()
 
         inventory_data = format_inventory_for_display(
-            getattr(soldier, "equipmentLayout", None)
+            getattr(soldier, "equipmentLayout", None), translator=tr
         )
 
         if inventory_data:

@@ -129,7 +129,7 @@ class SoldierListView(ctk.CTkFrame):
             values = [
                 soldier.id,
                 soldier.name,
-                soldier.rank,
+                self.controller.translation_manager.get(soldier.rank),
                 soldier.missions,
                 soldier.kills,
                 soldier.base,

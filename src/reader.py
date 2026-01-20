@@ -215,20 +215,43 @@ def make_csv(soldiers_):
     return csvlist
 
 
-def load_data_from_yaml(file_path, json_dump=False):
-    data = ""
-    print(f'Loading data from "{os.path.basename(file_path)}"...')
+def load_data_from_yaml(file_path, json_dump=False, section="game"):
+    """
+    Load data from a YAML file.
+    :param file_path: Path to the YAML file.
+    :param json_dump: Whether to dump the loaded data to a JSON file (debug).
+    :param section: "game" to return the document with 'difficulty',
+                    "meta" to return the document with 'name'.
+    :return: The requested document dictionary.
+    """
+    print(f'Loading data from "{os.path.basename(file_path)}" (section: {section})...')
+
+    found_data = None
+
     with open(file_path, "r", encoding="utf-8") as file:
-        for y in yaml.load_all(file, Loader=yaml.FullLoader):
-            try:
-                type(y["difficulty"])
-                data = y
-            except KeyError:
-                pass
+        # Load all documents; yaml.load_all returns a generator
+        for doc in yaml.load_all(file, Loader=yaml.FullLoader):
+            if not isinstance(doc, dict):
+                continue
+
+            if section == "game":
+                if "difficulty" in doc:
+                    found_data = doc
+                    break
+            elif section == "meta":
+                if "name" in doc:
+                    found_data = doc
+                    break
+
+    if found_data is None:
+        # Fallback/Error handling: if we couldn't find the specific section,
+        # checking if the file only had one document might be relevant,
+        # but strictly adhering to the plan:
+        raise ValueError(f"Could not find section '{section}' in {file_path}")
 
     if json_dump:
         print('Writing converted json data to "data.json"...')
         with open("data.json", "w") as outfile:
-            json.dump(data, outfile)
+            json.dump(found_data, outfile)
 
-    return data
+    return found_data
