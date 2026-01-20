@@ -25,6 +25,7 @@ class App(ctk.CTk):
         # Initialize TranslationManager using the reference directory
         # Assuming reference is in the project root
         project_root = os.path.dirname(os.path.abspath(__file__))
+        # Reference path is hardcoded for now, but will be changed later
         reference_path = os.path.join(os.path.dirname(project_root), "reference")
         self.translation_manager = TranslationManager(reference_path)
         self.translation_manager.index_mods()
