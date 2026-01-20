@@ -26,7 +26,7 @@ def format_inventory_for_display(equipment_layout):
         elif "ammoItem" in item:
             item_text += f" (Loaded with: {item['ammoItem']})"
 
-        if "fuseTimer" in item and item['fuseTimer'] is not None:
+        if "fuseTimer" in item and item["fuseTimer"] is not None:
             item_text += f" | Active[{item['fuseTimer']}]"
 
         inventory_by_slot[slot].append(item_text)

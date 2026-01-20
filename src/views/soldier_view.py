@@ -2,18 +2,21 @@ import customtkinter as ctk
 from functools import partial
 from inventory_formatter import format_inventory_for_display
 
+
 class SoldierView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.grid_columnconfigure(1, weight=1) # Make the title column expandable
+        self.grid_columnconfigure(1, weight=1)  # Make the title column expandable
 
         # Back Button
         back_button = ctk.CTkButton(self, text="←", command=self.back_to_list, width=30)
         back_button.grid(row=0, column=0, padx=(20, 0), pady=20, sticky="w")
 
         # Name Banner (Top Left)
-        self.name_label = ctk.CTkLabel(self, text="", font=ctk.CTkFont(size=24, weight="bold"))
+        self.name_label = ctk.CTkLabel(
+            self, text="", font=ctk.CTkFont(size=24, weight="bold")
+        )
         self.name_label.grid(row=0, column=1, padx=20, pady=20, sticky="w")
 
         # Stats Frame (Left)
@@ -22,8 +25,16 @@ class SoldierView(ctk.CTkFrame):
         self.stats_labels = {}
 
         stat_names = [
-            "TUs", "Stamina", "Health", "Bravery", "Reactions", "Firing",
-            "Throwing", "Strength", "Psi Strength", "Psi Skill"
+            "TUs",
+            "Stamina",
+            "Health",
+            "Bravery",
+            "Reactions",
+            "Firing",
+            "Throwing",
+            "Strength",
+            "Psi Strength",
+            "Psi Skill",
         ]
 
         for i, stat in enumerate(stat_names):
@@ -40,28 +51,43 @@ class SoldierView(ctk.CTkFrame):
 
         # Service Record Frame (Bottom, spanning both columns)
         service_record_frame = ctk.CTkFrame(self)
-        service_record_frame.grid(row=2, column=0, columnspan=2, padx=20, pady=10, sticky="nsew")
+        service_record_frame.grid(
+            row=2, column=0, columnspan=2, padx=20, pady=10, sticky="nsew"
+        )
         service_record_frame.grid_columnconfigure((0, 1), weight=1)
 
-        service_record_label = ctk.CTkLabel(service_record_frame, text="Service Record", font=ctk.CTkFont(size=16, weight="bold"))
-        service_record_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+        service_record_label = ctk.CTkLabel(
+            service_record_frame,
+            text="Service Record",
+            font=ctk.CTkFont(size=16, weight="bold"),
+        )
+        service_record_label.grid(
+            row=0, column=0, columnspan=2, padx=10, pady=5, sticky="w"
+        )
 
         # Service Record Info (Left Column)
         service_record_info_frame = ctk.CTkFrame(service_record_frame)
         service_record_info_frame.grid(row=1, column=0, padx=10, pady=5, sticky="nsew")
 
         # Mission History (Right Column)
-        self.mission_history_frame = ctk.CTkScrollableFrame(service_record_frame, height=200, label_text="Mission History")
+        self.mission_history_frame = ctk.CTkScrollableFrame(
+            service_record_frame, height=200, label_text="Mission History"
+        )
         self.mission_history_frame.grid(row=1, column=1, padx=10, pady=5, sticky="nsew")
 
-        self.service_record_summary_label = ctk.CTkLabel(service_record_info_frame, text="", justify="left")
+        self.service_record_summary_label = ctk.CTkLabel(
+            service_record_info_frame, text="", justify="left"
+        )
         self.service_record_summary_label.pack(anchor="w", padx=10, pady=5)
 
-        self.commendations_label = ctk.CTkLabel(service_record_info_frame, text="", justify="left")
+        self.commendations_label = ctk.CTkLabel(
+            service_record_info_frame, text="", justify="left"
+        )
         self.commendations_label.pack(anchor="w", padx=10, pady=5)
 
     def back_to_list(self):
         from views.soldier_list import SoldierListView
+
         self.controller.show_frame(SoldierListView)
 
     def on_mission_card_click(self, mission_id, soldier_id, event):
@@ -93,27 +119,43 @@ class SoldierView(ctk.CTkFrame):
         sr = soldier.service_record
         summary = (
             f"Months of Service: {sr.months_service}\n"
-            f"Days Wounded: {sr.days_wounded_total} (Wounded {sr.times_wounded_total} times)\n"
+            f"Days Wounded: {sr.days_wounded_total} "
+            f"(Wounded {sr.times_wounded_total} times)\n"
             f"Times Unconscious: {sr.unconscious_total}\n"
-            f"Shots Fired: {sr.shots_fired_counter_total} | Shots Landed: {sr.shots_landed_counter_total}\n"
-            f"Times Shot At: {sr.shot_at_counter_total} | Times Hit: {sr.hit_counter_total}"
+            f"Shots Fired: {sr.shots_fired_counter_total} | "
+            f"Shots Landed: {sr.shots_landed_counter_total}\n"
+            f"Times Shot At: {sr.shot_at_counter_total} | "
+            f"Times Hit: {sr.hit_counter_total}"
         )
         self.service_record_summary_label.configure(text=summary)
-        
+
         # Cause of death
         if soldier.death_info:
-            cause = soldier.death_info.get('cause', {})
+            cause = soldier.death_info.get("cause", {})
             death_text = (
                 f"\n--- KIA ---\n"
                 f"Date: {soldier.death_info.get('time')}\n"
-                f"Killed by: {cause.get('race', 'Unknown')} ({cause.get('rank', 'Unknown')})\n"
-                f"Weapon: {cause.get('weapon', 'Unknown')} ({cause.get('weaponAmmo', 'Unknown')})"
+                f"Killed by: {cause.get('race', 'Unknown')} "
+                f"({cause.get('rank', 'Unknown')})\n"
+                f"Weapon: {cause.get('weapon', 'Unknown')} "
+                f"({cause.get('weaponAmmo', 'Unknown')})"
             )
-            # Append to summary or show in a new label? Appending to summary for now as it sits in the service record info frame
+            # Append to summary or show in a new label?
+            # Appending to summary for now as it sits in the service record info frame
             current_text = self.service_record_summary_label.cget("text")
             self.service_record_summary_label.configure(text=current_text + death_text)
 
-        commendations_text = "Commendations:\n" + "\n".join([f"{c['commendationName']} (Level: {c['decorationLevel']})" for c in sr.commendations]) if sr.commendations else "No commendations."
+        commendations_text = (
+            "Commendations:\n"
+            + "\n".join(
+                [
+                    f"{c['commendationName']} (Level: {c['decorationLevel']})"
+                    for c in sr.commendations
+                ]
+            )
+            if sr.commendations
+            else "No commendations."
+        )
         self.commendations_label.configure(text=commendations_text)
 
         # Update inventory
@@ -121,12 +163,18 @@ class SoldierView(ctk.CTkFrame):
         for widget in self.inventory_frame.winfo_children():
             widget.destroy()
 
-        inventory_data = format_inventory_for_display(getattr(soldier, 'equipmentLayout', None))
+        inventory_data = format_inventory_for_display(
+            getattr(soldier, "equipmentLayout", None)
+        )
 
         if inventory_data:
             row = 0
             for slot, items in sorted(inventory_data.items()):
-                slot_label = ctk.CTkLabel(self.inventory_frame, text=slot, font=ctk.CTkFont(size=14, weight="bold"))
+                slot_label = ctk.CTkLabel(
+                    self.inventory_frame,
+                    text=slot,
+                    font=ctk.CTkFont(size=14, weight="bold"),
+                )
                 slot_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
                 row += 1
                 for item_text in items:
@@ -134,9 +182,10 @@ class SoldierView(ctk.CTkFrame):
                     item_label.grid(row=row, column=0, padx=20, pady=2, sticky="w")
                     row += 1
         else:
-            no_inventory_label = ctk.CTkLabel(self.inventory_frame, text="No inventory.")
+            no_inventory_label = ctk.CTkLabel(
+                self.inventory_frame, text="No inventory."
+            )
             no_inventory_label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
-
 
         # Clear old mission cards
         for widget in self.mission_history_frame.winfo_children():
@@ -147,13 +196,17 @@ class SoldierView(ctk.CTkFrame):
                 card = ctk.CTkFrame(self.mission_history_frame, border_width=1)
                 card.pack(fill="x", expand=True, padx=5, pady=5)
 
-                kill_count = len([k for k in sr.kill_list if k['mission'] == mission.id])
+                kill_count = len(
+                    [k for k in sr.kill_list if k["mission"] == mission.id]
+                )
 
                 card_title = f"{mission.name} - {mission.time}"
                 card_result = f"Result: {'Success' if mission.success else 'Failure'}"
                 card_kills = f"Kills: {kill_count}"
 
-                title_label = ctk.CTkLabel(card, text=card_title, font=ctk.CTkFont(weight="bold"))
+                title_label = ctk.CTkLabel(
+                    card, text=card_title, font=ctk.CTkFont(weight="bold")
+                )
                 title_label.pack(anchor="w", padx=10, pady=(5, 0))
 
                 result_label = ctk.CTkLabel(card, text=card_result)
@@ -164,14 +217,24 @@ class SoldierView(ctk.CTkFrame):
 
                 # Check for death in this mission
                 death_label = None
-                if soldier.death_info and soldier.death_info.get('cause', {}).get('mission') == mission.id:
-                    cause = soldier.death_info.get('cause', {})
-                    death_detail = f"KIA: {cause.get('weapon', 'Unknown')} ({cause.get('race', 'Unknown')})"
-                    death_label = ctk.CTkLabel(card, text=death_detail, text_color="#ff5555")
+                if (
+                    soldier.death_info
+                    and soldier.death_info.get("cause", {}).get("mission") == mission.id
+                ):
+                    cause = soldier.death_info.get("cause", {})
+                    death_detail = (
+                        f"KIA: {cause.get('weapon', 'Unknown')} "
+                        f"({cause.get('race', 'Unknown')})"
+                    )
+                    death_label = ctk.CTkLabel(
+                        card, text=death_detail, text_color="#ff5555"
+                    )
                     death_label.pack(anchor="w", padx=10, pady=(0, 5))
 
                 # Bind click event to the card and its labels
-                click_handler = partial(self.on_mission_card_click, mission.id, soldier.id)
+                click_handler = partial(
+                    self.on_mission_card_click, mission.id, soldier.id
+                )
                 card.bind("<Button-1>", click_handler)
                 title_label.bind("<Button-1>", click_handler)
                 result_label.bind("<Button-1>", click_handler)
@@ -179,5 +242,7 @@ class SoldierView(ctk.CTkFrame):
                 if death_label:
                     death_label.bind("<Button-1>", click_handler)
         else:
-            no_missions_label = ctk.CTkLabel(self.mission_history_frame, text="No mission history.")
+            no_missions_label = ctk.CTkLabel(
+                self.mission_history_frame, text="No mission history."
+            )
             no_missions_label.pack(padx=10, pady=10)

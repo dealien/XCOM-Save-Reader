@@ -4,8 +4,9 @@ A tool to read OpenXCOM save files and display statistics about your soldiers an
 
 ## Setup
 
-1.  Ensure you have Python 3.10+ installed.
-2.  Install the required dependencies:
+1. Ensure you have Python 3.10+ installed.
+2. Install the required dependencies:
+
     ```bash
     pip install -r requirements.txt
     ```
