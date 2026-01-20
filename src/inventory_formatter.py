@@ -17,6 +17,9 @@ def format_inventory_for_display(equipment_layout, translator=None):
     inventory_by_slot = {}
     for item in equipment_layout:
         slot = item.get("slot", "Unslotted")
+        if translator:
+            slot = translator(slot)
+
         if slot not in inventory_by_slot:
             inventory_by_slot[slot] = []
 
