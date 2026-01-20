@@ -25,9 +25,11 @@ class Soldier:
             if "time" in self.death_info and isinstance(self.death_info["time"], dict):
                 t = self.death_info["time"]
                 self.death_info["time"] = (
-                    f"{t.get('day', 0):02d}/{t.get('month', 0):02d}/{t.get('year', 0)} {t.get('hour', 0):02d}:{t.get('minute', 0):02d}"
+                    f"{t.get('day', 0):02d}/{t.get('month', 0):02d}/{t.get('year', 0)} "
+                    f"{t.get('hour', 0):02d}:{t.get('minute', 0):02d}"
                 )
-            # If date is missing from death info (it happens), try to infer or leave generic
+            # If date is missing from death info (it happens),
+            # try to infer or leave generic
             elif "time" not in self.death_info:
                 self.death_info["time"] = "Unknown"
 
@@ -100,7 +102,10 @@ class Mission:
         self.id = mission_data.get("id")
         self.name = mission_data.get("markerName")
         time_data = mission_data.get("time", {})
-        self.time = f"{time_data.get('day', 0):02d}/{time_data.get('month', 0):02d}/{time_data.get('year', 0)}"
+        self.time = (
+            f"{time_data.get('day', 0):02d}/{time_data.get('month', 0):02d}/"
+            f"{time_data.get('year', 0)}"
+        )
         self.region = mission_data.get("region")
         self.type = mission_data.get("type")
         self.success = mission_data.get("success")

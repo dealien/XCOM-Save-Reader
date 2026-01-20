@@ -119,10 +119,13 @@ class SoldierView(ctk.CTkFrame):
         sr = soldier.service_record
         summary = (
             f"Months of Service: {sr.months_service}\n"
-            f"Days Wounded: {sr.days_wounded_total} (Wounded {sr.times_wounded_total} times)\n"
+            f"Days Wounded: {sr.days_wounded_total} "
+            f"(Wounded {sr.times_wounded_total} times)\n"
             f"Times Unconscious: {sr.unconscious_total}\n"
-            f"Shots Fired: {sr.shots_fired_counter_total} | Shots Landed: {sr.shots_landed_counter_total}\n"
-            f"Times Shot At: {sr.shot_at_counter_total} | Times Hit: {sr.hit_counter_total}"
+            f"Shots Fired: {sr.shots_fired_counter_total} | "
+            f"Shots Landed: {sr.shots_landed_counter_total}\n"
+            f"Times Shot At: {sr.shot_at_counter_total} | "
+            f"Times Hit: {sr.hit_counter_total}"
         )
         self.service_record_summary_label.configure(text=summary)
 
@@ -132,10 +135,13 @@ class SoldierView(ctk.CTkFrame):
             death_text = (
                 f"\n--- KIA ---\n"
                 f"Date: {soldier.death_info.get('time')}\n"
-                f"Killed by: {cause.get('race', 'Unknown')} ({cause.get('rank', 'Unknown')})\n"
-                f"Weapon: {cause.get('weapon', 'Unknown')} ({cause.get('weaponAmmo', 'Unknown')})"
+                f"Killed by: {cause.get('race', 'Unknown')} "
+                f"({cause.get('rank', 'Unknown')})\n"
+                f"Weapon: {cause.get('weapon', 'Unknown')} "
+                f"({cause.get('weaponAmmo', 'Unknown')})"
             )
-            # Append to summary or show in a new label? Appending to summary for now as it sits in the service record info frame
+            # Append to summary or show in a new label?
+            # Appending to summary for now as it sits in the service record info frame
             current_text = self.service_record_summary_label.cget("text")
             self.service_record_summary_label.configure(text=current_text + death_text)
 
@@ -216,7 +222,10 @@ class SoldierView(ctk.CTkFrame):
                     and soldier.death_info.get("cause", {}).get("mission") == mission.id
                 ):
                     cause = soldier.death_info.get("cause", {})
-                    death_detail = f"KIA: {cause.get('weapon', 'Unknown')} ({cause.get('race', 'Unknown')})"
+                    death_detail = (
+                        f"KIA: {cause.get('weapon', 'Unknown')} "
+                        f"({cause.get('race', 'Unknown')})"
+                    )
                     death_label = ctk.CTkLabel(
                         card, text=death_detail, text_color="#ff5555"
                     )

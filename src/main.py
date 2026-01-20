@@ -61,7 +61,8 @@ class App(ctk.CTk):
             main_menu_frame.soldiers_button.configure(state="normal")
             main_menu_frame.bases_button.configure(state="normal")
             print(
-                f"Loaded {len(self.soldiers)} soldiers and {len(self.missions)} missions."
+                f"Loaded {len(self.soldiers)} soldiers and "
+                f"{len(self.missions)} missions."
             )
 
     def get_soldier_by_id(self, soldier_id):

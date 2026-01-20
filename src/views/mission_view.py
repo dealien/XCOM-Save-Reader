@@ -99,7 +99,10 @@ class MissionView(ctk.CTkFrame):
                     and p.death_info.get("cause", {}).get("mission") == mission.id
                 ):
                     cause = p.death_info.get("cause", {})
-                    status = f"KIA ({cause.get('weapon', 'Unknown')} [{cause.get('race', 'Unknown')}])"
+                    status = (
+                        f"KIA ({cause.get('weapon', 'Unknown')} "
+                        f"[{cause.get('race', 'Unknown')}])"
+                    )
 
                 participant_info.append(f"{p.name} - {status}")
 
