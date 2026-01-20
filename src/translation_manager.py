@@ -25,6 +25,13 @@ class TranslationManager:
 
             for item in os.listdir(search_dir):
                 mod_path = os.path.join(search_dir, item)
+
+                # Prevent path traversal attacks
+                if not os.path.abspath(mod_path).startswith(
+                    os.path.abspath(search_dir)
+                ):
+                    continue
+
                 if not os.path.isdir(mod_path):
                     continue
 
