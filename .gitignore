@@ -77,3 +77,6 @@ user/piratez/*
 /data.json
 /soldiers.csv
 /~$*.xlsx
+
+# Project files
+reference/
