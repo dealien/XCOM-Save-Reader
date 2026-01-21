@@ -48,7 +48,7 @@ class TranslationManager:
                             if metadata and "id" in metadata:
                                 self.mod_map[metadata["id"]] = mod_path
                     except Exception as e:
-                        print(f"Error reading metadata for {item}: {e}")
+                        logger.error(f"Error reading metadata for {item}: {e}")
 
     def determine_master(self, save_mod_list):
         """
@@ -75,7 +75,7 @@ class TranslationManager:
                         if metadata and metadata.get("isMaster"):
                             return metadata.get("master", "xcom1")
                 except Exception as e:
-                    print(f"Error determining master for {mod_id}: {e}")
+                    logger.error(f"Error determining master for {mod_id}: {e}")
         return "xcom1"
 
     def load_all(self, save_mod_list):
@@ -123,7 +123,7 @@ class TranslationManager:
                     if isinstance(payload, dict):
                         self.translations.update(payload)
         except Exception as e:
-            print(f"Error loading translation file {path}: {e}")
+            logger.error(f"Error loading translation file {path}: {e}")
 
     def get(self, key):
         """

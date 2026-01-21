@@ -103,7 +103,7 @@ class SoldierView(ctk.CTkFrame):
     def update_view(self, soldier_id):
         soldier = self.controller.get_soldier_by_id(soldier_id)
         if not soldier:
-            print(f"Error: Soldier with ID {soldier_id} not found.")
+            logger.error(f"Error: Soldier with ID {soldier_id} not found.")
             self.back_to_list()
             return
 

@@ -73,7 +73,7 @@ class MissionView(ctk.CTkFrame):
         participants = self.controller.get_mission_participants(mission_id)
 
         if not mission:
-            print(f"Error: Mission with ID {mission_id} not found.")
+            logger.error(f"Error: Mission with ID {mission_id} not found.")
             self.back_to_soldier()
             return
 
