@@ -77,25 +77,52 @@ class App(ctk.CTk):
                 logger.info(
                     f"Index found {len(mod_list)} mods. Loading translations..."
                 )
+            except Exception as e:
+                logger.error(f"Error loading metadata: {e}")
+                from tkinter import messagebox
+
+                messagebox.showwarning(
+                    "Metadata Error",
+                    f"Could not load save metadata/mods list.\nError: {e}\n\n"
+                    "Translations may be incomplete.",
+                )
+
+            # Load translations (safe to call with empty list)
+            try:
                 self.translation_manager.load_all(mod_list)
             except Exception as e:
-                logger.error(f"Error loading metadata/translations: {e}")
+                logger.error(f"Error loading translations: {e}")
+                from tkinter import messagebox
+
+                messagebox.showwarning(
+                    "Translation Error",
+                    f"Could not load translations.\nError: {e}",
+                )
 
             # Load game data
-            self.save_data = reader.load_data_from_yaml(file_path, section="game")
-            self.missions = reader.read_missions(self.save_data)
-            self.soldiers, self.mission_participants = reader.read_soldiers(
-                self.save_data, self.missions
-            )
+            try:
+                self.save_data = reader.load_data_from_yaml(file_path, section="game")
+                self.missions = reader.read_missions(self.save_data)
+                self.soldiers, self.mission_participants = reader.read_soldiers(
+                    self.save_data, self.missions
+                )
 
-            # Enable buttons on main menu
-            main_menu_frame = self.frames[MainMenu]
-            main_menu_frame.soldiers_button.configure(state="normal")
-            main_menu_frame.bases_button.configure(state="normal")
-            logger.info(
-                f"Loaded {len(self.soldiers)} soldiers and "
-                f"{len(self.missions)} missions."
-            )
+                # Enable buttons on main menu
+                main_menu_frame = self.frames[MainMenu]
+                main_menu_frame.soldiers_button.configure(state="normal")
+                main_menu_frame.bases_button.configure(state="normal")
+                logger.info(
+                    f"Loaded {len(self.soldiers)} soldiers and "
+                    f"{len(self.missions)} missions."
+                )
+            except Exception as e:
+                logger.error(f"Error loading game data: {e}")
+                from tkinter import messagebox
+
+                messagebox.showerror(
+                    "Load Error",
+                    f"Could not load save game data.\nError: {e}",
+                )
 
     def get_soldier_by_id(self, soldier_id):
         try:
