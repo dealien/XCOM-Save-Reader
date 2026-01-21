@@ -1,0 +1,30 @@
+[project]
+requires-python = ">=3.10"
+
+[tool.ruff]
+# The version of Python you are targeting
+target-version = "py310"
+
+# How many characters per line (88 is the standard for Ruff/Black)
+line-length = 88
+
+[tool.ruff.lint]
+# Equivalent to your --select flag
+select = [
+    "E",   # pycodestyle errors
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+
+# Recommended to ignore these when using the Ruff formatter
+# to avoid minor style conflicts
+ignore = [
+    "COM812", # Missing trailing comma
+    "ISC001", # Implicit string concatenation
+]
+
+[tool.ruff.lint.isort]
+# Tells isort rules to use a specific import section order if needed
+combine-as-imports = true
