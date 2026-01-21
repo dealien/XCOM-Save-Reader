@@ -115,7 +115,9 @@ class TranslationManager:
                 data = yaml.safe_load(f)
                 # Structure is usually { "en-US": { "STR_KEY": "Value" } }
                 if data and self.language in data:
-                    self.translations.update(data[self.language])
+                    payload = data[self.language]
+                    if isinstance(payload, dict):
+                        self.translations.update(payload)
         except Exception as e:
             print(f"Error loading translation file {path}: {e}")
 

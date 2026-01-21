@@ -105,3 +105,20 @@ class TestTranslationManager:
 
         # Test missing key fallback
         assert tm.get("STR_MISSING") == "STR_MISSING"
+
+    def test_load_malformed_translation(self):
+        """
+        Verify that loading a malformed translation file (valid YAML but invalid structure)
+        does not crash the manager.
+        """
+        # Create a malformed translation file (string instead of dict)
+        malformed_path = os.path.join(self.common_lang_dir, "en-US.yml")
+        with open(malformed_path, "w") as f:
+            yaml.dump({"en-US": "This is not a dictionary"}, f)
+
+        tm = TranslationManager(self.test_dir)
+        # Should not raise exception
+        tm.load_all([])
+
+        # Verify it didn't load garbage
+        assert tm.get("STR_ANYTHING") == "STR_ANYTHING"
