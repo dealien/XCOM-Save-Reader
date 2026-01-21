@@ -162,7 +162,7 @@ class SoldierListView(ctk.CTkFrame):
             data.sort(key=lambda t: t[0], reverse=self.sort_reverse)
 
         # Repopulate treeview
-        for index, (val, child) in enumerate(data):
+        for index, (_, child) in enumerate(data):
             self.tree.move(child, "", index)
             # Re-stripe
             tag = "even" if index % 2 == 0 else "odd"
