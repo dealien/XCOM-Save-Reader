@@ -231,18 +231,25 @@ def load_data_from_yaml(file_path, json_dump=False, section="game"):
 
     with open(file_path, encoding="utf-8") as file:
         # Load all documents; yaml.load_all returns a generator
-        for doc in yaml.safe_load_all(file):
-            if not isinstance(doc, dict):
-                continue
+        documents = list(yaml.safe_load_all(file))
 
-            if section == "game":
-                if "difficulty" in doc:
-                    found_data = doc
-                    break
-            elif section == "meta":
-                if "name" in doc:
-                    found_data = doc
-                    break
+    if len(documents) != 2:
+        raise ValueError(
+            f"Expected 2 YAML documents in {file_path}, found {len(documents)}"
+        )
+
+    for doc in documents:
+        if not isinstance(doc, dict):
+            continue
+
+        if section == "game":
+            if "difficulty" in doc:
+                found_data = doc
+                break
+        elif section == "meta":
+            if "name" in doc:
+                found_data = doc
+                break
 
     if found_data is None:
         # Fallback/Error handling: if we couldn't find the specific section,

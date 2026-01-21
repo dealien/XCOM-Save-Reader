@@ -114,3 +114,35 @@ class TestReader:
             pytest.fail("Should have raised ValueError")
         except ValueError:
             pass
+
+    def test_load_data_invalid_document_count(self):
+        """Test that loading a file with wrong number of documents raises ValueError"""
+        # Create single document file
+        import tempfile
+
+        import yaml
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as tmp:
+            yaml.dump({"doc": 1}, tmp)
+            tmp_path = tmp.name
+
+        try:
+            load_data_from_yaml(tmp_path)
+            pytest.fail("Should have raised ValueError for single document")
+        except ValueError as e:
+            assert "Expected 2 YAML documents" in str(e)
+        finally:
+            os.remove(tmp_path)
+
+        # Create three document file
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as tmp:
+            yaml.dump_all([{"doc": 1}, {"doc": 2}, {"doc": 3}], tmp)
+            tmp_path_3 = tmp.name
+
+        try:
+            load_data_from_yaml(tmp_path_3)
+            pytest.fail("Should have raised ValueError for 3 documents")
+        except ValueError as e:
+            assert "Expected 2 YAML documents" in str(e)
+        finally:
+            os.remove(tmp_path_3)
