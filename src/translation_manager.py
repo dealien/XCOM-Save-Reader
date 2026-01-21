@@ -1,4 +1,5 @@
 import os
+
 import yaml
 
 
@@ -38,7 +39,7 @@ class TranslationManager:
                 metadata_path = os.path.join(mod_path, "metadata.yml")
                 if os.path.exists(metadata_path):
                     try:
-                        with open(metadata_path, "r", encoding="utf-8") as f:
+                        with open(metadata_path, encoding="utf-8") as f:
                             metadata = yaml.safe_load(f)
                             if metadata and "id" in metadata:
                                 self.mod_map[metadata["id"]] = mod_path
@@ -65,7 +66,7 @@ class TranslationManager:
             if mod_id in self.mod_map:
                 try:
                     metadata_path = os.path.join(self.mod_map[mod_id], "metadata.yml")
-                    with open(metadata_path, "r", encoding="utf-8") as f:
+                    with open(metadata_path, encoding="utf-8") as f:
                         metadata = yaml.safe_load(f)
                         if metadata and metadata.get("isMaster"):
                             return metadata.get("master", "xcom1")
@@ -110,7 +111,7 @@ class TranslationManager:
             return
 
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 data = yaml.safe_load(f)
                 # Structure is usually { "en-US": { "STR_KEY": "Value" } }
                 if data and self.language in data:

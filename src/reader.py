@@ -1,5 +1,6 @@
 import json
 import os
+
 import yaml
 
 
@@ -228,7 +229,7 @@ def load_data_from_yaml(file_path, json_dump=False, section="game"):
 
     found_data = None
 
-    with open(file_path, "r", encoding="utf-8") as file:
+    with open(file_path, encoding="utf-8") as file:
         # Load all documents; yaml.load_all returns a generator
         for doc in yaml.safe_load_all(file):
             if not isinstance(doc, dict):
