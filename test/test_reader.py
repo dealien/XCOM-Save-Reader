@@ -5,12 +5,12 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from src.reader import (
+    ServiceRecord,
+    Soldier,
     load_data_from_yaml,
+    make_csv,
     read_missions,
     read_soldiers,
-    Soldier,
-    make_csv,
-    ServiceRecord,
 )
 
 TEST_SAVE_FILE = os.path.join(os.path.dirname(__file__), "..", "test", "Test Save.sav")

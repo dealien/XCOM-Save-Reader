@@ -1,14 +1,14 @@
 import os
+
 import customtkinter as ctk
 
-
-from views.main_menu import MainMenu
 import reader
+from translation_manager import TranslationManager
+from views.base_view import BaseView
+from views.main_menu import MainMenu
+from views.mission_view import MissionView
 from views.soldier_list import SoldierListView
 from views.soldier_view import SoldierView
-from views.mission_view import MissionView
-from views.base_view import BaseView
-from translation_manager import TranslationManager
 
 
 class App(ctk.CTk):

@@ -1,5 +1,6 @@
-import customtkinter as ctk
 from tkinter import ttk
+
+import customtkinter as ctk
 
 
 class SoldierListView(ctk.CTkFrame):

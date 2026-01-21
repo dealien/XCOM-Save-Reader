@@ -1,7 +1,8 @@
 import os
-import sys
 import shutil
+import sys
 import tempfile
+
 import yaml
 
 # Add src directory to path

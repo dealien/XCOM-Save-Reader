@@ -1,5 +1,7 @@
-import customtkinter as ctk
 from functools import partial
+
+import customtkinter as ctk
+
 from inventory_formatter import format_inventory_for_display
 
 
