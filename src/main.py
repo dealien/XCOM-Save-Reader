@@ -26,16 +26,39 @@ class App(ctk.CTk):
         self.missions = {}
         self.mission_participants = {}
 
-        # Initialize TranslationManager using the reference directory
-        # Assuming reference is in the project root
-        project_root = os.path.dirname(os.path.abspath(__file__))
-        # Reference path is hardcoded for now, but will be changed later
-        reference_path = os.path.join(os.path.dirname(project_root), "reference")
-        self.translation_manager = TranslationManager(reference_path)
+        # Initialize TranslationManager
+        resource_path = self._find_resource_path()
+        self.translation_manager = TranslationManager(resource_path)
         self.translation_manager.index_mods()
 
         # Set appearance mode
         ctk.set_appearance_mode("dark")
+
+    def _find_resource_path(self):
+        """
+        Locates the directory containing game resources ('common', 'standard', etc.).
+        Searches:
+        1. Adjacent to this script (Production/Flat layout)
+        2. Parent directory (Source layout)
+        3. '../reference' from parent (Development layout)
+        """
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        parent_dir = os.path.dirname(script_dir)
+
+        candidates = [
+            script_dir,  # Production: resources next to executable/script
+            parent_dir,  # Source root: resources in project root
+            os.path.join(parent_dir, "reference"),  # Dev: resources in reference/
+        ]
+
+        for path in candidates:
+            if os.path.isdir(os.path.join(path, "common")):
+                logger.info(f"Found game resources at: {path}")
+                return path
+
+        logger.warning("Could not find game resources in standard locations.")
+        # Fallback to dev path to avoid immediate crash, though it will likely fail later
+        return os.path.join(parent_dir, "reference")
 
         # Container for all frames
         container = ctk.CTkFrame(self)
