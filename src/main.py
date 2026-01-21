@@ -69,6 +69,7 @@ class App(ctk.CTk):
         if file_path:
             logger.info(f"Loading save file: {file_path}")
 
+            mod_list = []
             # Load metadata to get mods list
             try:
                 metadata = reader.load_data_from_yaml(file_path, section="meta")
