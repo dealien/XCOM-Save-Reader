@@ -108,8 +108,8 @@ class TestTranslationManager:
 
     def test_load_malformed_translation(self):
         """
-        Verify that loading a malformed translation file (valid YAML but invalid structure)
-        does not crash the manager.
+        Verify that loading a malformed translation file (valid YAML
+        but invalid structure) does not crash the manager.
         """
         # Create a malformed translation file (string instead of dict)
         malformed_path = os.path.join(self.common_lang_dir, "en-US.yml")

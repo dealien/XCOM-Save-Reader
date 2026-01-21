@@ -82,23 +82,26 @@ class TestTranslationManagerSecurity(unittest.TestCase):
 
         # Check calls to mocked functions
         # valid_mod_path should be checked for isdir (line 36)
-        # malicious_mod_path should NOT be checked for isdir because it should hit 'continue' at line 34 (ish)
+        # malicious_mod_path should NOT be checked for isdir because it
+        # should hit 'continue' at line 34 (ish)
 
         # Wait, the code:
-        # 34:                 if os.path.commonpath([search_root, candidate]) != search_root:
-        # 35:                     continue
+        # 34:         if os.path.commonpath([search_root, candidate]) != search_root:
+        # 35:             continue
         # 36:
-        # 37:                 if not os.path.isdir(mod_path): ...
+        # 37:         if not os.path.isdir(mod_path): ...
 
         # Note: In my replacement, I might have shifted lines slightly but logically:
-        # The security check is BEFORE isdir check (which was line 36 in original, maybe line 37 in my thought).
+        # The security check is BEFORE isdir check (which was line 36 in original,
+        # maybe line 37 in my thought).
 
         # Let's verify what arguments were passed to os.path.isdir
         # isdir is called for search_dir (line 24) and mod_path (line 36)
 
         # We expect isdir to be called with search_dir
         # We expect isdir to be called with valid_mod_path
-        # We expect isdir NOT to be called with malicious_mod_path IF the traversal check works.
+        # We expect isdir NOT to be called with malicious_mod_path IF the traversal
+        # check works.
 
         # Actually, isdir is called at line 24 for search_dir.
         # And line 36 for mod_path.
@@ -115,7 +118,8 @@ class TestTranslationManagerSecurity(unittest.TestCase):
             valid_mod_path, called_paths, "Valid mod path should be processed"
         )
 
-        # We expect malicious_mod_path NOT to be in called_paths (because it failed security check)
+        # We expect malicious_mod_path NOT to be in called_paths
+        # (because it failed security check)
         self.assertNotIn(
             malicious_mod_path,
             called_paths,
