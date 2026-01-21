@@ -1,5 +1,6 @@
-import customtkinter as ctk
 from tkinter import ttk
+
+import customtkinter as ctk
 
 
 class SoldierListView(ctk.CTkFrame):
@@ -129,7 +130,7 @@ class SoldierListView(ctk.CTkFrame):
             values = [
                 soldier.id,
                 soldier.name,
-                soldier.rank,
+                self.controller.translation_manager.get(soldier.rank),
                 soldier.missions,
                 soldier.kills,
                 soldier.base,
@@ -161,7 +162,7 @@ class SoldierListView(ctk.CTkFrame):
             data.sort(key=lambda t: t[0], reverse=self.sort_reverse)
 
         # Repopulate treeview
-        for index, (val, child) in enumerate(data):
+        for index, (_, child) in enumerate(data):
             self.tree.move(child, "", index)
             # Re-stripe
             tag = "even" if index % 2 == 0 else "odd"

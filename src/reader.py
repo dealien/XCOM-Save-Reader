@@ -1,6 +1,11 @@
 import json
+import logging
 import os
+
 import yaml
+
+# Configure logger for this module
+logger = logging.getLogger(__name__)
 
 
 class Soldier:
@@ -115,7 +120,7 @@ class Mission:
 
 def read_missions(data_):
     missions_ = {}
-    print("Reading mission data...")
+    logger.info("Reading mission data...")
     if "missionStatistics" in data_:
         for m in data_["missionStatistics"]:
             missions_[m["id"]] = Mission(m)
@@ -125,7 +130,7 @@ def read_missions(data_):
 def read_soldiers(data_, mission_data):
     soldiers_ = []
     mission_participants = {}
-    print("Reading soldier data...")
+    logger.info("Reading soldier data...")
     for base in data_["bases"]:
         try:
             for s in base["soldiers"]:
@@ -215,20 +220,53 @@ def make_csv(soldiers_):
     return csvlist
 
 
-def load_data_from_yaml(file_path, json_dump=False):
-    data = ""
-    print(f'Loading data from "{os.path.basename(file_path)}"...')
-    with open(file_path, "r", encoding="utf-8") as file:
-        for y in yaml.load_all(file, Loader=yaml.FullLoader):
-            try:
-                type(y["difficulty"])
-                data = y
-            except KeyError:
-                pass
+def load_data_from_yaml(file_path, json_dump=False, section="game"):
+    """
+    Load data from a YAML file.
+    :param file_path: Path to the YAML file.
+    :param json_dump: Whether to dump the loaded data to a JSON file (debug).
+    :param section: "game" to return the document with 'difficulty',
+                    "meta" to return the document with 'name'.
+    :return: The requested document dictionary.
+    """
+    logger.info(
+        f'Loading data from "{os.path.basename(file_path)}" (section: {section})...'
+    )
+
+    found_data = None
+
+    with open(file_path, encoding="utf-8") as file:
+        # Load all documents; yaml.load_all returns a generator
+        documents = list(yaml.safe_load_all(file))
+
+    # Fail if not exactly 2 documents (healthy saves always have 2 documents)
+    if len(documents) != 2:
+        raise ValueError(
+            f"Expected 2 YAML documents in {file_path}, found {len(documents)}"
+        )
+
+    for doc in documents:
+        if not isinstance(doc, dict):
+            continue
+
+        if section == "game":
+            if "difficulty" in doc:
+                found_data = doc
+                break
+        elif section == "meta":
+            if "name" in doc:
+                found_data = doc
+                break
+
+    if found_data is None:
+        # Fallback/Error handling: if we couldn't find the specific section,
+        # checking if the file only had one document might be relevant,
+        # but strictly adhering to the plan:
+        raise ValueError(f"Could not find section '{section}' in {file_path}")
 
     if json_dump:
-        print('Writing converted json data to "data.json"...')
+        logger.info('Writing converted json data to "data.json"...')
         with open("data.json", "w") as outfile:
-            json.dump(data, outfile)
+            json.dump(found_data, outfile)
 
-    return data
+    return found_data

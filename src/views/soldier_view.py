@@ -1,6 +1,13 @@
-import customtkinter as ctk
+import logging
 from functools import partial
+
+import customtkinter as ctk
+
+import view_utils
 from inventory_formatter import format_inventory_for_display
+
+# Configure logger for this module
+logger = logging.getLogger(__name__)
 
 
 class SoldierView(ctk.CTkFrame):
@@ -96,11 +103,13 @@ class SoldierView(ctk.CTkFrame):
     def update_view(self, soldier_id):
         soldier = self.controller.get_soldier_by_id(soldier_id)
         if not soldier:
-            print(f"Error: Soldier with ID {soldier_id} not found.")
+            logger.error(f"Error: Soldier with ID {soldier_id} not found.")
             self.back_to_list()
             return
 
-        self.name_label.configure(text=f"{soldier.name} ({soldier.rank})")
+        tr = self.controller.translation_manager.get
+
+        self.name_label.configure(text=f"{soldier.name} ({tr(soldier.rank)})")
 
         # Current Stats
         current_stats = soldier.currentstats
@@ -117,31 +126,12 @@ class SoldierView(ctk.CTkFrame):
 
         # Service Record
         sr = soldier.service_record
-        summary = (
-            f"Months of Service: {sr.months_service}\n"
-            f"Days Wounded: {sr.days_wounded_total} "
-            f"(Wounded {sr.times_wounded_total} times)\n"
-            f"Times Unconscious: {sr.unconscious_total}\n"
-            f"Shots Fired: {sr.shots_fired_counter_total} | "
-            f"Shots Landed: {sr.shots_landed_counter_total}\n"
-            f"Times Shot At: {sr.shot_at_counter_total} | "
-            f"Times Hit: {sr.hit_counter_total}"
-        )
+        summary = view_utils.format_service_record_summary(sr)
         self.service_record_summary_label.configure(text=summary)
 
         # Cause of death
-        if soldier.death_info:
-            cause = soldier.death_info.get("cause", {})
-            death_text = (
-                f"\n--- KIA ---\n"
-                f"Date: {soldier.death_info.get('time')}\n"
-                f"Killed by: {cause.get('race', 'Unknown')} "
-                f"({cause.get('rank', 'Unknown')})\n"
-                f"Weapon: {cause.get('weapon', 'Unknown')} "
-                f"({cause.get('weaponAmmo', 'Unknown')})"
-            )
-            # Append to summary or show in a new label?
-            # Appending to summary for now as it sits in the service record info frame
+        death_text = view_utils.format_death_info(soldier.death_info, tr)
+        if death_text:
             current_text = self.service_record_summary_label.cget("text")
             self.service_record_summary_label.configure(text=current_text + death_text)
 
@@ -149,7 +139,7 @@ class SoldierView(ctk.CTkFrame):
             "Commendations:\n"
             + "\n".join(
                 [
-                    f"{c['commendationName']} (Level: {c['decorationLevel']})"
+                    f"{tr(c['commendationName'])} (Level: {c['decorationLevel']})"
                     for c in sr.commendations
                 ]
             )
@@ -164,7 +154,7 @@ class SoldierView(ctk.CTkFrame):
             widget.destroy()
 
         inventory_data = format_inventory_for_display(
-            getattr(soldier, "equipmentLayout", None)
+            getattr(soldier, "equipmentLayout", None), translator=tr
         )
 
         if inventory_data:
@@ -200,7 +190,7 @@ class SoldierView(ctk.CTkFrame):
                     [k for k in sr.kill_list if k["mission"] == mission.id]
                 )
 
-                card_title = f"{mission.name} - {mission.time}"
+                card_title = f"{tr(mission.name)} - {mission.time}"
                 card_result = f"Result: {'Success' if mission.success else 'Failure'}"
                 card_kills = f"Kills: {kill_count}"
 
@@ -221,10 +211,8 @@ class SoldierView(ctk.CTkFrame):
                     soldier.death_info
                     and soldier.death_info.get("cause", {}).get("mission") == mission.id
                 ):
-                    cause = soldier.death_info.get("cause", {})
-                    death_detail = (
-                        f"KIA: {cause.get('weapon', 'Unknown')} "
-                        f"({cause.get('race', 'Unknown')})"
+                    death_detail = view_utils.format_mission_death_detail(
+                        soldier.death_info, tr
                     )
                     death_label = ctk.CTkLabel(
                         card, text=death_detail, text_color="#ff5555"
