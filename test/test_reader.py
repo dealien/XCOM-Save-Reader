@@ -109,6 +109,6 @@ class TestReader:
         # Test invalid section
         try:
             load_data_from_yaml(TEST_SAVE_FILE, section="invalid")
-            assert False, "Should have raised ValueError"
+            pytest.fail("Should have raised ValueError")
         except ValueError:
             pass
