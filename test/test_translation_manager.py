@@ -68,7 +68,8 @@ class TestTranslationManager:
         # Default
         assert tm.determine_master([]) == "xcom1"
 
-        # Explicit master via mod (simulating a Total Conversion or just master dependency)
+        # Explicit master via mod
+        # (simulating a Total Conversion or just master dependency)
         # Assuming verify check uses metadata
         # Create a mod that refers to xcom2 as master?
         # Actually determine_master implementation checks if a mod *IS* a master.
