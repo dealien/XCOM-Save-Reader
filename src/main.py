@@ -67,16 +67,18 @@ class App(ctk.CTk):
         file_path = "test/Test Save.sav"
 
         if file_path:
-            print(f"Loading save file: {file_path}")
+            logger.info(f"Loading save file: {file_path}")
 
             # Load metadata to get mods list
             try:
                 metadata = reader.load_data_from_yaml(file_path, section="meta")
                 mod_list = metadata.get("mods", [])
-                print(f"Index found {len(mod_list)} mods. Loading translations...")
+                logger.info(
+                    f"Index found {len(mod_list)} mods. Loading translations..."
+                )
                 self.translation_manager.load_all(mod_list)
             except Exception as e:
-                print(f"Error loading metadata/translations: {e}")
+                logger.error(f"Error loading metadata/translations: {e}")
 
             # Load game data
             self.save_data = reader.load_data_from_yaml(file_path, section="game")
@@ -89,7 +91,7 @@ class App(ctk.CTk):
             main_menu_frame = self.frames[MainMenu]
             main_menu_frame.soldiers_button.configure(state="normal")
             main_menu_frame.bases_button.configure(state="normal")
-            print(
+            logger.info(
                 f"Loaded {len(self.soldiers)} soldiers and "
                 f"{len(self.missions)} missions."
             )

@@ -85,7 +85,7 @@ class TranslationManager:
         self.translations = {}
 
         # 1. Load Common
-        print(f"Loading common translations ({self.language})...")
+        logger.info(f"Loading common translations ({self.language})...")
         common_lang = os.path.join(
             self.base_path, "common", "Language", f"{self.language}.yml"
         )
@@ -93,18 +93,18 @@ class TranslationManager:
 
         # 2. Determine and Load Master
         master = self.determine_master(save_mod_list)
-        print(f"Loading master translations ({master})...")
+        logger.info(f"Loading master translations ({master})...")
         master_lang = os.path.join(
             self.base_path, "standard", master, "Language", f"{self.language}.yml"
         )
         self._load_file(master_lang)
 
         # 3. Load Mods
-        print("Loading mod translations...")
+        logger.info("Loading mod translations...")
         for mod_entry in save_mod_list:
             mod_id = mod_entry.split(" ver:", 1)[0].strip()
             if mod_id in self.mod_map:
-                print(f"  - Loading translations for: {mod_id}")
+                logger.debug(f"  - Loading translations for: {mod_id}")
                 mod_lang = os.path.join(
                     self.mod_map[mod_id], "Language", f"{self.language}.yml"
                 )

@@ -120,7 +120,7 @@ class Mission:
 
 def read_missions(data_):
     missions_ = {}
-    print("Reading mission data...")
+    logger.info("Reading mission data...")
     if "missionStatistics" in data_:
         for m in data_["missionStatistics"]:
             missions_[m["id"]] = Mission(m)
@@ -130,7 +130,7 @@ def read_missions(data_):
 def read_soldiers(data_, mission_data):
     soldiers_ = []
     mission_participants = {}
-    print("Reading soldier data...")
+    logger.info("Reading soldier data...")
     for base in data_["bases"]:
         try:
             for s in base["soldiers"]:
@@ -229,7 +229,9 @@ def load_data_from_yaml(file_path, json_dump=False, section="game"):
                     "meta" to return the document with 'name'.
     :return: The requested document dictionary.
     """
-    print(f'Loading data from "{os.path.basename(file_path)}" (section: {section})...')
+    logger.info(
+        f'Loading data from "{os.path.basename(file_path)}" (section: {section})...'
+    )
 
     found_data = None
 
@@ -262,7 +264,7 @@ def load_data_from_yaml(file_path, json_dump=False, section="game"):
         raise ValueError(f"Could not find section '{section}' in {file_path}")
 
     if json_dump:
-        print('Writing converted json data to "data.json"...')
+        logger.info('Writing converted json data to "data.json"...')
         with open("data.json", "w") as outfile:
             json.dump(found_data, outfile)
 
