@@ -1,4 +1,9 @@
+import logging
+
 import customtkinter as ctk
+
+# Configure logger for this module
+logger = logging.getLogger(__name__)
 
 
 class MissionView(ctk.CTkFrame):

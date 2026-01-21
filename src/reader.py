@@ -1,7 +1,11 @@
 import json
+import logging
 import os
 
 import yaml
+
+# Configure logger for this module
+logger = logging.getLogger(__name__)
 
 
 class Soldier:

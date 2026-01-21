@@ -1,3 +1,4 @@
+import logging
 import os
 
 import customtkinter as ctk
@@ -9,6 +10,9 @@ from views.main_menu import MainMenu
 from views.mission_view import MissionView
 from views.soldier_list import SoldierListView
 from views.soldier_view import SoldierView
+
+# Configure logger for this module
+logger = logging.getLogger(__name__)
 
 
 class App(ctk.CTk):

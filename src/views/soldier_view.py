@@ -1,9 +1,13 @@
+import logging
 from functools import partial
 
 import customtkinter as ctk
 
 import view_utils
 from inventory_formatter import format_inventory_for_display
+
+# Configure logger for this module
+logger = logging.getLogger(__name__)
 
 
 class SoldierView(ctk.CTkFrame):
