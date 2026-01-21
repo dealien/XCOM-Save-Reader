@@ -239,6 +239,7 @@ def load_data_from_yaml(file_path, json_dump=False, section="game"):
         # Load all documents; yaml.load_all returns a generator
         documents = list(yaml.safe_load_all(file))
 
+    # Fail if not exactly 2 documents (healthy saves always have 2 documents)
     if len(documents) != 2:
         raise ValueError(
             f"Expected 2 YAML documents in {file_path}, found {len(documents)}"
