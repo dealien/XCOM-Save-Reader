@@ -34,6 +34,26 @@ class App(ctk.CTk):
         # Set appearance mode
         ctk.set_appearance_mode("dark")
 
+        # Container for all frames
+        container = ctk.CTkFrame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+
+        # Initialize frames
+        for F in (MainMenu, SoldierListView, SoldierView, MissionView, BaseView):
+            # Pass translation_manager to all views
+            # (Requires views to accept **kwargs or specific arg)
+            # Modifying views to accept app as main controller,
+            # so accessing app.translation_manager is cleaner
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame(MainMenu)
+
     def _find_resource_path(self):
         """
         Locates the directory containing game resources ('common', 'standard', etc.).
@@ -57,28 +77,9 @@ class App(ctk.CTk):
                 return path
 
         logger.warning("Could not find game resources in standard locations.")
-        # Fallback to dev path to avoid immediate crash, though it will likely fail later
+        # Fallback to dev path to avoid immediate crash,
+        # though it will likely fail later
         return os.path.join(parent_dir, "reference")
-
-        # Container for all frames
-        container = ctk.CTkFrame(self)
-        container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
-
-        self.frames = {}
-
-        # Initialize frames
-        for F in (MainMenu, SoldierListView, SoldierView, MissionView, BaseView):
-            # Pass translation_manager to all views
-            # (Requires views to accept **kwargs or specific arg)
-            # Modifying views to accept app as main controller,
-            # so accessing app.translation_manager is cleaner
-            frame = F(container, self)
-            self.frames[F] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
-
-        self.show_frame(MainMenu)
 
     def show_frame(self, cont, *args):
         frame = self.frames[cont]
