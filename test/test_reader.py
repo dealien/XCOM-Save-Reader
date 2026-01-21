@@ -1,6 +1,8 @@
 import os
 import sys
 
+import pytest
+
 # Add src directory to path to allow import of reader
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
