@@ -3,6 +3,8 @@ from tkinter import ttk
 
 import customtkinter as ctk
 
+import view_utils
+
 logger = logging.getLogger(__name__)
 
 
@@ -203,7 +205,8 @@ class BaseView(ctk.CTkFrame):
             status_parts = []
             is_wounded = False
             if s.recovery > 0:
-                status_parts.append(f"Wounded ({s.recovery}d)")
+                rec_str = view_utils.format_recovery_time(s.recovery)
+                status_parts.append(f"Wounded ({rec_str})")
                 is_wounded = True
             if s.training:
                 status_parts.append("Training")
