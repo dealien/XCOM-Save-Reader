@@ -69,7 +69,7 @@ class BaseView(ctk.CTkFrame):
         self.base_selector.configure(values=base_names, state="normal")
 
         # Select first base if none selected or not in list
-        current_selection = self.base_selector.get()
+        # current_selection = self.base_selector.get()
         if not self.current_base or self.current_base.name not in base_names:
             self.base_selector.set(base_names[0])
             self.on_base_select(base_names[0])
