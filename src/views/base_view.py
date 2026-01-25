@@ -1,4 +1,5 @@
 import logging
+from tkinter import ttk
 
 import customtkinter as ctk
 
@@ -7,8 +8,14 @@ logger = logging.getLogger(__name__)
 
 class BaseView(ctk.CTkFrame):
     def __init__(self, parent, controller):
+        print("DEBUG: Entering BaseView.__init__")
         super().__init__(parent)
+        print("DEBUG: Called super().__init__")
         self.controller = controller
+
+        # Sort state for soldier list
+        self.soldier_sort_col = "Rank"
+        self.soldier_sort_reverse = False
 
         # Configure grid
         self.grid_rowconfigure(1, weight=1)
@@ -118,43 +125,181 @@ class BaseView(ctk.CTkFrame):
         wounded = sum(1 for s in base.soldiers if s.recovery > 0)
         training = sum(1 for s in base.soldiers if s.training)
         psi_training = sum(1 for s in base.soldiers if s.psi_training)
-        active = total - wounded  # Approximate, overlapping statuses possible?
+        active = total - wounded  # Approximate
+
+        # Summary Frame
+        stats_frame = ctk.CTkFrame(frame)
+        stats_frame.pack(fill="x", padx=20, pady=10)
 
         ctk.CTkLabel(
-            frame,
-            text=f"Total Soldiers: {total}",
-            font=ctk.CTkFont(size=18, weight="bold"),
-        ).pack(pady=10)
-
-        stats_frame = ctk.CTkFrame(frame)
-        stats_frame.pack(fill="x", padx=20)
-
-        ctk.CTkLabel(stats_frame, text=f"Active: {active} (Approx)").pack(
-            side="left", expand=True, padx=5
-        )
+            stats_frame, text=f"Total: {total}", font=ctk.CTkFont(weight="bold")
+        ).pack(side="left", padx=10)
+        ctk.CTkLabel(stats_frame, text=f"Active: {active}").pack(side="left", padx=10)
         ctk.CTkLabel(
             stats_frame,
             text=f"Wounded: {wounded}",
             text_color="orange" if wounded > 0 else "gray",
-        ).pack(side="left", expand=True, padx=5)
+        ).pack(side="left", padx=10)
         ctk.CTkLabel(
             stats_frame,
             text=f"Training: {training}",
             text_color="cyan" if training > 0 else "gray",
-        ).pack(side="left", expand=True, padx=5)
+        ).pack(side="left", padx=10)
         ctk.CTkLabel(
             stats_frame,
-            text=f"Psi Training: {psi_training}",
+            text=f"Psi: {psi_training}",
             text_color="purple" if psi_training > 0 else "gray",
-        ).pack(side="left", expand=True, padx=5)
+        ).pack(side="left", padx=10)
 
-        # TODO: Link to filtered soldier list view
-        # For now, simplistic message
-        ctk.CTkLabel(
-            frame,
-            text="(Feature to filter soldier list by base coming soon)",
-            text_color="gray",
-        ).pack(pady=20)
+        # Treeview
+        self.soldier_tree = self.create_soldier_tree(frame)
+        self.soldier_tree.pack(fill="both", expand=True, padx=20, pady=(0, 20))
+
+        self.populate_soldier_tree(base.soldiers)
+
+    def create_soldier_tree(self, parent):
+        columns = ["Rank", "Name", "Missions", "Kills", "Status"]
+        tree = ttk.Treeview(parent, columns=columns, show="headings")
+
+        # Configure headers
+        for col in columns:
+            tree.heading(col, text=col, command=lambda c=col: self.sort_soldier_tree(c))
+
+            if col == "Name":
+                tree.column(col, width=200, anchor="w")
+            elif col == "Status":
+                tree.column(col, width=200, anchor="w")
+            else:
+                tree.column(col, width=80, anchor="center")
+
+        # Scrollbar
+        scrollbar = ttk.Scrollbar(parent, orient="vertical", command=tree.yview)
+        tree.configure(yscroll=scrollbar.set)
+        scrollbar.pack(side="right", fill="y", padx=(0, 20), pady=(0, 20))
+
+        tree.bind("<<TreeviewSelect>>", self.on_soldier_select)
+
+        # Tags for styling
+        tree.tag_configure("odd", background="#2b2b2b")
+        tree.tag_configure("even", background="#323538")
+        tree.tag_configure("wounded", foreground="orange")
+
+        return tree
+
+    def populate_soldier_tree(self, soldiers):
+        # Clear existing
+        for i in self.soldier_tree.get_children():
+            self.soldier_tree.delete(i)
+
+        data = []
+        for s in soldiers:
+            # Rank translation
+            rank_key = self.controller.translation_manager.get_rank_string(
+                s.rank, s.type
+            )
+            rank_str = self.controller.translation_manager.get(rank_key)
+
+            # Status
+            status_parts = []
+            is_wounded = False
+            if s.recovery > 0:
+                status_parts.append(f"Wounded ({s.recovery}d)")
+                is_wounded = True
+            if s.training:
+                status_parts.append("Training")
+            if s.psi_training:
+                status_parts.append("Psi Training")
+
+            status_str = ", ".join(status_parts) if status_parts else "Active"
+
+            data.append(
+                {
+                    "id": s.id,
+                    "values": [rank_str, s.name, s.missions, s.kills, status_str],
+                    "wounded": is_wounded,
+                    "raw_sort": {  # For smarter sorting
+                        "Rank": s.rank,
+                        "Name": s.name,
+                        "Missions": s.missions,
+                        "Kills": s.kills,
+                        "Status": s.recovery,  # Sort status by recovery days roughly
+                    },
+                }
+            )
+
+        # Sort
+        self.sort_data_list(data)
+
+        # Insert
+        for i, item in enumerate(data):
+            tags = ["even" if i % 2 == 0 else "odd"]
+            if item["wounded"]:
+                tags.append("wounded")
+
+            self.soldier_tree.insert(
+                "", "end", iid=item["id"], values=item["values"], tags=tuple(tags)
+            )
+
+    def sort_soldier_tree(self, col):
+        if self.soldier_sort_col == col:
+            self.soldier_sort_reverse = not self.soldier_sort_reverse
+        else:
+            self.soldier_sort_reverse = False
+            self.soldier_sort_col = col
+
+        # Repopulate (using current base soldiers, but we need access to them.
+        # Easier to re-read from tree or just re-render.
+        # But render_soldiers creates new tree.
+        # Let's re-sort the existing items in the tree.
+
+        items = []
+        for child in self.soldier_tree.get_children(""):
+            values = self.soldier_tree.item(child, "values")
+            # We loose raw data if we just pull values.
+            # But we can assume typical string/int sorting for now.
+            items.append((values, child))
+
+        # Helper to get sort key
+        def get_key(item):
+            # Map column name to index
+            col_idx = ["Rank", "Name", "Missions", "Kills", "Status"].index(col)
+            val = item[0][col_idx]
+            # Try float
+            try:
+                return float(val)
+            except ValueError:
+                return val
+
+        items.sort(key=get_key, reverse=self.soldier_sort_reverse)
+
+        for index, (_, child) in enumerate(items):
+            self.soldier_tree.move(child, "", index)
+            # Re-stripe
+            current_tags = list(self.soldier_tree.item(child, "tags"))
+            # Remove old striping
+            if "even" in current_tags:
+                current_tags.remove("even")
+            if "odd" in current_tags:
+                current_tags.remove("odd")
+
+            new_stripe = "even" if index % 2 == 0 else "odd"
+            current_tags.append(new_stripe)
+            self.soldier_tree.item(child, tags=tuple(current_tags))
+
+    def sort_data_list(self, data):
+        # Sort the raw data dictionary list based on self.soldier_sort_col
+        key_name = self.soldier_sort_col
+
+        def get_sort_val(item):
+            return item["raw_sort"].get(key_name, "")
+
+        data.sort(key=get_sort_val, reverse=self.soldier_sort_reverse)
+
+    def on_soldier_select(self, event):
+        selected = self.soldier_tree.selection()
+        if selected:
+            soldier_id = selected[0]
+            self.controller.show_soldier_view(soldier_id)
 
     def render_storage(self, base):
         frame = self.tab_storage
