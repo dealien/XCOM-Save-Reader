@@ -69,3 +69,24 @@ def format_mission_death_detail(death_info, translator):
     weapon = translator(cause.get("weapon", "Unknown"))
 
     return f"KIA: {weapon} ({race})"
+
+
+def format_recovery_time(recovery_days):
+    """
+    Formats recovery time float (days) into 'Xd Yh' format.
+    Hours are rounded up.
+    """
+    import math
+
+    if recovery_days <= 0:
+        return ""
+
+    hours_total = math.ceil(recovery_days * 24)
+    days = hours_total // 24
+    hours = hours_total % 24
+
+    if days > 0:
+        if hours > 0:
+            return f"{days}d {hours}h"
+        return f"{days}d"
+    return f"{hours}h"
