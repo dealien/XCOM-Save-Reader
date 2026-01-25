@@ -166,7 +166,7 @@ sys.modules["tkinter"].ttk = mock_ttk
 sys.modules["tkinter.ttk"] = mock_ttk
 
 # Now import the class under test
-from views.base_view import BaseView
+from views.base_view import BaseView  # noqa: E402
 
 
 class TestBaseView(unittest.TestCase):
@@ -194,7 +194,8 @@ class TestBaseView(unittest.TestCase):
         self.mock_controller.bases = []
 
         # We need to spy on base_selector methods.
-        # Since DummyCTkOptionMenu is a real class here, we can mock its methods on the instance
+        # Since DummyCTkOptionMenu is a real class here,
+        # we can mock its methods on the instance
         self.view.base_selector.set = MagicMock()
         self.view.base_selector.configure = MagicMock()
 
