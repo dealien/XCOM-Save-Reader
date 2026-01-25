@@ -22,6 +22,11 @@ class Soldier:
         self.service_record = ServiceRecord(data.get("diary", {}), mission_data)
         self.equipmentLayout = data.get("equipmentLayout")
 
+        # Status parsing
+        self.recovery = data.get("recovery", 0)
+        self.training = data.get("training", False)
+        self.psi_training = data.get("psiTraining", False)
+
         # Death info
         self.death_info = None
         if "death" in data:
@@ -118,6 +123,82 @@ class Mission:
         self.injuries = mission_data.get("injuryList", {})
 
 
+class Base:
+    def __init__(self, data, mission_data):
+        self.name = data.get("name", "Unknown Base")
+        self.lon = data.get("lon")
+        self.lat = data.get("lat")
+
+        # Facilities
+        self.facilities = [Facility(f) for f in data.get("facilities", [])]
+
+        # Soldiers (Create Soldier objects)
+        self.soldiers = []
+        if "soldiers" in data:
+            for s in data["soldiers"]:
+                self.soldiers.append(Soldier(s, self.name, mission_data))
+
+        # Items in storage
+        self.items = data.get("items", {})
+
+        # Research
+        self.research = [ResearchProject(r) for r in data.get("research", [])]
+
+        # Manufacturing
+        self.manufacturing = [
+            ManufacturingProject(m) for m in data.get("productions", [])
+        ]
+
+        # Transfers
+        self.transfers = []
+        if "transfers" in data:
+            for t in data["transfers"]:
+                self.transfers.append(Transfer(t, mission_data))
+
+
+class Facility:
+    def __init__(self, data):
+        self.type = data.get("type")
+        self.x = data.get("x")
+        self.y = data.get("y")
+        self.build_time = data.get("buildTime", 0)  # Days remaining, 0 if built
+
+
+class ResearchProject:
+    def __init__(self, data):
+        self.project = data.get("project")
+        self.assigned = data.get("assigned", 0)
+        self.spent = data.get("spent", 0)
+        self.cost = data.get("cost", 0)
+
+
+class ManufacturingProject:
+    def __init__(self, data):
+        self.item = data.get("item")
+        self.assigned = data.get("assigned", 0)
+        self.spent = data.get("spent", 0)
+        self.amount = data.get("amount", 0)  # Amount ordered
+
+
+class Transfer:
+    def __init__(self, data, mission_data):
+        self.hours = data.get("hours", 0)
+        self.soldier = None
+        self.item_id = None
+        self.item_qty = 0
+
+        if "soldier" in data:
+            # Soldier transfer
+            # Note: Soldier parsing needs base name, but it's in transit.
+            # We can use "In Transit" or destination if known contextually (but here local).
+            # The transfer list belongs to the *destination* base in the save file structure.
+            self.soldier = Soldier(data["soldier"], "In Transit", mission_data)
+        elif "itemId" in data:
+            # Item transfer
+            self.item_id = data.get("itemId")
+            self.item_qty = data.get("itemQty", 0)
+
+
 def read_missions(data_):
     missions_ = {}
     logger.info("Reading mission data...")
@@ -127,18 +208,34 @@ def read_missions(data_):
     return missions_
 
 
+def read_bases(data_, mission_data):
+    bases_ = []
+    logger.info("Reading base data...")
+    if "bases" in data_:
+        for b in data_["bases"]:
+            bases_.append(Base(b, mission_data))
+    return bases_
+
+
 def read_soldiers(data_, mission_data):
+    # Backward compatibility wrapper if we still simply need all soldiers list
+    # But ideally valid usage is via read_bases now.
+    # However, existing main.py uses this. Let's maintain it by extracting from bases.
     soldiers_ = []
     mission_participants = {}
-    logger.info("Reading soldier data...")
-    for base in data_["bases"]:
-        try:
-            for s in base["soldiers"]:
-                soldier_ = Soldier(s, base["name"], mission_data)
-                soldiers_.append(soldier_)
-        except KeyError:
-            pass
+    logger.info("Reading soldier data (flat list)...")
 
+    # Extract from active bases
+    if "bases" in data_:
+        for base in data_["bases"]:
+            try:
+                for s in base["soldiers"]:
+                    soldier_ = Soldier(s, base["name"], mission_data)
+                    soldiers_.append(soldier_)
+            except KeyError:
+                pass
+
+    # Extract dead soldiers
     if "deadSoldiers" in data_:
         for s in data_["deadSoldiers"]:
             soldier_ = Soldier(s, "KIA", mission_data)
@@ -184,9 +281,18 @@ def make_csv(soldiers_):
             "Initial Strength",
             "Initial PsiStrength",
             "Initial PsiSkill",
+            "Recovery Info",
         ]
     ]
     for i in soldiers_:
+        recovery_info = ""
+        if i.recovery > 0:
+            recovery_info = f"Wounded ({i.recovery} days)"
+        if i.training:
+            recovery_info += " Training" if not recovery_info else ", Training"
+        if i.psi_training:
+            recovery_info += " Psi Training" if not recovery_info else ", Psi Training"
+
         row = [
             i.id,
             i.base,
@@ -215,6 +321,7 @@ def make_csv(soldiers_):
             i.initialstats.strength,
             i.initialstats.psistrength,
             i.initialstats.psiskill,
+            recovery_info,
         ]
         csvlist.append(row)
     return csvlist
