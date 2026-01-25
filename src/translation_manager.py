@@ -139,3 +139,25 @@ class TranslationManager:
             return val[0]
 
         return val
+
+    def get_rank_string(self, rank_index, soldier_type):
+        """
+        Get the translation key for a soldier's rank.
+        TODO: Load specific rank strings from ruleset for the given soldier type.
+        """
+        # Standard X-COM ranks mapping
+        ranks = [
+            "STR_ROOKIE",
+            "STR_SQUADDIE",
+            "STR_SERGEANT",
+            "STR_CAPTAIN",
+            "STR_COLONEL",
+            "STR_COMMANDER",
+        ]
+
+        # Safe lookup
+        if isinstance(rank_index, int) and 0 <= rank_index < len(ranks):
+            return ranks[rank_index]
+
+        # Fallback
+        return f"STR_RANK_{rank_index}"
