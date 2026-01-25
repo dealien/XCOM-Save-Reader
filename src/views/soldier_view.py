@@ -95,12 +95,18 @@ class SoldierView(ctk.CTkFrame):
     def back_to_list(self):
         from views.soldier_list import SoldierListView
 
-        self.controller.show_frame(SoldierListView)
+        target_view = getattr(self, "previous_view", SoldierListView)
+        if target_view is None:
+            target_view = SoldierListView
+
+        self.controller.show_frame(target_view)
 
     def on_mission_card_click(self, mission_id, soldier_id, event):
         self.controller.show_mission_view(mission_id, soldier_id)
 
-    def update_view(self, soldier_id):
+    def update_view(self, soldier_id, previous_view=None):
+        self.previous_view = previous_view
+
         soldier = self.controller.get_soldier_by_id(soldier_id)
         if not soldier:
             logger.error(f"Error: Soldier with ID {soldier_id} not found.")

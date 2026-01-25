@@ -302,7 +302,7 @@ class BaseView(ctk.CTkFrame):
         selected = self.soldier_tree.selection()
         if selected:
             soldier_id = selected[0]
-            self.controller.show_soldier_view(soldier_id)
+            self.controller.show_soldier_view(soldier_id, previous_view=BaseView)
 
     def render_storage(self, base):
         frame = self.tab_storage
