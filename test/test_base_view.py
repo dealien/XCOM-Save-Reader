@@ -97,6 +97,55 @@ class DummyCTkScrollableFrame:
         pass
 
 
+class DummyTreeview:
+    def __init__(self, master=None, **kwargs):
+        pass
+
+    def pack(self, **kwargs):
+        pass
+
+    def grid(self, **kwargs):
+        pass
+
+    def heading(self, col, **kwargs):
+        pass
+
+    def column(self, col, **kwargs):
+        pass
+
+    def configure(self, **kwargs):
+        pass
+
+    def bind(self, event, command):
+        pass
+
+    def tag_configure(self, tag, **kwargs):
+        pass
+
+    def get_children(self):
+        return []
+
+    def delete(self, item):
+        pass
+
+    def insert(self, parent, index, **kwargs):
+        pass
+
+    def yview(self, *args):
+        pass
+
+
+class DummyScrollbar:
+    def __init__(self, master=None, **kwargs):
+        pass
+
+    def pack(self, **kwargs):
+        pass
+
+    def set(self, *args):
+        pass
+
+
 mock_ctk = MagicMock()
 mock_ctk.CTkFrame = DummyCTkFrame
 mock_ctk.CTkLabel = DummyCTkLabel
@@ -107,6 +156,14 @@ mock_ctk.CTkScrollableFrame = DummyCTkScrollableFrame
 mock_ctk.CTkFont = MagicMock()
 
 sys.modules["customtkinter"] = mock_ctk
+
+# Mock ttk
+mock_ttk = MagicMock()
+mock_ttk.Treeview = DummyTreeview
+mock_ttk.Scrollbar = DummyScrollbar
+sys.modules["tkinter"] = MagicMock()
+sys.modules["tkinter"].ttk = mock_ttk
+sys.modules["tkinter.ttk"] = mock_ttk
 
 # Now import the class under test
 from views.base_view import BaseView
@@ -190,29 +247,32 @@ class TestBaseView(unittest.TestCase):
     def test_render_soldiers(self):
         """Test soldier statistics logic"""
         base = MagicMock()
-        # active = total - wounded
-        s1 = MagicMock()
-        s1.recovery = 0
-        s1.training = False
-        s1.psi_training = False
-        s2 = MagicMock()
-        s2.recovery = 10
-        s2.training = False
-        s2.psi_training = False
-        s3 = MagicMock()
-        s3.recovery = 0
-        s3.training = True
-        s3.psi_training = False
-        base.soldiers = [s1, s2, s3]
+        base.soldiers = []
 
-        with patch("customtkinter.CTkLabel") as MockLabel:
+        # We need to mock the creation of the treeview and its methods for verification
+        with patch("tkinter.ttk.Treeview") as MockTree:
+            # Setup specific soldier data to test population
+            s1 = MagicMock()
+            s1.id = 1
+            s1.recovery = 0
+            s1.training = False
+            s1.psi_training = False
+            s1.rank = 0
+            s1.type = "S"
+            s1.name = "Soldier 1"
+            s1.missions = 10
+            s1.kills = 5
+            base.soldiers = [s1]
+
             self.view.render_soldiers(base)
 
-            texts = [c.kwargs.get("text") for c in MockLabel.call_args_list]
-            self.assertIn("Total Soldiers: 3", texts)
-            self.assertIn("Active: 2 (Approx)", texts)  # 3 - 1 = 2
-            self.assertIn("Wounded: 1", texts)
-            self.assertIn("Training: 1", texts)
+            # Verify Treeview created
+            MockTree.assert_called()
+
+            # Verify insert called
+            # Get the instance returned by MockTree()
+            tree_instance = MockTree.return_value
+            tree_instance.insert.assert_called()
 
     def test_render_transfers(self):
         """Test transfer rendering"""
