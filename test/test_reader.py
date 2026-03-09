@@ -51,27 +51,27 @@ class TestReader:
         csv_data = make_csv(soldier_list)
         assert isinstance(csv_data, list)
         assert len(csv_data) > 1  # Header + at least one soldier
-        assert len(csv_data[0]) == 27  # Check for correct number of columns
+        assert len(csv_data[0]) == 28  # Check for correct number of columns
 
     def test_read_service_record(self):
         """Test that service record data is read correctly"""
         yaml_data = load_data_from_yaml(TEST_SAVE_FILE)
         mission_data = read_missions(yaml_data)
         soldier_list, _ = read_soldiers(yaml_data, mission_data)
-        veronica = None
+        dana = None
         for soldier in soldier_list:
-            if soldier.name == "Veronica Steele":
-                veronica = soldier
+            if soldier.name == "Dana Scully":
+                dana = soldier
                 break
 
-        assert veronica is not None, "Veronica Steele not found in soldier list"
+        assert dana is not None, "Dana Scully not found in soldier list"
 
-        sr = veronica.service_record
+        sr = dana.service_record
         assert isinstance(sr, ServiceRecord)
-        assert len(sr.missions) == 22
-        assert len(sr.commendations) == 19
+        assert len(sr.missions) == 34
+        assert len(sr.commendations) == 28
         assert len(sr.kill_list) > 0
-        assert sr.days_wounded_total == 116
+        assert sr.days_wounded_total == 180
 
     def test_mission_participants(self):
         """Test that the mission participants map is created correctly"""

@@ -90,6 +90,23 @@ class TestViewUtils(unittest.TestCase):
             view_utils.format_mission_death_detail(death_info, translator), expected
         )
 
+    def test_format_recovery_time(self):
+        # 1 day exactly
+        self.assertEqual(view_utils.format_recovery_time(1.0), "1d")
+
+        # 1.5 days -> 1d 12h
+        self.assertEqual(view_utils.format_recovery_time(1.5), "1d 12h")
+
+        # Rounding up: 1.0001 days -> 1d 1h
+        res = view_utils.format_recovery_time(1.0001)
+        self.assertEqual(res, "1d 1h")
+
+        # 0.5 days -> 12h
+        self.assertEqual(view_utils.format_recovery_time(0.5), "12h")
+
+        # 0 days (should generally be handled by caller check > 0, but check valid returns)
+        self.assertEqual(view_utils.format_recovery_time(0), "")
+
 
 if __name__ == "__main__":
     unittest.main()

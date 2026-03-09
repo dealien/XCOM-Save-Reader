@@ -22,6 +22,7 @@ class App(ctk.CTk):
         self.title("OpenXCOM Soldier Stats")
         self.geometry("1024x768")
         self.save_data = None
+        self.bases = []
         self.soldiers = []
         self.missions = {}
         self.mission_participants = {}
@@ -127,6 +128,7 @@ class App(ctk.CTk):
             try:
                 self.save_data = reader.load_data_from_yaml(file_path, section="game")
                 self.missions = reader.read_missions(self.save_data)
+                self.bases = reader.read_bases(self.save_data, self.missions)
                 self.soldiers, self.mission_participants = reader.read_soldiers(
                     self.save_data, self.missions
                 )
@@ -136,7 +138,8 @@ class App(ctk.CTk):
                 main_menu_frame.soldiers_button.configure(state="normal")
                 main_menu_frame.bases_button.configure(state="normal")
                 logger.info(
-                    f"Loaded {len(self.soldiers)} soldiers and "
+                    f"Loaded {len(self.bases)} bases, "
+                    f"{len(self.soldiers)} soldiers and "
                     f"{len(self.missions)} missions."
                 )
             except Exception as e:
@@ -164,8 +167,8 @@ class App(ctk.CTk):
     def get_mission_participants(self, mission_id):
         return self.mission_participants.get(mission_id, [])
 
-    def show_soldier_view(self, soldier_id):
-        self.show_frame(SoldierView, soldier_id)
+    def show_soldier_view(self, soldier_id, previous_view=None):
+        self.show_frame(SoldierView, soldier_id, previous_view)
 
     def show_mission_view(self, mission_id, from_soldier_id):
         self.show_frame(MissionView, mission_id, from_soldier_id)

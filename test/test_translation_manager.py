@@ -122,3 +122,14 @@ class TestTranslationManager:
 
         # Verify it didn't load garbage
         assert tm.get("STR_ANYTHING") == "STR_ANYTHING"
+
+    def test_get_rank_string(self):
+        tm = TranslationManager(self.test_dir)
+        # Test standard ranks
+        assert tm.get_rank_string(0, "STR_SOLDIER") == "STR_ROOKIE"
+        assert tm.get_rank_string(2, "STR_SOLDIER") == "STR_SERGEANT"
+        assert tm.get_rank_string(5, "STR_SOLDIER") == "STR_COMMANDER"
+
+        # Test out of bounds
+        assert tm.get_rank_string(6, "STR_SOLDIER") == "STR_RANK_6"
+        assert tm.get_rank_string(-1, "STR_SOLDIER") == "STR_RANK_-1"
