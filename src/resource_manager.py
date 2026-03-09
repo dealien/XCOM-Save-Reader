@@ -1,0 +1,80 @@
+import logging
+import os
+
+import customtkinter as ctk
+from PIL import Image
+
+logger = logging.getLogger(__name__)
+
+
+class ResourceManager:
+    def __init__(self, data_manager):
+        self.data_manager = data_manager
+        self.image_cache = {}
+
+    def get_sprite(self, sprite_type, index=0, ctk_image=True, size=None):
+        """
+        Retrieves a sprite from the extraSprites ruleset definitions.
+        :param sprite_type: The `type` identifier in extraSprites.
+        :param index: For sprite sheets, which index to grab. If singleImage, usually 0.
+        :param ctk_image: Whether to return a CustomTkinter CTkImage or a PIL Image.
+        :param size: Tuple (width, height) to resize or frame the image.
+        """
+        if sprite_type not in self.data_manager.extraSprites:
+            return None
+
+        sprite_def = self.data_manager.extraSprites[sprite_type]
+        files = sprite_def.get("files", {})
+        
+        # files is a dict mapping index -> path (e.g. {0: "Resources/UI/icon.png"})
+        if index not in files:
+            # Try to grab the first one if the explicit index is missing
+            if files:
+                index = list(files.keys())[0]
+            else:
+                return None
+
+        rel_path = files[index]
+        source_dir = sprite_def.get("_source_dir", "")
+        
+        # OXCE paths are relative to the mod standard dir
+        abs_path = os.path.join(source_dir, rel_path)
+
+        if not os.path.exists(abs_path):
+            logger.warning(f"Sprite file missing: {abs_path}")
+            return None
+
+        cache_key = f"{abs_path}_{index}_{size}"
+        if cache_key in self.image_cache:
+            if ctk_image and not isinstance(
+                self.image_cache[cache_key], ctk.CTkImage
+            ):
+                # We cached PIL, but they want CTkImage. 
+                # Let's do a simple wrap if needed. caching handles this.
+                pass
+            else:
+                return self.image_cache[cache_key]
+
+        try:
+            # We assume it's a standard image format (png, gif).
+            # OXCE extraSprites are mostly PNGs or GIFs.
+            img = Image.open(abs_path)
+
+            if size:
+                # Basic resize for now. 
+                # Might need to handle sprite sheet chopping later.
+                img = img.resize(size, Image.Resampling.LANCZOS)
+            
+            if ctk_image:
+                # CTkImage requires a size, so if not provided, use image size
+                final_size = size if size else img.size
+                result = ctk.CTkImage(light_image=img, dark_image=img, size=final_size)
+            else:
+                result = img
+
+            self.image_cache[cache_key] = result
+            return result
+
+        except Exception as e:
+            logger.error(f"Failed to load sprite {abs_path}: {e}")
+            return None
