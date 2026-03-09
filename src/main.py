@@ -4,6 +4,9 @@ import os
 import customtkinter as ctk
 
 import reader
+from config import Config
+from data_manager import GameDataManager
+from resource_manager import ResourceManager
 from translation_manager import TranslationManager
 from views.base_view import BaseView
 from views.main_menu import MainMenu
@@ -27,10 +30,15 @@ class App(ctk.CTk):
         self.missions = {}
         self.mission_participants = {}
 
-        # Initialize TranslationManager
+        # Initialize Config
+        self.config = Config()
+
+        # Initialize Game and Translation Managers
         resource_path = self._find_resource_path()
-        self.translation_manager = TranslationManager(resource_path)
-        self.translation_manager.index_mods()
+        self.data_manager = GameDataManager(resource_path)
+        self.data_manager.index_mods()
+        self.translation_manager = TranslationManager(self.data_manager)
+        self.resource_manager = ResourceManager(self.data_manager)
 
         # Set appearance mode
         ctk.set_appearance_mode("dark")
@@ -59,10 +67,26 @@ class App(ctk.CTk):
         """
         Locates the directory containing game resources ('common', 'standard', etc.).
         Searches:
+        0. User configuration
         1. Adjacent to this script (Production/Flat layout)
         2. Parent directory (Source layout)
         3. '../reference' from parent (Development layout)
         """
+        # First check user configuration
+        if hasattr(self, "config") and self.config.game_dir:
+            if os.path.exists(self.config.game_dir):
+                if os.path.isdir(os.path.join(self.config.game_dir, "common")):
+                    logger.info(
+                        f"Found game resources at config path: "
+                        f"{self.config.game_dir}"
+                    )
+                    return self.config.game_dir
+                else:
+                    logger.warning(
+                        f"Configured path {self.config.game_dir} "
+                        "does not contain 'common'."
+                    )
+        
         script_dir = os.path.dirname(os.path.abspath(__file__))
         parent_dir = os.path.dirname(script_dir)
 
@@ -112,16 +136,17 @@ class App(ctk.CTk):
                     "Translations may be incomplete.",
                 )
 
-            # Load translations (safe to call with empty list)
+            # Load rulesets and translations
             try:
+                self.data_manager.load_all(mod_list)
                 self.translation_manager.load_all(mod_list)
             except Exception as e:
-                logger.error(f"Error loading translations: {e}")
+                logger.error(f"Error loading rulesets or translations: {e}")
                 from tkinter import messagebox
 
                 messagebox.showwarning(
-                    "Translation Error",
-                    f"Could not load translations.\nError: {e}",
+                    "Data Error",
+                    f"Could not load mod rulesets or translations.\nError: {e}",
                 )
 
             # Load game data
