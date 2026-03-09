@@ -22,6 +22,7 @@ class App(ctk.CTk):
         self.title("OpenXCOM Soldier Stats")
         self.geometry("1024x768")
         self.save_data = None
+        self.bases = []
         self.soldiers = []
         self.missions = {}
         self.mission_participants = {}
