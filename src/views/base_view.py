@@ -176,7 +176,7 @@ class BaseView(ctk.CTkFrame):
 
         # Scrollbar
         scrollbar = ttk.Scrollbar(parent, orient="vertical", command=tree.yview)
-        tree.configure(yscroll=scrollbar.set)
+        tree.configure(yscrollcommand=scrollbar.set)
         scrollbar.pack(side="right", fill="y", padx=(0, 20), pady=(0, 20))
 
         tree.bind("<<TreeviewSelect>>", self.on_soldier_select)
