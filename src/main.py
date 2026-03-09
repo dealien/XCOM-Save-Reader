@@ -137,7 +137,8 @@ class App(ctk.CTk):
                 main_menu_frame.soldiers_button.configure(state="normal")
                 main_menu_frame.bases_button.configure(state="normal")
                 logger.info(
-                    f"Loaded {len(self.bases)} bases, {len(self.soldiers)} soldiers and "
+                    f"Loaded {len(self.bases)} bases, "
+                    f"{len(self.soldiers)} soldiers and "
                     f"{len(self.missions)} missions."
                 )
             except Exception as e:
