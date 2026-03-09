@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 class BaseView(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        print("DEBUG: Entering BaseView.__init__")
+        logger.debug("Entering BaseView.__init__")
         super().__init__(parent)
-        print("DEBUG: Called super().__init__")
+        logger.debug("Called super().__init__")
         self.controller = controller
 
         # Sort state for soldier list
