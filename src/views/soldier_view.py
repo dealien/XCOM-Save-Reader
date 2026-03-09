@@ -188,13 +188,17 @@ class SoldierView(ctk.CTkFrame):
             widget.destroy()
 
         if sr.missions:
+            # Pre-calculate kill counts per mission ID for better performance
+            kills_per_mission = {}
+            for kill in sr.kill_list:
+                m_id = kill.get("mission")
+                kills_per_mission[m_id] = kills_per_mission.get(m_id, 0) + 1
+
             for mission in sr.missions:
                 card = ctk.CTkFrame(self.mission_history_frame, border_width=1)
                 card.pack(fill="x", expand=True, padx=5, pady=5)
 
-                kill_count = len(
-                    [k for k in sr.kill_list if k["mission"] == mission.id]
-                )
+                kill_count = kills_per_mission.get(mission.id, 0)
 
                 card_title = f"{tr(mission.name)} - {mission.time}"
                 card_result = f"Result: {'Success' if mission.success else 'Failure'}"
