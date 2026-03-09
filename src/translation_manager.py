@@ -8,11 +8,10 @@ logger = logging.getLogger(__name__)
 
 
 class TranslationManager:
-    def __init__(self, base_path, language="en-US"):
-        self.base_path = base_path
+    def __init__(self, data_manager, language="en-US"):
+        self.data_manager = data_manager
         self.language = language
         self.translations = {}
-        self.mod_map = {}
 
     def index_mods(self):
         """
@@ -83,19 +82,20 @@ class TranslationManager:
         Loads translations in order: Common -> Standard (Master) -> Mods.
         """
         self.translations = {}
+        base_path = self.data_manager.base_path
+        master = self.data_manager.master
+        mod_map = self.data_manager.mod_map
 
-        # 1. Load Common
         logger.info(f"Loading common translations ({self.language})...")
         common_lang = os.path.join(
-            self.base_path, "common", "Language", f"{self.language}.yml"
+            base_path, "common", "Language", f"{self.language}.yml"
         )
         self._load_file(common_lang)
 
         # 2. Determine and Load Master
-        master = self.determine_master(save_mod_list)
         logger.info(f"Loading master translations ({master})...")
         master_lang = os.path.join(
-            self.base_path, "standard", master, "Language", f"{self.language}.yml"
+            base_path, "standard", master, "Language", f"{self.language}.yml"
         )
         self._load_file(master_lang)
 
@@ -103,10 +103,10 @@ class TranslationManager:
         logger.info("Loading mod translations...")
         for mod_entry in save_mod_list:
             mod_id = mod_entry.split(" ver:", 1)[0].strip()
-            if mod_id in self.mod_map:
+            if mod_id in mod_map:
                 logger.debug(f"  - Loading translations for: {mod_id}")
                 mod_lang = os.path.join(
-                    self.mod_map[mod_id], "Language", f"{self.language}.yml"
+                    mod_map[mod_id], "Language", f"{self.language}.yml"
                 )
                 self._load_file(mod_lang)
 
@@ -142,22 +142,6 @@ class TranslationManager:
 
     def get_rank_string(self, rank_index, soldier_type):
         """
-        Get the translation key for a soldier's rank.
-        TODO: Load specific rank strings from ruleset for the given soldier type.
+        Delegates to GameDataManager for accurate ruleset-based rank string.
         """
-        # Standard X-COM ranks mapping
-        ranks = [
-            "STR_ROOKIE",
-            "STR_SQUADDIE",
-            "STR_SERGEANT",
-            "STR_CAPTAIN",
-            "STR_COLONEL",
-            "STR_COMMANDER",
-        ]
-
-        # Safe lookup
-        if isinstance(rank_index, int) and 0 <= rank_index < len(ranks):
-            return ranks[rank_index]
-
-        # Fallback
-        return f"STR_RANK_{rank_index}"
+        return self.data_manager.get_soldier_rank_string(soldier_type, rank_index)
