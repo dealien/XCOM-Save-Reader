@@ -155,6 +155,12 @@ mock_ctk.CTkTabview = DummyCTkTabview
 mock_ctk.CTkScrollableFrame = DummyCTkScrollableFrame
 mock_ctk.CTkFont = MagicMock()
 
+_original_modules = {
+    "customtkinter": sys.modules.get("customtkinter"),
+    "tkinter": sys.modules.get("tkinter"),
+    "tkinter.ttk": sys.modules.get("tkinter.ttk"),
+}
+
 sys.modules["customtkinter"] = mock_ctk
 
 # Mock ttk
@@ -167,6 +173,18 @@ sys.modules["tkinter.ttk"] = mock_ttk
 
 # Now import the class under test
 from views.base_view import BaseView  # noqa: E402
+
+
+def tearDownModule():
+    """Restore sys.modules to prevent test pollution."""
+    for mod_name, original_mod in _original_modules.items():
+        if original_mod is None:
+            sys.modules.pop(mod_name, None)
+        else:
+            sys.modules[mod_name] = original_mod
+
+    # Remove the imported module so it can be cleanly re-imported by other tests
+    sys.modules.pop("views.base_view", None)
 
 
 class TestBaseView(unittest.TestCase):
