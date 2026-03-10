@@ -151,18 +151,19 @@ class TestMain(unittest.TestCase):
         import main
         self.app.show_frame.reset_mock()
         self.app.show_soldier_view(123)
-        args = self.app.show_frame.call_args[0]
-        self.assertEqual(args[0], main.SoldierView)
-        self.assertEqual(args[1], 123)
+        self.app.show_frame.assert_called_once_with(main.SoldierView, 123, None)
+
+    def test_show_soldier_view_with_previous(self):
+        import main
+        self.app.show_frame.reset_mock()
+        self.app.show_soldier_view(123, previous_view="PreviousView")
+        self.app.show_frame.assert_called_once_with(main.SoldierView, 123, "PreviousView")
 
     def test_show_mission_view(self):
         import main
         self.app.show_frame.reset_mock()
         self.app.show_mission_view(456, 123)
-        args = self.app.show_frame.call_args[0]
-        self.assertEqual(args[0], main.MissionView)
-        self.assertEqual(args[1], 456)
-        self.assertEqual(args[2], 123)
+        self.app.show_frame.assert_called_once_with(main.MissionView, 456, 123)
 
 
 if __name__ == "__main__":
