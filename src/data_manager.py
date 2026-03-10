@@ -278,8 +278,6 @@ class GameDataManager:
             ent_type = item.get("type") or item.get("name")
             if not ent_type:
                 continue
-
-            ent_type = item["type"]
             if ent_type not in target_dict:
                 target_dict[ent_type] = item
             else:
