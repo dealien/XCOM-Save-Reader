@@ -120,6 +120,6 @@ class TestTranslationManager:
 
         # Verify that an error was logged for this file
         assert any(
-            f"Error loading translation file {invalid_yaml_path}" in record.message
+            f"Error loading translation file {invalid_yaml_path}" in record.getMessage()
             for record in caplog.records
         )
