@@ -61,6 +61,33 @@ class TestGameDataManager:
         assert "mod2" in dm.mod_map
         assert dm.mod_map["mod1"] == self.mod1_dir
 
+    def test_index_mods_metadata_error(self, caplog):
+        """
+        Verify that a malformed metadata.yml does not crash indexing
+        and logs an appropriate error message.
+        """
+        import logging
+        # Create a mod with a malformed metadata.yml
+        bad_mod_dir = os.path.join(self.test_dir, "user", "mods", "BadMod")
+        os.makedirs(bad_mod_dir, exist_ok=True)
+        bad_metadata_path = os.path.join(bad_mod_dir, "metadata.yml")
+
+        # Write invalid YAML
+        with open(bad_metadata_path, "w") as f:
+            f.write("id: [unclosed list")
+
+        dm = GameDataManager(self.test_dir)
+
+        with caplog.at_level(logging.ERROR):
+            dm.index_mods()
+
+        # The bad mod should not be in the mod map
+        assert bad_mod_dir not in dm.mod_map.values()
+
+        # Verify the error was logged
+        error_logs = [record.getMessage() for record in caplog.records if record.levelname == "ERROR"]
+        assert any("Error reading metadata for BadMod" in msg for msg in error_logs)
+
     def test_determine_master(self):
         dm = GameDataManager(self.test_dir)
         dm.index_mods()
