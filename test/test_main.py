@@ -13,6 +13,8 @@ _original_modules = {
     "tkinter.messagebox": sys.modules.get("tkinter.messagebox"),
     "tkinter.filedialog": sys.modules.get("tkinter.filedialog"),
     "yaml": sys.modules.get("yaml"),  # Added from HEAD
+    "PIL": sys.modules.get("PIL"),
+    "PIL.Image": sys.modules.get("PIL.Image"),
 }
 
 
@@ -80,6 +82,8 @@ class TestMain(unittest.TestCase):
         sys.modules["tkinter.messagebox"] = MagicMock()
         sys.modules["tkinter.filedialog"] = MagicMock()
         sys.modules["yaml"] = MagicMock()  # Added from HEAD
+        sys.modules["PIL"] = MagicMock()
+        sys.modules["PIL.Image"] = MagicMock()
 
         # Make sure `main` is completely reloaded
         if "main" in sys.modules:

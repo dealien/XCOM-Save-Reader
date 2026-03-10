@@ -6,7 +6,7 @@ import unittest
 # Add src directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from reader import load_data_from_yaml, read_missions, read_soldiers
+from reader import load_data_from_yaml, read_bases, read_missions, read_soldiers
 
 
 class TestReaderEdgeCases(unittest.TestCase):
@@ -78,3 +78,9 @@ class TestReaderEdgeCases(unittest.TestCase):
 
         missions = read_missions(game_data)
         self.assertEqual(missions, {})
+
+    def test_read_bases_missing_bases_key(self):
+        """Test read_bases when 'bases' key is missing from the data."""
+        data = {}
+        bases = read_bases(data, {})
+        self.assertEqual(bases, [])
