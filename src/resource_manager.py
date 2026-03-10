@@ -36,13 +36,24 @@ class ResourceManager:
 
         rel_path = files[index]
         source_dir = sprite_def.get("_source_dir", "")
-        
-        # OXCE paths are relative to the mod standard dir
+
+        # OXCE paths are relative to the mod/standard dir
         abs_path = os.path.join(source_dir, rel_path)
 
-        if not os.path.exists(abs_path):
-            logger.warning(f"Sprite file missing: {abs_path}")
+        # Prevent path traversal (e.g. "../../secrets")
+        resolved = os.path.realpath(abs_path)
+        root = os.path.realpath(source_dir)
+        if os.path.commonpath([root, resolved]) != root:
+            logger.warning(
+                f"Blocked path traversal attempt: {rel_path}"
+            )
             return None
+
+        if not os.path.exists(resolved):
+            logger.warning(f"Sprite file missing: {resolved}")
+            return None
+
+        abs_path = resolved
 
         cache_key = f"{abs_path}_{index}_{size}"
         if cache_key in self.image_cache:
