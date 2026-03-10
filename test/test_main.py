@@ -3,36 +3,107 @@ import sys
 import unittest
 from unittest.mock import MagicMock
 
+# Add src to path
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-# Mock yaml
-sys.modules["yaml"] = MagicMock()
+_original_modules = {
+    "customtkinter": sys.modules.get("customtkinter"),
+    "tkinter": sys.modules.get("tkinter"),
+    "tkinter.ttk": sys.modules.get("tkinter.ttk"),
+    "tkinter.messagebox": sys.modules.get("tkinter.messagebox"),
+    "yaml": sys.modules.get("yaml"),  # Added from HEAD
+}
 
-# Mock ctk components
-class DummyCTk:
-    def __init__(self, *args, **kwargs):
-        pass
 
-mock_ctk = MagicMock()
-mock_ctk.CTk = DummyCTk
-sys.modules["customtkinter"] = mock_ctk
-sys.modules["tkinter"] = MagicMock()
+def tearDownModule():
+    """Restore sys.modules to prevent test pollution."""
+    for mod_name, original_mod in _original_modules.items():
+        if original_mod is None:
+            sys.modules.pop(mod_name, None)
+        else:
+            sys.modules[mod_name] = original_mod
 
-from main import App
+    # Remove the imported modules so they can be cleanly re-imported by other tests
+    sys.modules.pop("main", None)
+    for mod in list(sys.modules.keys()):
+        if mod.startswith("views."):
+            sys.modules.pop(mod, None)
+
 
 class TestMain(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """
+        Dynamically load `main.py` making sure no previous mock pollutes the test.
+        The trick is to mock the problem dependencies BEFORE importing main.
+        """
+
+        # We need a dummy CTk class to avoid inheriting from MagicMock
+        class DummyCTk:
+            def __init__(self, *args, **kwargs):
+                pass
+
+            def title(self, *args):
+                pass
+
+            def geometry(self, *args):
+                pass
+
+        class DummyCTkFrame:
+            def __init__(self, master=None, **kwargs):
+                self.master = master
+                self.winfo_children = MagicMock(return_value=[])
+
+            def grid(self, **kwargs):
+                pass
+
+            def pack(self, **kwargs):
+                pass
+
+            def grid_rowconfigure(self, index, weight=1):
+                pass
+
+            def grid_columnconfigure(self, index, weight=1):
+                pass
+
+            def destroy(self):
+                pass
+
+        mock_ctk = MagicMock()
+        mock_ctk.CTk = DummyCTk
+        mock_ctk.CTkFrame = DummyCTkFrame
+
+        sys.modules["customtkinter"] = mock_ctk
+        sys.modules["tkinter"] = MagicMock()
+        sys.modules["tkinter.ttk"] = MagicMock()
+        sys.modules["tkinter.messagebox"] = MagicMock()
+        sys.modules["yaml"] = MagicMock()  # Added from HEAD
+
+        # Make sure `main` is completely reloaded
+        if "main" in sys.modules:
+            del sys.modules["main"]
+
+        import main
+
+        cls.AppClass = main.App
+
     def setUp(self):
-        # We don't need a real App object, just use the function
-        # Or create an object that acts like App just for this method
-        class DummyApp:
+        class MockApp:
             def __init__(self):
-                self.soldiers = []
+                self.soldiers = []  # From HEAD
+                self.missions = {  # From incoming
+                    101: {"id": 101, "name": "Operation Falling Star"},
+                    102: {"id": 102, "name": "Operation Hidden Chalice"},
+                }
 
-            get_soldier_by_id = App.get_soldier_by_id
+            get_soldier_by_id = (
+                self.AppClass.get_soldier_by_id
+            )  # From HEAD, adapted to use AppClass
+            get_mission_by_id = self.AppClass.get_mission_by_id  # From incoming
 
-        self.app = DummyApp()
+        self.app = MockApp()
 
-        # Set up soldiers list
+        # Set up soldiers list (from HEAD)
         class DummySoldier:
             def __init__(self, id):
                 self.id = id
@@ -42,6 +113,7 @@ class TestMain(unittest.TestCase):
 
         self.app.soldiers = [self.s1, self.s2]
 
+    # Tests from HEAD branch
     def test_get_soldier_by_id_valid_int(self):
         soldier = self.app.get_soldier_by_id(1)
         self.assertEqual(soldier, self.s1)
@@ -61,6 +133,17 @@ class TestMain(unittest.TestCase):
     def test_get_soldier_by_id_invalid_type_none(self):
         soldier = self.app.get_soldier_by_id(None)
         self.assertIsNone(soldier)
+
+    # Tests from incoming branch
+    def test_get_mission_by_id_existing(self):
+        mission = self.app.get_mission_by_id(101)
+        self.assertIsNotNone(mission)
+        self.assertEqual(mission["name"], "Operation Falling Star")
+
+    def test_get_mission_by_id_non_existing(self):
+        mission = self.app.get_mission_by_id(999)
+        self.assertIsNone(mission)
+
 
 if __name__ == "__main__":
     unittest.main()

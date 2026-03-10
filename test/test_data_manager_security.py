@@ -6,20 +6,20 @@ from unittest.mock import patch
 # Add src directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from src.translation_manager import TranslationManager
+from src.data_manager import GameDataManager
 
 
-class TestTranslationManagerSecurity(unittest.TestCase):
-    @patch("src.translation_manager.os.listdir")
-    @patch("src.translation_manager.os.path.isdir")
-    @patch("src.translation_manager.os.path.realpath")
-    @patch("src.translation_manager.os.path.commonpath")
+class TestGameDataManagerSecurity(unittest.TestCase):
+    @patch("src.data_manager.os.listdir")
+    @patch("src.data_manager.os.path.isdir")
+    @patch("src.data_manager.os.path.realpath")
+    @patch("src.data_manager.os.path.commonpath")
     def test_index_mods_traversal_prevention(
         self, mock_commonpath, mock_realpath, mock_isdir, mock_listdir
     ):
         # Setup
         base_path = "/app"
-        tm = TranslationManager(base_path)
+        dm = GameDataManager(base_path)
 
         # Mock search directories to exist
         mock_isdir.side_effect = lambda x: True
@@ -62,7 +62,7 @@ class TestTranslationManagerSecurity(unittest.TestCase):
         mock_commonpath.side_effect = commonpath_side_effect
 
         # Run
-        tm.index_mods()
+        dm.index_mods()
 
         # Assertions
         # The valid mod should technically continue to check for metadata.yml
@@ -78,7 +78,7 @@ class TestTranslationManagerSecurity(unittest.TestCase):
         mock_isdir.return_value = True  # Default
 
         # Run again with monitoring
-        tm.index_mods()
+        dm.index_mods()
 
         # Check calls to mocked functions
         # valid_mod_path should be checked for isdir (line 36)
