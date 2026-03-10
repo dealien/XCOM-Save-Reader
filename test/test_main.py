@@ -25,6 +25,14 @@ def tearDownModule():
 
     # Remove the imported modules so they can be cleanly re-imported by other tests
     sys.modules.pop("main", None)
+    sys.modules.pop("reader", None)
+    sys.modules.pop("config", None)
+    sys.modules.pop("data_manager", None)
+    sys.modules.pop("resource_manager", None)
+    sys.modules.pop("translation_manager", None)
+    sys.modules.pop("inventory_formatter", None)
+    sys.modules.pop("view_utils", None)
+
     for mod in list(sys.modules.keys()):
         if mod.startswith("views."):
             sys.modules.pop(mod, None)
@@ -79,9 +87,10 @@ class TestMain(unittest.TestCase):
         sys.modules["tkinter.messagebox"] = MagicMock()
         sys.modules["yaml"] = MagicMock()  # Added from HEAD
 
-        # Make sure `main` is completely reloaded
-        if "main" in sys.modules:
-            del sys.modules["main"]
+        # Make sure `main` and its direct dependencies are completely reloaded
+        # so they use the mocked dependencies
+        for mod in ["main", "reader", "config", "data_manager", "resource_manager", "translation_manager", "inventory_formatter", "view_utils"]:
+            sys.modules.pop(mod, None)
 
         import main
 
