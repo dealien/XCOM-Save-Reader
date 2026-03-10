@@ -24,11 +24,6 @@ class MainMenu(ctk.CTkFrame):
         )
         self.bases_button.pack(pady=10)
 
-        settings_button = ctk.CTkButton(
-            self, text="Settings", command=self.show_settings
-        )
-        settings_button.pack(pady=10)
-
         quit_button = ctk.CTkButton(self, text="Quit", command=controller.quit)
         quit_button.pack(pady=10)
 
@@ -44,7 +39,3 @@ class MainMenu(ctk.CTkFrame):
         from views.base_view import BaseView
 
         self.controller.show_frame(BaseView)
-        
-    def show_settings(self):
-        from views.settings_view import SettingsView
-        SettingsView(self, self.controller)

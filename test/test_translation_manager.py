@@ -8,7 +8,6 @@ import yaml
 # Add src directory to path
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from src.data_manager import GameDataManager
 from src.translation_manager import TranslationManager
 
 
@@ -52,6 +51,33 @@ class TestTranslationManager:
     def teardown_method(self):
         shutil.rmtree(self.test_dir)
 
+    def test_index_mods(self):
+        tm = TranslationManager(self.test_dir)
+        tm.index_mods()
+
+        assert "xcom1" in tm.mod_map
+        assert "xcom2" in tm.mod_map
+        assert "mod1" in tm.mod_map
+        assert "mod2" in tm.mod_map
+        assert tm.mod_map["mod1"] == self.mod1_dir
+
+    def test_determine_master(self):
+        tm = TranslationManager(self.test_dir)
+        tm.index_mods()
+
+        # Default
+        assert tm.determine_master([]) == "xcom1"
+
+        # Explicit master via mod
+        # (simulating a Total Conversion or just master dependency)
+        # Assuming verify check uses metadata
+        # Create a mod that refers to xcom2 as master?
+        # Actually determine_master implementation checks if a mod *IS* a master.
+        # So passing ["xcom2"] should translate to master=xcom2
+
+        assert tm.determine_master(["xcom2 ver: 1.0"]) == "xcom2"
+        assert tm.determine_master(["xcom1 ver: 1.0"]) == "xcom1"
+
     def test_load_all_precedence(self):
         # Setup language files
         with open(os.path.join(self.common_lang_dir, "en-US.yml"), "w") as f:
@@ -63,19 +89,16 @@ class TestTranslationManager:
         with open(os.path.join(self.mod1_dir, "Language", "en-US.yml"), "w") as f:
             yaml.dump({"en-US": {"STR_MOD1": "Mod1", "STR_OVERWRITE": "Mod1"}}, f)
 
-        dm = GameDataManager(self.test_dir)
-        dm.index_mods()
-        tm = TranslationManager(dm)
+        tm = TranslationManager(self.test_dir)
+        tm.index_mods()
 
         # Load with just Master
-        dm.load_all(["xcom1 ver: 1.0"])
         tm.load_all(["xcom1 ver: 1.0"])
         assert tm.get("STR_COMMON") == "Common"
         assert tm.get("STR_MASTER") == "Master"
         assert tm.get("STR_OVERWRITE") == "Master"
 
         # Load with Mod 1 (should overwrite Master)
-        dm.load_all(["xcom1 ver: 1.0", "mod1 ver: 1.0"])
         tm.load_all(["xcom1 ver: 1.0", "mod1 ver: 1.0"])
         assert tm.get("STR_OVERWRITE") == "Mod1"
         assert tm.get("STR_MOD1") == "Mod1"
@@ -93,10 +116,8 @@ class TestTranslationManager:
         with open(malformed_path, "w") as f:
             yaml.dump({"en-US": "This is not a dictionary"}, f)
 
-        dm = GameDataManager(self.test_dir)
-        tm = TranslationManager(dm)
+        tm = TranslationManager(self.test_dir)
         # Should not raise exception
-        dm.load_all([])
         tm.load_all([])
 
         # Verify it didn't load garbage
@@ -107,6 +128,7 @@ class TestTranslationManager:
         Verify that exceptions during yaml.safe_load are caught and logged.
         """
         import logging
+
         invalid_yaml_path = os.path.join(self.common_lang_dir, "invalid.yml")
         with open(invalid_yaml_path, "w") as f:
             # Write completely invalid YAML that will fail to parse
