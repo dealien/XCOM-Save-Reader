@@ -26,14 +26,6 @@ def tearDownModule():
 
     # Remove the imported modules so they can be cleanly re-imported by other tests
     sys.modules.pop("main", None)
-    sys.modules.pop("reader", None)
-    sys.modules.pop("config", None)
-    sys.modules.pop("data_manager", None)
-    sys.modules.pop("resource_manager", None)
-    sys.modules.pop("translation_manager", None)
-    sys.modules.pop("inventory_formatter", None)
-    sys.modules.pop("view_utils", None)
-
     for mod in list(sys.modules.keys()):
         if mod.startswith("views."):
             sys.modules.pop(mod, None)
@@ -89,30 +81,31 @@ class TestMain(unittest.TestCase):
         sys.modules["tkinter.filedialog"] = MagicMock()
         sys.modules["yaml"] = MagicMock()  # Added from HEAD
 
-        # Make sure `main` and its direct dependencies are completely reloaded
-        # so they use the mocked dependencies
-        for mod in [
-            "main",
-            "reader",
-            "config",
-            "data_manager",
-            "resource_manager",
-            "translation_manager",
-            "inventory_formatter",
-            "view_utils",
-        ]:
-            sys.modules.pop(mod, None)
+        # Make sure `main` is completely reloaded
+        if "main" in sys.modules:
+            del sys.modules["main"]
 
         import main
 
         cls.AppClass = main.App
 
     def setUp(self):
-        self.app = self.AppClass.__new__(self.AppClass)
-        self.app.missions = {
-            101: {"id": 101, "name": "Operation Falling Star"},
-            102: {"id": 102, "name": "Operation Hidden Chalice"},
-        }
+        class MockApp:
+            def __init__(self):
+                self.soldiers = []  # From HEAD
+                self.missions = {  # From incoming
+                    101: {"id": 101, "name": "Operation Falling Star"},
+                    102: {"id": 102, "name": "Operation Hidden Chalice"},
+                }
+
+            get_soldier_by_id = (
+                self.AppClass.get_soldier_by_id
+            )  # From HEAD, adapted to use AppClass
+            get_mission_by_id = self.AppClass.get_mission_by_id  # From incoming
+            show_soldier_view = self.AppClass.show_soldier_view
+            show_mission_view = self.AppClass.show_mission_view
+
+        self.app = MockApp()
         self.app.show_frame = MagicMock()
 
         # Set up soldiers list (from HEAD)
@@ -126,23 +119,23 @@ class TestMain(unittest.TestCase):
         self.app.soldiers = [self.s1, self.s2]
 
     # Tests from HEAD branch
-    def test_app_instance_get_soldier_by_id_valid_int(self):
+    def test_get_soldier_by_id_valid_int(self):
         soldier = self.app.get_soldier_by_id(1)
         self.assertEqual(soldier, self.s1)
 
-    def test_app_instance_get_soldier_by_id_valid_str(self):
+    def test_get_soldier_by_id_valid_str(self):
         soldier = self.app.get_soldier_by_id("2")
         self.assertEqual(soldier, self.s2)
 
-    def test_app_instance_get_soldier_by_id_not_found(self):
+    def test_get_soldier_by_id_not_found(self):
         soldier = self.app.get_soldier_by_id(999)
         self.assertIsNone(soldier)
 
-    def test_app_instance_get_soldier_by_id_invalid_type_str(self):
+    def test_get_soldier_by_id_invalid_type_str(self):
         soldier = self.app.get_soldier_by_id("abc")
         self.assertIsNone(soldier)
 
-    def test_app_instance_get_soldier_by_id_invalid_type_none(self):
+    def test_get_soldier_by_id_invalid_type_none(self):
         soldier = self.app.get_soldier_by_id(None)
         self.assertIsNone(soldier)
 
