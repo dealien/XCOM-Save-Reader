@@ -55,16 +55,9 @@ class ResourceManager:
 
         abs_path = resolved
 
-        cache_key = f"{abs_path}_{index}_{size}"
+        cache_key = f"{abs_path}_{index}_{size}_{ctk_image}"
         if cache_key in self.image_cache:
-            if ctk_image and not isinstance(
-                self.image_cache[cache_key], ctk.CTkImage
-            ):
-                # We cached PIL, but they want CTkImage. 
-                # Let's do a simple wrap if needed. caching handles this.
-                pass
-            else:
-                return self.image_cache[cache_key]
+            return self.image_cache[cache_key]
 
         try:
             # Open with context manager to ensure file handle is released.
