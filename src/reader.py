@@ -178,6 +178,7 @@ class ManufacturingProject:
         self.assigned = data.get("assigned", 0)
         self.spent = data.get("spent", 0)
         self.amount = data.get("amount", 0)  # Amount ordered
+        self.infinite = data.get("infinite", False)
 
 
 class Transfer:

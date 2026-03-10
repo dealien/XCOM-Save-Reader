@@ -272,10 +272,12 @@ class GameDataManager:
             return
 
         for item in source_list:
-            if not isinstance(item, dict) or "type" not in item:
+            if not isinstance(item, dict):
                 continue
 
-            ent_type = item["type"]
+            ent_type = item.get("type") or item.get("name")
+            if not ent_type:
+                continue
             if ent_type not in target_dict:
                 target_dict[ent_type] = item
             else:
