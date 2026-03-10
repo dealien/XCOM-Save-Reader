@@ -204,6 +204,11 @@ class GameDataManager:
             return True
         except Exception as e:
             logger.warning(f"Cache read failed, will re-parse: {e}")
+            try:
+                os.remove(path)
+                logger.info(f"Removed corrupt cache file: {path}")
+            except OSError:
+                pass
             return False
 
     def _save_cache(self, cache_key):
