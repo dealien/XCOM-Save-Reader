@@ -85,7 +85,7 @@ class TestGameDataManager:
         assert bad_mod_dir not in dm.mod_map.values()
 
         # Verify the error was logged
-        error_logs = [record.message for record in caplog.records if record.levelname == "ERROR"]
+        error_logs = [record.getMessage() for record in caplog.records if record.levelname == "ERROR"]
         assert any("Error reading metadata for BadMod" in msg for msg in error_logs)
 
     def test_determine_master(self):
