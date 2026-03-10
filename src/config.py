@@ -41,5 +41,7 @@ class Config:
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
                 logger.info(f"Saved config to {path}")
+            return True
         except Exception as e:
             logger.error(f"Failed to save user config: {e}")
+            return False

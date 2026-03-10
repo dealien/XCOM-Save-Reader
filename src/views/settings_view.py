@@ -83,17 +83,20 @@ class SettingsView(ctk.CTkToplevel):
     def save_settings(self):
         new_dir = self.dir_entry.get().strip()
         self.controller.config.game_dir = new_dir
-        self.controller.config.save()
 
-        # Force a re-initialization of translation manager if needed,
-        # but for now, just let the user know they might need to reload.
-        messagebox.showinfo(
-            "Settings Saved",
-            "Settings have been saved. You may need to restart "
-            "or reload to apply changes.",
-        )
-
-        self.destroy()
+        if self.controller.config.save():
+            messagebox.showinfo(
+                "Settings Saved",
+                "Settings have been saved. You may need to "
+                "restart or reload to apply changes.",
+            )
+            self.destroy()
+        else:
+            messagebox.showerror(
+                "Save Failed",
+                "Could not save settings. Check file "
+                "permissions and try again.",
+            )
 
     def open_cache_dir(self):
         cache_dir = self.controller.data_manager._cache_dir
