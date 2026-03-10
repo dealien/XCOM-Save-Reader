@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 
@@ -218,5 +219,43 @@ if __name__ == "__main__":
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
+    parser = argparse.ArgumentParser(description="OpenXCOM Save Reader")
+    parser.add_argument(
+        "save_file",
+        nargs="?",
+        default=None,
+        help="Path to save file to load on startup.",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        action="store_true",
+        help="Load test/Test Save.sav automatically.",
+    )
+    parser.add_argument(
+        "-j",
+        "--json-dump",
+        action="store_true",
+        help="Dump loaded save data to a JSON file.",
+    )
+    parser.add_argument(
+        "--clear-cache",
+        action="store_true",
+        help="Clear the ruleset cache before loading.",
+    )
+    args = parser.parse_args()
+
     app = App()
+
+    if args.clear_cache:
+        app.data_manager.clear_cache()
+
+    # Determine save file to load
+    save_path = args.save_file
+    if args.debug and not save_path:
+        save_path = "test/Test Save.sav"
+
+    if save_path:
+        app.load_save_file(file_path=save_path, json_dump=args.json_dump)
+
     app.mainloop()
