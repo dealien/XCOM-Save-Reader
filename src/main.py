@@ -111,8 +111,18 @@ class App(ctk.CTk):
             frame.update_view(*args)
         frame.tkraise()
 
-    def load_save_file(self):
-        file_path = "test/Test Save.sav"
+    def load_save_file(self, file_path=None, json_dump=False):
+        if not file_path:
+            from tkinter import filedialog
+
+            file_path = filedialog.askopenfilename(
+                title="Select Save File",
+                initialdir=os.getcwd(),
+                filetypes=[
+                    ("Save files", "*.sav *.asav"),
+                    ("All files", "*.*"),
+                ],
+            )
 
         if file_path:
             logger.info(f"Loading save file: {file_path}")
@@ -150,7 +160,9 @@ class App(ctk.CTk):
 
             # Load game data
             try:
-                self.save_data = reader.load_data_from_yaml(file_path, section="game")
+                self.save_data = reader.load_data_from_yaml(
+                    file_path, json_dump=json_dump, section="game"
+                )
                 self.missions = reader.read_missions(self.save_data)
                 self.bases = reader.read_bases(self.save_data, self.missions)
                 self.soldiers, self.mission_participants = reader.read_soldiers(
