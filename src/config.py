@@ -6,6 +6,7 @@ logger = logging.getLogger(__name__)
 
 CONFIG_FILE = "config.json"
 
+
 class Config:
     def __init__(self):
         self.game_dir = ""
@@ -16,7 +17,7 @@ class Config:
         # But for portability, using the same logic as _find_resource_path candidates
         # to find where config should live, or simply user root.
         # Let's put it next to the executable/script directory or project root.
-        
+
         # A simple approach: store it in the same directory as main.py (src/) or parent.
         # We will use parent directory of src/ so it persists across runs.
         src_dir = os.path.dirname(os.path.abspath(__file__))

@@ -89,7 +89,16 @@ class TestMain(unittest.TestCase):
 
         # Make sure `main` and its direct dependencies are completely reloaded
         # so they use the mocked dependencies
-        for mod in ["main", "reader", "config", "data_manager", "resource_manager", "translation_manager", "inventory_formatter", "view_utils"]:
+        for mod in [
+            "main",
+            "reader",
+            "config",
+            "data_manager",
+            "resource_manager",
+            "translation_manager",
+            "inventory_formatter",
+            "view_utils",
+        ]:
             sys.modules.pop(mod, None)
 
         import main
@@ -147,18 +156,23 @@ class TestMain(unittest.TestCase):
 
     def test_show_soldier_view(self):
         import main
+
         self.app.show_frame.reset_mock()
         self.app.show_soldier_view(123)
         self.app.show_frame.assert_called_once_with(main.SoldierView, 123, None)
 
     def test_show_soldier_view_with_previous(self):
         import main
+
         self.app.show_frame.reset_mock()
         self.app.show_soldier_view(123, previous_view="PreviousView")
-        self.app.show_frame.assert_called_once_with(main.SoldierView, 123, "PreviousView")
+        self.app.show_frame.assert_called_once_with(
+            main.SoldierView, 123, "PreviousView"
+        )
 
     def test_show_mission_view(self):
         import main
+
         self.app.show_frame.reset_mock()
         self.app.show_mission_view(456, 123)
         self.app.show_frame.assert_called_once_with(main.MissionView, 456, 123)

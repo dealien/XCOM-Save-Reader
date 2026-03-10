@@ -77,8 +77,7 @@ class App(ctk.CTk):
             if os.path.exists(self.config.game_dir):
                 if os.path.isdir(os.path.join(self.config.game_dir, "common")):
                     logger.info(
-                        f"Found game resources at config path: "
-                        f"{self.config.game_dir}"
+                        f"Found game resources at config path: {self.config.game_dir}"
                     )
                     return self.config.game_dir
                 else:
@@ -86,7 +85,7 @@ class App(ctk.CTk):
                         f"Configured path {self.config.game_dir} "
                         "does not contain 'common'."
                     )
-        
+
         script_dir = os.path.dirname(os.path.abspath(__file__))
         parent_dir = os.path.dirname(script_dir)
 
