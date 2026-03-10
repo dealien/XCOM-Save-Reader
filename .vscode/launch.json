@@ -11,10 +11,20 @@
             "program": "${workspaceFolder}/src/main.py",
             "console": "integratedTerminal",
             "args": [
-                "user/x-com-files/_quick_.asav",
+                "test/Test Save.sav",
                 "-d",
-                "-j"
+                "-j",
+                "--clear-cache"
             ],
+            "preLaunchTask": "Copy Saves"
+        },
+        {
+            "name": "Save Reader Normal",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/main.py",
+            "console": "integratedTerminal",
+            "args": [],
             "preLaunchTask": "Copy Saves"
         },
         {

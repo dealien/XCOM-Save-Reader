@@ -63,7 +63,7 @@ target/
 *.sublime-project
 *.sublime-workspace
 .idea/
-.vscode/
+# .vscode/
 .agent/
 
 # Self-generated files
