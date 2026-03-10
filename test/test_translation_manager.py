@@ -123,6 +123,25 @@ class TestTranslationManager:
         # Verify it didn't load garbage
         assert tm.get("STR_ANYTHING") == "STR_ANYTHING"
 
+    def test_load_file_exception(self, caplog):
+        """
+        Verify that exceptions during yaml.safe_load are caught and logged.
+        """
+        import logging
+        invalid_yaml_path = os.path.join(self.common_lang_dir, "invalid.yml")
+        with open(invalid_yaml_path, "w") as f:
+            # Write completely invalid YAML that will fail to parse
+            f.write("[unclosed bracket")
+
+        tm = TranslationManager(self.test_dir)
+
+        # We can call _load_file directly as it's the target of this test
+        with caplog.at_level(logging.ERROR):
+            tm._load_file(invalid_yaml_path)
+
+        # Verify that an error was logged
+        assert f"Error loading translation file {invalid_yaml_path}:" in caplog.text
+
     def test_get_rank_string(self):
         tm = TranslationManager(self.test_dir)
         # Test standard ranks
