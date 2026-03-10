@@ -82,7 +82,7 @@ class TestGameDataManager:
             dm.index_mods()
 
         # The bad mod should not be in the mod map
-        assert "BadMod" not in dm.mod_map
+        assert bad_mod_dir not in dm.mod_map.values()
 
         # Verify the error was logged
         error_logs = [record.message for record in caplog.records if record.levelname == "ERROR"]
