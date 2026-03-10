@@ -7,6 +7,7 @@ packaging==24.2
 pluggy==1.5.0
 pillow==12.1.1
 pytest==8.3.4
+ruff==0.15.5
 pytest-cov==7.0.0
 pytest-print==1.0.2
 PyYAML==6.0.2

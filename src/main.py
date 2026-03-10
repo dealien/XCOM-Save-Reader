@@ -1,3 +1,4 @@
+import argparse
 import logging
 import os
 
@@ -111,8 +112,18 @@ class App(ctk.CTk):
             frame.update_view(*args)
         frame.tkraise()
 
-    def load_save_file(self):
-        file_path = "test/Test Save.sav"
+    def load_save_file(self, file_path=None, json_dump=False):
+        if not file_path:
+            from tkinter import filedialog
+
+            file_path = filedialog.askopenfilename(
+                title="Select Save File",
+                initialdir=os.getcwd(),
+                filetypes=[
+                    ("Save files", "*.sav *.asav"),
+                    ("All files", "*.*"),
+                ],
+            )
 
         if file_path:
             logger.info(f"Loading save file: {file_path}")
@@ -150,7 +161,9 @@ class App(ctk.CTk):
 
             # Load game data
             try:
-                self.save_data = reader.load_data_from_yaml(file_path, section="game")
+                self.save_data = reader.load_data_from_yaml(
+                    file_path, json_dump=json_dump, section="game"
+                )
                 self.missions = reader.read_missions(self.save_data)
                 self.bases = reader.read_bases(self.save_data, self.missions)
                 self.soldiers, self.mission_participants = reader.read_soldiers(
@@ -181,7 +194,7 @@ class App(ctk.CTk):
             for soldier in self.soldiers:
                 if soldier.id == sid:
                     return soldier
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             pass
         return None
 
@@ -206,5 +219,43 @@ if __name__ == "__main__":
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
+    parser = argparse.ArgumentParser(description="OpenXCOM Save Reader")
+    parser.add_argument(
+        "save_file",
+        nargs="?",
+        default=None,
+        help="Path to save file to load on startup.",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        action="store_true",
+        help="Load test/Test Save.sav automatically.",
+    )
+    parser.add_argument(
+        "-j",
+        "--json-dump",
+        action="store_true",
+        help="Dump loaded save data to a JSON file.",
+    )
+    parser.add_argument(
+        "--clear-cache",
+        action="store_true",
+        help="Clear the ruleset cache before loading.",
+    )
+    args = parser.parse_args()
+
     app = App()
+
+    if args.clear_cache:
+        app.data_manager.clear_cache()
+
+    # Determine save file to load
+    save_path = args.save_file
+    if args.debug and not save_path:
+        save_path = "test/Test Save.sav"
+
+    if save_path:
+        app.load_save_file(file_path=save_path, json_dump=args.json_dump)
+
     app.mainloop()

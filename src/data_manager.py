@@ -29,6 +29,25 @@ class GameDataManager:
         )
         self.is_loaded = False
 
+    def clear_cache(self):
+        """Remove all cached ruleset files."""
+        if os.path.isdir(self._cache_dir):
+            failures = 0
+            for f in os.listdir(self._cache_dir):
+                fp = os.path.join(self._cache_dir, f)
+                try:
+                    os.remove(fp)
+                except OSError:
+                    logger.warning(f"Failed to remove cache file: {fp}")
+                    failures += 1
+            if failures:
+                logger.warning(
+                    f"Cache partially cleared ({failures} file(s) "
+                    "could not be removed)."
+                )
+            else:
+                logger.info("Ruleset cache cleared.")
+
     def index_mods(self):
         """
         Scans 'standard' and 'user/mods' to index available mods.
