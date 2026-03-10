@@ -100,8 +100,11 @@ class TestMain(unittest.TestCase):
                 self.AppClass.get_soldier_by_id
             )  # From HEAD, adapted to use AppClass
             get_mission_by_id = self.AppClass.get_mission_by_id  # From incoming
+            show_soldier_view = self.AppClass.show_soldier_view
+            show_mission_view = self.AppClass.show_mission_view
 
         self.app = MockApp()
+        self.app.show_frame = MagicMock()
 
         # Set up soldiers list (from HEAD)
         class DummySoldier:
@@ -143,6 +146,23 @@ class TestMain(unittest.TestCase):
     def test_get_mission_by_id_non_existing(self):
         mission = self.app.get_mission_by_id(999)
         self.assertIsNone(mission)
+
+    def test_show_soldier_view(self):
+        import main
+        self.app.show_frame.reset_mock()
+        self.app.show_soldier_view(123)
+        args = self.app.show_frame.call_args[0]
+        self.assertEqual(args[0], main.SoldierView)
+        self.assertEqual(args[1], 123)
+
+    def test_show_mission_view(self):
+        import main
+        self.app.show_frame.reset_mock()
+        self.app.show_mission_view(456, 123)
+        args = self.app.show_frame.call_args[0]
+        self.assertEqual(args[0], main.MissionView)
+        self.assertEqual(args[1], 456)
+        self.assertEqual(args[2], 123)
 
 
 if __name__ == "__main__":
