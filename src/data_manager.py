@@ -34,6 +34,8 @@ class GameDataManager:
         Scans 'standard' and 'user/mods' to index available mods.
         Populates self.mod_map with {mod_id: mod_path}.
         """
+        self.mod_map.clear()
+        self.master_mod_map.clear()
         search_dirs = [
             os.path.join(self.base_path, "standard"),
             os.path.join(self.base_path, "user", "mods"),
@@ -82,7 +84,7 @@ class GameDataManager:
         Loads ruleset data in order: Common -> Standard (Master) -> Mods.
         Uses a persistent JSON cache keyed by the mod list hash.
         """
-        if not self.mod_map:
+        if not self.mod_map or not self.master_mod_map:
             self.index_mods()
 
         self.master = self.determine_master(save_mod_list)
