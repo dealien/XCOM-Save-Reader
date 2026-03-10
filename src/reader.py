@@ -178,7 +178,6 @@ class ManufacturingProject:
         self.assigned = data.get("assigned", 0)
         self.spent = data.get("spent", 0)
         self.amount = data.get("amount", 0)  # Amount ordered
-        self.infinite = data.get("infinite", False)
 
 
 class Transfer:
@@ -191,8 +190,8 @@ class Transfer:
         if "soldier" in data:
             # Soldier transfer
             # Note: Soldier parsing needs base name, but it's in transit.
-            # We can use "In Transit" or destination if known contextually.
-            # The transfer list belongs to the *destination* base structure.
+            # We can use "In Transit" or destination if known contextually (but here local).
+            # The transfer list belongs to the *destination* base in the save file structure.
             self.soldier = Soldier(data["soldier"], "In Transit", mission_data)
         elif "itemId" in data:
             # Item transfer

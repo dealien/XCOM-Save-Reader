@@ -378,9 +378,9 @@ class BaseView(ctk.CTkFrame):
 
         h = ctk.CTkFrame(scroll)
         h.pack(fill="x")
-        ctk.CTkLabel(h, text="Item", width=250, anchor="w").pack(side="left", padx=5)
+        ctk.CTkLabel(h, text="Item", width=300, anchor="w").pack(side="left", padx=5)
         ctk.CTkLabel(h, text="Assigned", width=80).pack(side="left", padx=5)
-        ctk.CTkLabel(h, text="Progress", width=180).pack(side="left", padx=5)
+        ctk.CTkLabel(h, text="Spent", width=100).pack(side="left", padx=5)
         ctk.CTkLabel(h, text="Ordered", width=80).pack(side="left", padx=5)
 
         for m in base.manufacturing:
@@ -388,29 +388,14 @@ class BaseView(ctk.CTkFrame):
             row = ctk.CTkFrame(scroll)
             row.pack(fill="x", pady=2)
 
-            ctk.CTkLabel(row, text=name, width=250, anchor="w").pack(
+            ctk.CTkLabel(row, text=name, width=300, anchor="w").pack(
                 side="left", padx=5
             )
             ctk.CTkLabel(row, text=str(m.assigned), width=80).pack(side="left", padx=5)
-
-            # Progress calculation using ruleset data
-            mfg_rule = self.controller.data_manager.get_manufacture(m.item)
-            time_per_unit = mfg_rule.get("time", 0)
-
-            if time_per_unit > 0:
-                if m.infinite:
-                    total = time_per_unit
-                else:
-                    total = time_per_unit * m.amount
-                pct = min(1.0, m.spent / total) if total > 0 else 0
-                prog_text = f"{m.spent}/{total} ({int(pct * 100)}%)"
-            else:
-                prog_text = f"{m.spent}/?"
-
-            ctk.CTkLabel(row, text=prog_text, width=180).pack(side="left", padx=5)
+            ctk.CTkLabel(row, text=str(m.spent), width=100).pack(side="left", padx=5)
             ctk.CTkLabel(
                 row,
-                text=str(m.amount) if not m.infinite else "∞",
+                text=str(m.amount) if not getattr(m, "infinite", False) else "∞",
                 width=80,
             ).pack(side="left", padx=5)
 

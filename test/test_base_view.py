@@ -469,27 +469,7 @@ class TestBaseView(unittest.TestCase):
         m2.amount = 0
         m2.infinite = True
 
-        m3 = MagicMock()
-        m3.item = "STR_UNKNOWN_ITEM"
-        m3.assigned = 5
-        m3.spent = 30
-        m3.amount = 2
-        m3.infinite = False
-
-        base.manufacturing = [m1, m2, m3]
-
-        # Mock ruleset data: time per unit
-        def mock_get_manufacture(item_type):
-            rules = {
-                "STR_LASER_RIFLE": {"time": 100},
-                "STR_LASER_PISTOL": {"time": 200},
-            }
-            return rules.get(item_type, {})
-
-        self.mock_controller.data_manager = MagicMock()
-        self.mock_controller.data_manager.get_manufacture.side_effect = (
-            mock_get_manufacture
-        )
+        base.manufacturing = [m1, m2]
 
         with patch("customtkinter.CTkLabel") as MockLabel:
             self.view.render_manufacturing(base)
@@ -497,15 +477,9 @@ class TestBaseView(unittest.TestCase):
             texts = [c.kwargs.get("text") for c in MockLabel.call_args_list]
             self.assertIn("TR[STR_LASER_RIFLE]", texts)
             self.assertIn("20", texts)
-            # 50 spent / (100 time * 5 amount) = 50/500 (10%)
-            self.assertIn("50/500 (10%)", texts)
             self.assertIn("5", texts)
             self.assertIn("TR[STR_LASER_PISTOL]", texts)
-            # infinite: 20 spent / 200 time = 20/200 (10%)
-            self.assertIn("20/200 (10%)", texts)
             self.assertIn("∞", texts)
-            # Unknown item: no ruleset, falls back
-            self.assertIn("30/?", texts)
 
     def test_render_manufacturing_empty(self):
         """Test manufacturing rendering when empty"""

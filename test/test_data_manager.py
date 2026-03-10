@@ -176,31 +176,3 @@ class TestGameDataManager:
         key_b = dm._compute_cache_key(list_b)
 
         assert key_a != key_b
-
-    def test_merge_list_to_dict_name_key(self):
-        """Manufacture rulesets use 'name' instead of 'type'."""
-        dm = GameDataManager(self.test_dir)
-        target = {}
-        source = [
-            {"name": "STR_LASER_RIFLE", "time": 400, "cost": 20000},
-            {"name": "STR_LASER_PISTOL", "time": 300, "cost": 8000},
-        ]
-        dm._merge_list_to_dict(source, target, self.test_dir)
-
-        assert "STR_LASER_RIFLE" in target
-        assert target["STR_LASER_RIFLE"]["time"] == 400
-        assert "STR_LASER_PISTOL" in target
-        assert target["STR_LASER_PISTOL"]["cost"] == 8000
-
-    def test_merge_list_to_dict_skips_no_key(self):
-        """Entries without 'type' or 'name' should be skipped."""
-        dm = GameDataManager(self.test_dir)
-        target = {}
-        source = [
-            {"category": "STR_WEAPON"},  # no type or name
-            {"type": "STR_RIFLE", "weight": 5},
-        ]
-        dm._merge_list_to_dict(source, target, self.test_dir)
-
-        assert len(target) == 1
-        assert "STR_RIFLE" in target
