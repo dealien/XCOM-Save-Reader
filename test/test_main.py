@@ -8,6 +8,28 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 import importlib
 from unittest.mock import MagicMock
 
+_original_modules = {
+    "customtkinter": sys.modules.get("customtkinter"),
+    "tkinter": sys.modules.get("tkinter"),
+    "tkinter.ttk": sys.modules.get("tkinter.ttk"),
+    "tkinter.messagebox": sys.modules.get("tkinter.messagebox"),
+}
+
+def tearDownModule():
+    """Restore sys.modules to prevent test pollution."""
+    for mod_name, original_mod in _original_modules.items():
+        if original_mod is None:
+            sys.modules.pop(mod_name, None)
+        else:
+            sys.modules[mod_name] = original_mod
+
+    # Remove the imported modules so they can be cleanly re-imported by other tests
+    sys.modules.pop("main", None)
+    for mod in list(sys.modules.keys()):
+        if mod.startswith("views."):
+            sys.modules.pop(mod, None)
+
+
 class TestMain(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -15,9 +37,6 @@ class TestMain(unittest.TestCase):
         Dynamically load `main.py` making sure no previous mock pollutes the test.
         The trick is to mock the problem dependencies BEFORE importing main.
         """
-        cls.orig_ctk = sys.modules.get("customtkinter")
-        cls.orig_tk = sys.modules.get("tkinter")
-
         # We need a dummy CTk class to avoid inheriting from MagicMock
         class DummyCTk:
             def __init__(self, *args, **kwargs):
@@ -27,8 +46,29 @@ class TestMain(unittest.TestCase):
             def geometry(self, *args):
                 pass
 
+        class DummyCTkFrame:
+            def __init__(self, master=None, **kwargs):
+                self.master = master
+                self.winfo_children = MagicMock(return_value=[])
+
+            def grid(self, **kwargs):
+                pass
+
+            def pack(self, **kwargs):
+                pass
+
+            def grid_rowconfigure(self, index, weight=1):
+                pass
+
+            def grid_columnconfigure(self, index, weight=1):
+                pass
+
+            def destroy(self):
+                pass
+
         mock_ctk = MagicMock()
         mock_ctk.CTk = DummyCTk
+        mock_ctk.CTkFrame = DummyCTkFrame
 
         sys.modules["customtkinter"] = mock_ctk
         sys.modules["tkinter"] = MagicMock()
@@ -41,21 +81,6 @@ class TestMain(unittest.TestCase):
 
         import main
         cls.AppClass = main.App
-
-    @classmethod
-    def tearDownClass(cls):
-        # Restore original modules
-        if cls.orig_ctk:
-            sys.modules["customtkinter"] = cls.orig_ctk
-        else:
-            sys.modules.pop("customtkinter", None)
-
-        if cls.orig_tk:
-            sys.modules["tkinter"] = cls.orig_tk
-        else:
-            sys.modules.pop("tkinter", None)
-            sys.modules.pop("tkinter.ttk", None)
-            sys.modules.pop("tkinter.messagebox", None)
 
     def setUp(self):
         class MockApp:
