@@ -145,10 +145,37 @@ class GameDataManager:
 
     def _compute_cache_key(self, save_mod_list):
         """
-        Produce a hash string from the base path and mod list
-        to use as cache filename.
+        Produce a hash from the base path, mod list, and
+        modification times of all .rul files that would be loaded.
         """
         raw = self.base_path + "|" + "|".join(save_mod_list)
+
+        # Collect mtimes from all ruleset files to detect on-disk changes
+        rul_dirs = [
+            os.path.join(self.base_path, "common", "Ruleset"),
+            os.path.join(
+                self.base_path, "standard", self.master, "Ruleset"
+            ),
+        ]
+        for mod_entry in save_mod_list:
+            mod_id = mod_entry.split(" ver:", 1)[0].strip()
+            if mod_id in self.mod_map:
+                mod_path = self.mod_map[mod_id]
+                mod_rul = os.path.join(mod_path, f"{mod_id}.rul")
+                if os.path.exists(mod_rul):
+                    raw += f"|{mod_rul}:{os.path.getmtime(mod_rul)}"
+                rul_dir = os.path.join(mod_path, "Ruleset")
+                if os.path.isdir(rul_dir):
+                    rul_dirs.append(rul_dir)
+
+        for rul_dir in rul_dirs:
+            if not os.path.isdir(rul_dir):
+                continue
+            for fn in sorted(os.listdir(rul_dir)):
+                if fn.endswith(".rul"):
+                    fp = os.path.join(rul_dir, fn)
+                    raw += f"|{fp}:{os.path.getmtime(fp)}"
+
         return hashlib.sha256(
             raw.encode("utf-8")
         ).hexdigest()[:16]
