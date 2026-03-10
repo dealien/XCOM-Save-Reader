@@ -192,8 +192,8 @@ class App(ctk.CTk):
     def get_mission_participants(self, mission_id):
         return self.mission_participants.get(mission_id, [])
 
-    def show_soldier_view(self, soldier_id, previous_view=None):
-        self.show_frame(SoldierView, soldier_id, previous_view)
+    def show_soldier_view(self, soldier_id):
+        self.show_frame(SoldierView, soldier_id)
 
     def show_mission_view(self, mission_id, from_soldier_id):
         self.show_frame(MissionView, mission_id, from_soldier_id)
