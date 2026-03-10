@@ -100,19 +100,31 @@ class SettingsView(ctk.CTkToplevel):
 
     def open_cache_dir(self):
         cache_dir = self.controller.data_manager._cache_dir
-        os.makedirs(cache_dir, exist_ok=True)
-        if sys.platform == "win32":
-            os.startfile(cache_dir)
-        elif sys.platform == "darwin":
-            subprocess.Popen(["open", cache_dir])
-        else:
-            subprocess.Popen(["xdg-open", cache_dir])
+        try:
+            os.makedirs(cache_dir, exist_ok=True)
+            if sys.platform == "win32":
+                os.startfile(cache_dir)
+            elif sys.platform == "darwin":
+                subprocess.Popen(["open", cache_dir])
+            else:
+                subprocess.Popen(["xdg-open", cache_dir])
+        except Exception as e:
+            messagebox.showerror(
+                "Error",
+                f"Could not open cache directory: {e}",
+            )
 
     def clear_cache(self):
         cache_dir = self.controller.data_manager._cache_dir
-        if os.path.isdir(cache_dir):
-            shutil.rmtree(cache_dir)
-        messagebox.showinfo(
-            "Cache Cleared",
-            "Ruleset cache has been cleared.",
-        )
+        try:
+            if os.path.isdir(cache_dir):
+                shutil.rmtree(cache_dir)
+            messagebox.showinfo(
+                "Cache Cleared",
+                "Ruleset cache has been cleared.",
+            )
+        except Exception as e:
+            messagebox.showerror(
+                "Error",
+                f"Could not clear cache: {e}",
+            )
