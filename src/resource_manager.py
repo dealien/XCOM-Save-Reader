@@ -67,21 +67,23 @@ class ResourceManager:
                 return self.image_cache[cache_key]
 
         try:
-            # We assume it's a standard image format (png, gif).
-            # OXCE extraSprites are mostly PNGs or GIFs.
-            img = Image.open(abs_path)
+            # Open with context manager to ensure file handle is released.
+            # img.load() forces pixel data into memory before closing.
+            with Image.open(abs_path) as img:
+                img.load()
 
-            if size:
-                # Basic resize for now. 
-                # Might need to handle sprite sheet chopping later.
-                img = img.resize(size, Image.Resampling.LANCZOS)
-            
-            if ctk_image:
-                # CTkImage requires a size, so if not provided, use image size
-                final_size = size if size else img.size
-                result = ctk.CTkImage(light_image=img, dark_image=img, size=final_size)
-            else:
-                result = img
+                if size:
+                    img = img.resize(size, Image.Resampling.LANCZOS)
+
+                if ctk_image:
+                    final_size = size if size else img.size
+                    result = ctk.CTkImage(
+                        light_image=img,
+                        dark_image=img,
+                        size=final_size,
+                    )
+                else:
+                    result = img.copy()
 
             self.image_cache[cache_key] = result
             return result
