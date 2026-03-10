@@ -104,7 +104,7 @@ class TestViewUtils(unittest.TestCase):
         # 0.5 days -> 12h
         self.assertEqual(view_utils.format_recovery_time(0.5), "12h")
 
-        # 0 days (should generally be handled by caller check > 0, but check valid returns)
+        # 0 days (generally handled by caller check > 0, but check valid returns)
         self.assertEqual(view_utils.format_recovery_time(0), "")
 
 

@@ -67,6 +67,7 @@ class TestGameDataManager:
         and logs an appropriate error message.
         """
         import logging
+
         # Create a mod with a malformed metadata.yml
         bad_mod_dir = os.path.join(self.test_dir, "user", "mods", "BadMod")
         os.makedirs(bad_mod_dir, exist_ok=True)
@@ -85,7 +86,11 @@ class TestGameDataManager:
         assert bad_mod_dir not in dm.mod_map.values()
 
         # Verify the error was logged
-        error_logs = [record.getMessage() for record in caplog.records if record.levelname == "ERROR"]
+        error_logs = [
+            record.getMessage()
+            for record in caplog.records
+            if record.levelname == "ERROR"
+        ]
         assert any("Error reading metadata for BadMod" in msg for msg in error_logs)
 
     def test_determine_master(self):
