@@ -11,6 +11,7 @@ _original_modules = {
     "tkinter": sys.modules.get("tkinter"),
     "tkinter.ttk": sys.modules.get("tkinter.ttk"),
     "tkinter.messagebox": sys.modules.get("tkinter.messagebox"),
+    "tkinter.filedialog": sys.modules.get("tkinter.filedialog"),
     "yaml": sys.modules.get("yaml"),  # Added from HEAD
 }
 
@@ -85,6 +86,7 @@ class TestMain(unittest.TestCase):
         sys.modules["tkinter"] = MagicMock()
         sys.modules["tkinter.ttk"] = MagicMock()
         sys.modules["tkinter.messagebox"] = MagicMock()
+        sys.modules["tkinter.filedialog"] = MagicMock()
         sys.modules["yaml"] = MagicMock()  # Added from HEAD
 
         # Make sure `main` and its direct dependencies are completely reloaded
@@ -247,24 +249,24 @@ class TestMain(unittest.TestCase):
         app.translation_manager = MagicMock()
         app.frames = {main.MainMenu: MagicMock()}
 
-        with unittest.mock.patch(
-            "tkinter.filedialog.askopenfilename",
-            return_value="selected.sav",
-        ) as mock_dialog:
-            with unittest.mock.patch("reader.load_data_from_yaml") as mock_load:
-                mock_load.return_value = {
-                    "mods": [],
-                    "difficulty": 0,
-                }
-                with unittest.mock.patch("reader.read_missions", return_value={}):
-                    with unittest.mock.patch("reader.read_bases", return_value=[]):
-                        with unittest.mock.patch(
-                            "reader.read_soldiers",
-                            return_value=([], {}),
-                        ):
-                            app.load_save_file()
+        # Configure the already-mocked tkinter.filedialog
+        mock_filedialog = sys.modules["tkinter"].filedialog
+        mock_filedialog.askopenfilename = MagicMock(return_value="selected.sav")
 
-            mock_dialog.assert_called_once()
+        with unittest.mock.patch("reader.load_data_from_yaml") as mock_load:
+            mock_load.return_value = {
+                "mods": [],
+                "difficulty": 0,
+            }
+            with unittest.mock.patch("reader.read_missions", return_value={}):
+                with unittest.mock.patch("reader.read_bases", return_value=[]):
+                    with unittest.mock.patch(
+                        "reader.read_soldiers",
+                        return_value=([], {}),
+                    ):
+                        app.load_save_file()
+
+            mock_filedialog.askopenfilename.assert_called_once()
             mock_load.assert_any_call("selected.sav", section="meta")
 
     def test_load_save_file_dialog_cancelled(self):
@@ -272,10 +274,13 @@ class TestMain(unittest.TestCase):
         app = self.AppClass.__new__(self.AppClass)
         app.data_manager = MagicMock()
 
-        with unittest.mock.patch("tkinter.filedialog.askopenfilename", return_value=""):
-            with unittest.mock.patch("reader.load_data_from_yaml") as mock_load:
-                app.load_save_file()
-                mock_load.assert_not_called()
+        # Configure the already-mocked tkinter.filedialog
+        mock_filedialog = sys.modules["tkinter"].filedialog
+        mock_filedialog.askopenfilename = MagicMock(return_value="")
+
+        with unittest.mock.patch("reader.load_data_from_yaml") as mock_load:
+            app.load_save_file()
+            mock_load.assert_not_called()
 
     def test_clear_cache(self):
         """Test data_manager.clear_cache removes cache files."""
