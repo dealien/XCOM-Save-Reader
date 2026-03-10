@@ -228,12 +228,15 @@ class GameDataManager:
 
     def _load_rulesets(self, path, source_dir):
         """
-        Loads all .rul files in a directory.
+        Loads all .rul files in a directory in alphabetical order.
+
+        Alphabetical ordering guarantees deterministic merge precedence:
+        later files overwrite fields set by earlier ones.
         """
         if not os.path.exists(path):
             return
 
-        for filename in os.listdir(path):
+        for filename in sorted(os.listdir(path)):
             if filename.endswith(".rul"):
                 self._parse_file(os.path.join(path, filename), source_dir)
 
