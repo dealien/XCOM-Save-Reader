@@ -85,6 +85,9 @@ class GameDataManager:
         Loads ruleset data in order: Common -> Standard (Master) -> Mods.
         Uses a persistent JSON cache keyed by the mod list hash.
         """
+        if not self.mod_map:
+            self.index_mods()
+
         self.master = self.determine_master(save_mod_list)
 
         # Try loading from cache first
