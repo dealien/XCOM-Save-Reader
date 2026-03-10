@@ -13,6 +13,7 @@ class GameDataManager:
     def __init__(self, base_path):
         self.base_path = base_path
         self.mod_map = {}
+        self.master_mod_map = {}
         self.master = "xcom1"
 
         # Parsed databases
@@ -59,7 +60,10 @@ class GameDataManager:
                         with open(metadata_path, encoding="utf-8") as f:
                             metadata = yaml.safe_load(f)
                             if metadata and "id" in metadata:
-                                self.mod_map[metadata["id"]] = mod_path
+                                mod_id = metadata["id"]
+                                self.mod_map[mod_id] = mod_path
+                                if metadata.get("isMaster"):
+                                    self.master_mod_map[mod_id] = metadata.get("master", "xcom1")
                     except Exception as e:
                         logger.error(f"Error reading metadata for {item}: {e}")
 
@@ -69,15 +73,8 @@ class GameDataManager:
         """
         for mod_entry in save_mod_list:
             mod_id = mod_entry.split(" ver:", 1)[0].strip()
-            if mod_id in self.mod_map:
-                try:
-                    metadata_path = os.path.join(self.mod_map[mod_id], "metadata.yml")
-                    with open(metadata_path, encoding="utf-8") as f:
-                        metadata = yaml.safe_load(f)
-                        if metadata and metadata.get("isMaster"):
-                            return metadata.get("master", "xcom1")
-                except Exception:
-                    pass
+            if mod_id in self.master_mod_map:
+                return self.master_mod_map[mod_id]
         return "xcom1"
 
     def load_all(self, save_mod_list):
