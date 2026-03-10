@@ -12,6 +12,8 @@ _original_modules = {
     "tkinter.ttk": sys.modules.get("tkinter.ttk"),
     "tkinter.messagebox": sys.modules.get("tkinter.messagebox"),
     "yaml": sys.modules.get("yaml"),  # Added from HEAD
+    "PIL": sys.modules.get("PIL"),
+    "PIL.Image": sys.modules.get("PIL.Image"),
 }
 
 
