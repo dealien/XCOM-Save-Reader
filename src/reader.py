@@ -190,8 +190,8 @@ class Transfer:
         if "soldier" in data:
             # Soldier transfer
             # Note: Soldier parsing needs base name, but it's in transit.
-            # We can use "In Transit" or destination if known contextually (but here local).
-            # The transfer list belongs to the *destination* base in the save file structure.
+            # We can use "In Transit" or destination if known contextually.
+            # The transfer list belongs to the *destination* base in the file.
             self.soldier = Soldier(data["soldier"], "In Transit", mission_data)
         elif "itemId" in data:
             # Item transfer

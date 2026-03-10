@@ -78,6 +78,8 @@ class TestMain(unittest.TestCase):
         sys.modules["tkinter.ttk"] = MagicMock()
         sys.modules["tkinter.messagebox"] = MagicMock()
         sys.modules["yaml"] = MagicMock()  # Added from HEAD
+        sys.modules["PIL"] = MagicMock()
+        sys.modules["PIL.Image"] = MagicMock()
 
         # Make sure `main` is completely reloaded
         if "main" in sys.modules:
