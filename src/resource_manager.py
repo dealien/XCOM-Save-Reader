@@ -25,7 +25,7 @@ class ResourceManager:
 
         sprite_def = self.data_manager.extraSprites[sprite_type]
         files = sprite_def.get("files", {})
-        
+
         # files is a dict mapping index -> path (e.g. {0: "Resources/UI/icon.png"})
         if index not in files:
             # Try to grab the first one if the explicit index is missing
@@ -44,9 +44,7 @@ class ResourceManager:
         resolved = os.path.realpath(abs_path)
         root = os.path.realpath(source_dir)
         if os.path.commonpath([root, resolved]) != root:
-            logger.warning(
-                f"Blocked path traversal attempt: {rel_path}"
-            )
+            logger.warning(f"Blocked path traversal attempt: {rel_path}")
             return None
 
         if not os.path.exists(resolved):

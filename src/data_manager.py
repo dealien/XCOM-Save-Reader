@@ -65,7 +65,9 @@ class GameDataManager:
                                 mod_id = metadata["id"]
                                 self.mod_map[mod_id] = mod_path
                                 if metadata.get("isMaster"):
-                                    self.master_mod_map[mod_id] = metadata.get("master", "xcom1")
+                                    self.master_mod_map[mod_id] = metadata.get(
+                                        "master", "xcom1"
+                                    )
                     except Exception as e:
                         logger.error(f"Error reading metadata for {item}: {e}")
 
@@ -106,20 +108,12 @@ class GameDataManager:
         # 1. Load Common
         logger.info("Loading common rulesets...")
         common_path = os.path.join(self.base_path, "common")
-        self._load_rulesets(
-            os.path.join(common_path, "Ruleset"), common_path
-        )
+        self._load_rulesets(os.path.join(common_path, "Ruleset"), common_path)
 
         # 2. Determine and Load Master
-        logger.info(
-            f"Loading master rulesets ({self.master})..."
-        )
-        master_path = os.path.join(
-            self.base_path, "standard", self.master
-        )
-        self._load_rulesets(
-            os.path.join(master_path, "Ruleset"), master_path
-        )
+        logger.info(f"Loading master rulesets ({self.master})...")
+        master_path = os.path.join(self.base_path, "standard", self.master)
+        self._load_rulesets(os.path.join(master_path, "Ruleset"), master_path)
 
         # 3. Load Mods based on load order
         logger.info("Loading user mod rulesets...")
@@ -131,9 +125,7 @@ class GameDataManager:
 
                 # Check for individual ruleset files in mod root
                 # (OpenXcom supports a single ruleset named after the mod)
-                mod_rul = os.path.join(
-                    mod_path, f"{mod_id}.rul"
-                )
+                mod_rul = os.path.join(mod_path, f"{mod_id}.rul")
                 if os.path.exists(mod_rul):
                     self._parse_file(mod_rul, mod_path)
 
@@ -155,9 +147,7 @@ class GameDataManager:
         # Collect mtimes from all ruleset files to detect on-disk changes
         rul_dirs = [
             os.path.join(self.base_path, "common", "Ruleset"),
-            os.path.join(
-                self.base_path, "standard", self.master, "Ruleset"
-            ),
+            os.path.join(self.base_path, "standard", self.master, "Ruleset"),
         ]
         for mod_entry in save_mod_list:
             mod_id = mod_entry.split(" ver:", 1)[0].strip()
@@ -178,9 +168,7 @@ class GameDataManager:
                     fp = os.path.join(rul_dir, fn)
                     raw += f"|{fp}:{os.path.getmtime(fp)}"
 
-        return hashlib.sha256(
-            raw.encode("utf-8")
-        ).hexdigest()[:16]
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
 
     def _get_cache_path(self, cache_key):
         return os.path.join(self._cache_dir, f"rulesets_{cache_key}.json")
@@ -255,7 +243,7 @@ class GameDataManager:
                 for doc in docs:
                     if not doc:
                         continue
-                    
+
                     self._merge_list_to_dict(
                         doc.get("items", []), self.items, source_dir
                     )
@@ -271,7 +259,7 @@ class GameDataManager:
                     self._merge_list_to_dict(
                         doc.get("extraSprites", []), self.extraSprites, source_dir
                     )
-                    
+
         except Exception as e:
             logger.error(f"Error parsing ruleset {file_path}: {e}")
 
@@ -286,7 +274,7 @@ class GameDataManager:
         for item in source_list:
             if not isinstance(item, dict) or "type" not in item:
                 continue
-            
+
             ent_type = item["type"]
             if ent_type not in target_dict:
                 target_dict[ent_type] = item
@@ -297,7 +285,7 @@ class GameDataManager:
                 # but simplified version here:
                 for k, v in item.items():
                     target_dict[ent_type][k] = v
-                    
+
             # Inject source directory so we can resolve relative paths
             target_dict[ent_type]["_source_dir"] = source_dir
 
@@ -308,12 +296,12 @@ class GameDataManager:
         if soldier_type in self.soldiers:
             soldier_def = self.soldiers[soldier_type]
             rank_strings = soldier_def.get("rankStrings", [])
-            
+
             # Rank strings can be lists.
             if rank_strings and isinstance(rank_strings, list):
                 if isinstance(rank_index, int) and 0 <= rank_index < len(rank_strings):
                     return rank_strings[rank_index]
-        
+
         # Fallback standard ranks
         ranks = [
             "STR_ROOKIE",
@@ -325,7 +313,7 @@ class GameDataManager:
         ]
         if isinstance(rank_index, int) and 0 <= rank_index < len(ranks):
             return ranks[rank_index]
-            
+
         return f"STR_RANK_{rank_index}"
 
     def get_item(self, item_type):

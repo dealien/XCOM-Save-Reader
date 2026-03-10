@@ -94,8 +94,7 @@ class SettingsView(ctk.CTkToplevel):
         else:
             messagebox.showerror(
                 "Save Failed",
-                "Could not save settings. Check file "
-                "permissions and try again.",
+                "Could not save settings. Check file permissions and try again.",
             )
 
     def open_cache_dir(self):

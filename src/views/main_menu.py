@@ -44,7 +44,8 @@ class MainMenu(ctk.CTkFrame):
         from views.base_view import BaseView
 
         self.controller.show_frame(BaseView)
-        
+
     def show_settings(self):
         from views.settings_view import SettingsView
+
         SettingsView(self, self.controller)
