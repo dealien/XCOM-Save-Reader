@@ -67,8 +67,10 @@ class TestConfig:
             result = config.save()
             assert result is False
 
-    def test_get_config_path(self):
+    @patch("os.path.exists")
+    def test_get_config_path(self, mock_exists):
         """Verify _get_config_path() returns correct path."""
+        mock_exists.return_value = False
         config = Config()
         path = config._get_config_path()
         assert path.endswith("config.json")
