@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import sys
@@ -101,3 +102,24 @@ class TestTranslationManager:
 
         # Verify it didn't load garbage
         assert tm.get("STR_ANYTHING") == "STR_ANYTHING"
+
+    def test_load_file_exception(self, caplog):
+        """
+        Verify that an exception during file loading is caught and logged.
+        """
+        # Create a file with invalid YAML to force yaml.safe_load to raise an exception
+        invalid_yaml_path = os.path.join(self.common_lang_dir, "en-US.yml")
+        with open(invalid_yaml_path, "w") as f:
+            f.write("invalid: yaml: :\n  - [")
+
+        dm = GameDataManager(self.test_dir)
+        tm = TranslationManager(dm)
+
+        with caplog.at_level(logging.ERROR):
+            tm.load_all([])
+
+        # Verify that an error was logged for this file
+        assert any(
+            f"Error loading translation file {invalid_yaml_path}" in record.message
+            for record in caplog.records
+        )
