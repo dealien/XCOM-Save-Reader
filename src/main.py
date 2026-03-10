@@ -194,7 +194,7 @@ class App(ctk.CTk):
             for soldier in self.soldiers:
                 if soldier.id == sid:
                     return soldier
-        except (ValueError, TypeError):
+        except ValueError, TypeError:
             pass
         return None
 
