@@ -100,7 +100,7 @@ class SettingsView(ctk.CTkToplevel):
     def open_cache_dir(self):
         cache_dir = self.controller.data_manager._cache_dir
         try:
-            os.makedirs(cache_dir, exist_ok=True)
+            os.makedirs(cache_dir, mode=0o700, exist_ok=True)
             if sys.platform == "win32":
                 os.startfile(cache_dir)
             elif sys.platform == "darwin":
