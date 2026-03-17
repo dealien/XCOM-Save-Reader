@@ -30,8 +30,17 @@ class DummyCTkToplevel(DummyCTk):
 
 ctk_mock = MagicMock()
 ctk_mock.CTkToplevel = DummyCTkToplevel
-sys.modules["customtkinter"] = ctk_mock
 
+_original_modules = {
+    "customtkinter": sys.modules.get("customtkinter"),
+    "tkinter": sys.modules.get("tkinter"),
+    "tkinter.filedialog": sys.modules.get("tkinter.filedialog"),
+    "tkinter.messagebox": sys.modules.get("tkinter.messagebox"),
+    "PIL": sys.modules.get("PIL"),
+    "PIL.Image": sys.modules.get("PIL.Image"),
+}
+
+sys.modules["customtkinter"] = ctk_mock
 sys.modules["tkinter"] = MagicMock()
 sys.modules["tkinter.filedialog"] = MagicMock()
 sys.modules["tkinter.messagebox"] = MagicMock()
@@ -40,6 +49,19 @@ sys.modules["PIL.Image"] = MagicMock()
 
 from src.data_manager import GameDataManager  # noqa: E402
 from src.views.settings_view import SettingsView  # noqa: E402
+
+
+def tearDownModule():
+    """Restore sys.modules to prevent test pollution."""
+    for mod_name, original_mod in _original_modules.items():
+        if original_mod is None:
+            sys.modules.pop(mod_name, None)
+        else:
+            sys.modules[mod_name] = original_mod
+
+    # Remove the imported module so it can be cleanly re-imported by other tests
+    sys.modules.pop("src.data_manager", None)
+    sys.modules.pop("src.views.settings_view", None)
 
 
 class TestSecurityMakedirs(unittest.TestCase):
