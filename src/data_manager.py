@@ -222,7 +222,7 @@ class GameDataManager:
         Persist compiled ruleset data to a JSON cache file.
         """
         try:
-            os.makedirs(self._cache_dir, exist_ok=True)
+            os.makedirs(self._cache_dir, mode=0o700, exist_ok=True)
             path = self._get_cache_path(cache_key)
             data = {
                 "items": self.items,

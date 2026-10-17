@@ -159,48 +159,63 @@ class DummyScrollbar:
         pass
 
 
-mock_ctk = MagicMock()
-mock_ctk.CTkFrame = DummyCTkFrame
-mock_ctk.CTkLabel = DummyCTkLabel
-mock_ctk.CTkButton = DummyCTkButton
-mock_ctk.CTkOptionMenu = DummyCTkOptionMenu
-mock_ctk.CTkTabview = DummyCTkTabview
-mock_ctk.CTkScrollableFrame = DummyCTkScrollableFrame
-mock_ctk.CTkFont = MagicMock()
-
-_original_modules = {
-    "customtkinter": sys.modules.get("customtkinter"),
-    "tkinter": sys.modules.get("tkinter"),
-    "tkinter.ttk": sys.modules.get("tkinter.ttk"),
-}
-
-sys.modules["customtkinter"] = mock_ctk
-
-# Mock ttk
-mock_ttk = MagicMock()
-mock_ttk.Treeview = DummyTreeview
-mock_ttk.Scrollbar = DummyScrollbar
-sys.modules["tkinter"] = MagicMock()
-sys.modules["tkinter"].ttk = mock_ttk
-sys.modules["tkinter.ttk"] = mock_ttk
-
-# Now import the class under test
-from views.base_view import BaseView  # noqa: E402
-
-
-def tearDownModule():
-    """Restore sys.modules to prevent test pollution."""
-    for mod_name, original_mod in _original_modules.items():
-        if original_mod is None:
-            sys.modules.pop(mod_name, None)
-        else:
-            sys.modules[mod_name] = original_mod
-
-    # Remove the imported module so it can be cleanly re-imported by other tests
-    sys.modules.pop("views.base_view", None)
+# Global BaseView that will be populated in setUpClass
+BaseView = None
 
 
 class TestBaseView(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Setup mocks for the entire class."""
+        cls._original_modules = {
+            "customtkinter": sys.modules.get("customtkinter"),
+            "tkinter": sys.modules.get("tkinter"),
+            "tkinter.ttk": sys.modules.get("tkinter.ttk"),
+            "PIL": sys.modules.get("PIL"),
+            "PIL.Image": sys.modules.get("PIL.Image"),
+        }
+
+        mock_ctk = MagicMock()
+        mock_ctk.CTkFrame = DummyCTkFrame
+        mock_ctk.CTkLabel = DummyCTkLabel
+        mock_ctk.CTkButton = DummyCTkButton
+        mock_ctk.CTkOptionMenu = DummyCTkOptionMenu
+        mock_ctk.CTkTabview = DummyCTkTabview
+        mock_ctk.CTkScrollableFrame = DummyCTkScrollableFrame
+        mock_ctk.CTkFont = MagicMock()
+        sys.modules["customtkinter"] = mock_ctk
+
+        mock_ttk = MagicMock()
+        mock_ttk.Treeview = DummyTreeview
+        mock_ttk.Scrollbar = DummyScrollbar
+        sys.modules["tkinter"] = MagicMock()
+        sys.modules["tkinter"].ttk = mock_ttk
+        sys.modules["tkinter.ttk"] = mock_ttk
+
+        sys.modules["PIL"] = MagicMock()
+        sys.modules["PIL.Image"] = MagicMock()
+
+        # Ensure views.base_view is reloaded with these mocks
+        if "views.base_view" in sys.modules:
+            del sys.modules["views.base_view"]
+
+        import views.base_view
+
+        global BaseView
+        BaseView = views.base_view.BaseView
+
+    @classmethod
+    def tearDownClass(cls):
+        """Restore sys.modules to prevent test pollution."""
+        for mod_name, original_mod in cls._original_modules.items():
+            if original_mod is None:
+                sys.modules.pop(mod_name, None)
+            else:
+                sys.modules[mod_name] = original_mod
+
+        # Remove the imported module so it can be cleanly re-imported by other tests
+        sys.modules.pop("views.base_view", None)
+
     def setUp(self):
         self.mock_parent = MagicMock()
         self.mock_controller = MagicMock()
