@@ -65,6 +65,7 @@ target/
 .idea/
 # .vscode/
 .agent/
+.code-workspace
 
 # Self-generated files
 logs/

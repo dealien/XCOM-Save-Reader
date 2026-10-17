@@ -2,6 +2,8 @@
 
 A tool to read OpenXCOM save files and display statistics about your soldiers and bases.
 
+Contributors (human or AI): see [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md) for architecture, status, and conventions.
+
 ## Setup
 
 1. Ensure you have Python 3.10+ installed.

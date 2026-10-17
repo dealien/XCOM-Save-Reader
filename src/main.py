@@ -71,7 +71,7 @@ class App(ctk.CTk):
         0. User configuration
         1. Adjacent to this script (Production/Flat layout)
         2. Parent directory (Source layout)
-        3. '../reference' from parent (Development layout)
+        3. '../reference' from parent directory (Development layout)
         """
         # First check user configuration
         if hasattr(self, "config") and self.config.game_dir:
