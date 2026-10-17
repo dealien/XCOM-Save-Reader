@@ -1,0 +1,39 @@
+{
+  "name": "XCOM Save Reader",
+  "image": "mcr.microsoft.com/devcontainers/python:3-3.14-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "Linux desktop",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "python -m pip install -r requirements.txt",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.vscode-pylance",
+        "pflannery.vscode-versionlens",
+        "meta.pyrefly",
+        "charliermarsh.ruff",
+        "pedroterzero.oxc-yaml-helper",
+        "tamasfe.even-better-toml",
+        "github.vscode-github-actions",
+        "ldez.ignore-files",
+        "fill-labs.dependi"
+      ],
+      "settings": {
+        "python.testing.pytestArgs": [
+          "test"
+        ],
+        "python.testing.unittestEnabled": false,
+        "python.testing.pytestEnabled": true
+      }
+    }
+  }
+}
