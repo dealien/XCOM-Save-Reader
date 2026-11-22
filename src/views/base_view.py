@@ -108,16 +108,31 @@ class BaseView(ctk.CTkFrame):
             scroll, text="Facilities", font=ctk.CTkFont(size=16, weight="bold")
         ).pack(anchor="w", pady=5)
 
-        # Simple list of facilities for now
-        # Could grouping by type count? e.g. "Living Quarters x3"
-        counts = {}
+        # Group facilities by type and render with sprite if available
+        counts: dict[str, int] = {}
+        type_to_raw: dict[str, str] = {}
         for f in base.facilities:
             if f.type:
                 ftype = self.controller.translation_manager.get(f.type)
                 counts[ftype] = counts.get(ftype, 0) + 1
+                type_to_raw[ftype] = f.type
 
         for ftype, count in counts.items():
-            ctk.CTkLabel(scroll, text=f"{ftype}: {count}").pack(anchor="w", padx=10)
+            row = ctk.CTkFrame(scroll, fg_color="transparent")
+            row.pack(anchor="w", padx=10, pady=2)
+
+            raw_type = type_to_raw.get(ftype, "")
+            sprite = None
+            if (
+                hasattr(self.controller, "resource_manager")
+                and self.controller.resource_manager
+            ):
+                sprite = self.controller.resource_manager.get_facility_sprite(raw_type)
+
+            if sprite is not None:
+                ctk.CTkLabel(row, text="", image=sprite).pack(side="left", padx=(0, 8))
+
+            ctk.CTkLabel(row, text=f"{ftype}: {count}").pack(side="left")
 
     def render_soldiers(self, base):
         frame = self.tab_soldiers

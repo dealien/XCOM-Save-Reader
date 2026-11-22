@@ -663,11 +663,39 @@ class VanillaAssetExtractor:
         img.save(cached_path, format="PNG")
         return img
 
+    def get_smoke_sprite(self, sprite_index: int) -> Image.Image:
+        """Extract a 32x40 smoke/rank sprite from ``UFOGRAPH/SMOKE.PCK``."""
+        cached_path = self.get_cached_sprite_path(
+            "UFOGRAPH/SMOKE.PCK", sprite_index, PALETTE_BATTLESCAPE
+        )
+        if cached_path.is_file():
+            return Image.open(cached_path).convert("RGBA")
+
+        frames = self._load_archive(
+            pck_rel_path="UFOGRAPH/SMOKE.PCK",
+            tab_rel_path="UFOGRAPH/SMOKE.TAB",
+            palette_index=PALETTE_BATTLESCAPE,
+            width=DEFAULT_PCK_WIDTH,
+            height=DEFAULT_PCK_HEIGHT,
+        )
+        if not (0 <= sprite_index < len(frames)):
+            raise IndexError(
+                f"SMOKE.PCK sprite index {sprite_index} out of range "
+                f"(0..{len(frames) - 1})"
+            )
+        img = frames[sprite_index]
+        img.save(cached_path, format="PNG")
+        return img
+
 
 def _extract_all(extractor: VanillaAssetExtractor) -> int:
-    """Decode every BASEBITS and BIGOBS frame into the extractor's cache dir."""
+    """Decode every BASEBITS, BIGOBS, and SMOKE frame into the extractor's cache dir."""
     total = 0
-    for getter in (extractor.get_basebit_sprite, extractor.get_bigob_sprite):
+    for getter in (
+        extractor.get_basebit_sprite,
+        extractor.get_bigob_sprite,
+        extractor.get_smoke_sprite,
+    ):
         index = 0
         while True:
             try:

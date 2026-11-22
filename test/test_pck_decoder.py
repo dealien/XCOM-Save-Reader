@@ -226,7 +226,11 @@ def fake_game_dir(tmp_path):
     (tmp_path / "geodata").mkdir()
     (tmp_path / "geodata" / "palettes.dat").write_bytes(bytes(pal))
     frame = bytes([0, 1, 0xFF])
-    for folder, name in (("geograph", "basebits"), ("units", "bigobs")):
+    for folder, name in (
+        ("geograph", "basebits"),
+        ("units", "bigobs"),
+        ("ufograph", "smoke"),
+    ):
         (tmp_path / folder).mkdir()
         (tmp_path / folder / f"{name}.pck").write_bytes(frame + frame)
         (tmp_path / folder / f"{name}.tab").write_bytes(
@@ -250,6 +254,10 @@ def test_extractor_decodes_and_caches(fake_game_dir, tmp_path):
     with pytest.raises(IndexError):
         ex.get_bigob_sprite(2)
 
+    assert ex.get_smoke_sprite(0).size == (32, 40)
+    with pytest.raises(IndexError):
+        ex.get_smoke_sprite(2)
+
 
 def test_extractor_missing_files(tmp_path):
     ex = pd.VanillaAssetExtractor(tmp_path / "nothing", tmp_path / "cache")
@@ -266,8 +274,8 @@ def test_extractor_bad_palette_index(fake_game_dir, tmp_path):
 def test_cli_extracts_all(fake_game_dir, tmp_path, capsys):
     cache = tmp_path / "out"
     assert pd.main(["--game-dir", str(fake_game_dir), "--cache-dir", str(cache)]) == 0
-    assert len(list(cache.glob("*.png"))) == 4
-    assert "Extracted 4 sprites" in capsys.readouterr().out
+    assert len(list(cache.glob("*.png"))) == 6
+    assert "Extracted 6 sprites" in capsys.readouterr().out
 
 
 # --- Integration: real vanilla files ------------------------------------------
