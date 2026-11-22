@@ -8,6 +8,26 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
+CACHE_VERSION = "v2"
+
+
+def _to_int_key(key):
+    """Convert numeric string keys (e.g. from JSON caches) back to int."""
+    if isinstance(key, int) and not isinstance(key, bool):
+        return key
+    if isinstance(key, str):
+        digits = key[1:] if key.startswith("-") else key
+        if digits.isdigit():
+            return int(key)
+    return key
+
+
+def _normalize_int_keys(mapping):
+    """Return a copy of mapping with numeric string keys converted to int."""
+    if not isinstance(mapping, dict):
+        return {}
+    return {_to_int_key(k): v for k, v in mapping.items()}
+
 
 class GameDataManager:
     def __init__(self, base_path):
@@ -127,17 +147,21 @@ class GameDataManager:
         # 1. Load Common
         logger.info("Loading common rulesets...")
         common_path = os.path.join(self.base_path, "common")
+        self._load_rulesets(common_path, common_path)
         self._load_rulesets(os.path.join(common_path, "Ruleset"), common_path)
 
         # 2. Determine and Load Master
         logger.info(f"Loading master rulesets ({self.master})...")
         master_path = os.path.join(self.base_path, "standard", self.master)
+        self._load_rulesets(master_path, master_path)
         self._load_rulesets(os.path.join(master_path, "Ruleset"), master_path)
 
         # 3. Load Mods based on load order
         logger.info("Loading user mod rulesets...")
         for mod_entry in save_mod_list:
             mod_id = mod_entry.split(" ver:", 1)[0].strip()
+            if mod_id == self.master:
+                continue
             if mod_id in self.mod_map:
                 mod_path = self.mod_map[mod_id]
                 ruleset_dir = os.path.join(mod_path, "Ruleset")
@@ -161,15 +185,21 @@ class GameDataManager:
         Produce a hash from the base path, mod list, and
         modification times of all .rul files that would be loaded.
         """
-        raw = self.base_path + "|" + "|".join(save_mod_list)
+        raw = f"{CACHE_VERSION}|{self.base_path}|" + "|".join(save_mod_list)
 
         # Collect mtimes from all ruleset files to detect on-disk changes
+        common_path = os.path.join(self.base_path, "common")
+        master_path = os.path.join(self.base_path, "standard", self.master)
         rul_dirs = [
-            os.path.join(self.base_path, "common", "Ruleset"),
-            os.path.join(self.base_path, "standard", self.master, "Ruleset"),
+            common_path,
+            os.path.join(common_path, "Ruleset"),
+            master_path,
+            os.path.join(master_path, "Ruleset"),
         ]
         for mod_entry in save_mod_list:
             mod_id = mod_entry.split(" ver:", 1)[0].strip()
+            if mod_id == self.master:
+                continue
             if mod_id in self.mod_map:
                 mod_path = self.mod_map[mod_id]
                 mod_rul = os.path.join(mod_path, f"{mod_id}.rul")
@@ -207,6 +237,17 @@ class GameDataManager:
             self.manufacture = data.get("manufacture", {})
             self.facilities = data.get("facilities", {})
             self.extraSprites = data.get("extraSprites", {})
+            if isinstance(self.extraSprites, dict):
+                for sprite_def in self.extraSprites.values():
+                    if isinstance(sprite_def, dict):
+                        if "files" in sprite_def:
+                            sprite_def["files"] = _normalize_int_keys(
+                                sprite_def["files"]
+                            )
+                        if "_file_sources" in sprite_def:
+                            sprite_def["_file_sources"] = _normalize_int_keys(
+                                sprite_def["_file_sources"]
+                            )
             return True
         except Exception as e:
             logger.warning(f"Cache read failed, will re-parse: {e}")
@@ -275,12 +316,42 @@ class GameDataManager:
                     self._merge_list_to_dict(
                         doc.get("facilities", []), self.facilities, source_dir
                     )
-                    self._merge_list_to_dict(
-                        doc.get("extraSprites", []), self.extraSprites, source_dir
-                    )
+                    self._merge_extra_sprites(doc.get("extraSprites", []), source_dir)
 
         except Exception as e:
             logger.error(f"Error parsing ruleset {file_path}: {e}")
+
+    def _merge_extra_sprites(self, source_list, source_dir):
+        """Merge extraSprites entries while tracking per-index source directories."""
+        if not source_list:
+            return
+
+        for item in source_list:
+            if not isinstance(item, dict):
+                continue
+
+            ent_type = item.get("type") or item.get("name")
+            if not ent_type:
+                continue
+
+            target = self.extraSprites.setdefault(
+                ent_type, {"files": {}, "_file_sources": {}}
+            )
+            if not isinstance(target.get("files"), dict):
+                target["files"] = {}
+            if not isinstance(target.get("_file_sources"), dict):
+                target["_file_sources"] = {}
+
+            for k, v in item.items():
+                if k == "files" and isinstance(v, dict):
+                    for idx, rel_path in v.items():
+                        norm_idx = _to_int_key(idx)
+                        target["files"][norm_idx] = rel_path
+                        target["_file_sources"][norm_idx] = source_dir
+                else:
+                    target[k] = v
+
+            target["_source_dir"] = source_dir
 
     def _merge_list_to_dict(self, source_list, target_dict, source_dir):
         """

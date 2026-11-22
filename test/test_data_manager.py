@@ -176,3 +176,78 @@ class TestGameDataManager:
         key_b = dm._compute_cache_key(list_b)
 
         assert key_a != key_b
+
+    def test_standard_root_rulesets_loaded_and_keyed(self):
+        """Root standard/<master>/*.rul files should load and affect cache key."""
+        xcom1_dir = os.path.join(self.test_dir, "standard", "xcom1")
+        fac_rul = os.path.join(xcom1_dir, "facilities.rul")
+        items_rul = os.path.join(xcom1_dir, "items.rul")
+        with open(fac_rul, "w") as f:
+            yaml.dump(
+                {"facilities": [{"type": "STR_ACCESS_LIFT", "spriteFacility": 17}]}, f
+            )
+        with open(items_rul, "w") as f:
+            yaml.dump({"items": [{"type": "STR_RIFLE", "bigSprite": 1}]}, f)
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        dm.load_all(["xcom1 ver: 1.0"])
+
+        assert dm.facilities["STR_ACCESS_LIFT"]["spriteFacility"] == 17
+        assert dm.items["STR_RIFLE"]["bigSprite"] == 1
+
+        key_before = dm._compute_cache_key(["xcom1 ver: 1.0"])
+        mtime = os.path.getmtime(fac_rul) + 10
+        os.utime(fac_rul, (mtime, mtime))
+        key_after = dm._compute_cache_key(["xcom1 ver: 1.0"])
+        assert key_before != key_after
+
+    def test_merge_extra_sprites_across_mods_and_cache_reload(self):
+        """extraSprites merges per-index files and preserves int keys across cache."""
+        self._create_ruleset(
+            self.mod1_dir,
+            {
+                "extraSprites": [
+                    {"type": "BIGOBS.PCK", "files": {57: "a.png"}},
+                    {"type": "BIGOBS.PCK", "files": {58: "b.png"}},
+                ]
+            },
+        )
+        self._create_ruleset(
+            self.mod2_dir,
+            {
+                "extraSprites": [
+                    {"type": "BIGOBS.PCK", "files": {70: "c.png"}},
+                ]
+            },
+        )
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        mod_list = ["xcom1 ver: 1.0", "mod1 ver: 1.0", "mod2 ver: 1.0"]
+        dm.load_all(mod_list)
+
+        bigobs = dm.extraSprites["BIGOBS.PCK"]
+        assert bigobs["files"] == {57: "a.png", 58: "b.png", 70: "c.png"}
+        assert bigobs["_file_sources"] == {
+            57: self.mod1_dir,
+            58: self.mod1_dir,
+            70: self.mod2_dir,
+        }
+
+        dm2 = GameDataManager(self.test_dir)
+        dm2._cache_dir = dm._cache_dir
+        dm2.index_mods()
+        dm2.load_all(mod_list)
+
+        reloaded = dm2.extraSprites["BIGOBS.PCK"]
+        assert all(isinstance(k, int) for k in reloaded["files"])
+        assert all(isinstance(k, int) for k in reloaded["_file_sources"])
+        assert reloaded["files"] == {57: "a.png", 58: "b.png", 70: "c.png"}
+        assert reloaded["_file_sources"] == {
+            57: self.mod1_dir,
+            58: self.mod1_dir,
+            70: self.mod2_dir,
+        }

@@ -259,6 +259,37 @@ def test_extractor_decodes_and_caches(fake_game_dir, tmp_path):
         ex.get_smoke_sprite(2)
 
 
+def test_extractor_invalidates_stale_cache_on_source_change(fake_game_dir, tmp_path):
+    cache = tmp_path / "cache"
+    ex = pd.VanillaAssetExtractor(fake_game_dir, cache)
+
+    assert ex.get_basebit_sprite(0).getpixel((0, 0)) == RED
+    cached_png = ex.get_cached_sprite_path(
+        "GEOGRAPH/BASEBITS.PCK", 0, pd.PALETTE_BASESCAPE
+    )
+    cached_mtime = cached_png.stat().st_mtime
+
+    # Update BASEBITS.PCK frame 0 to draw palette index 2 (opaque black) and bump mtime.
+    pck_path = fake_game_dir / "geograph" / "basebits.pck"
+    new_frame = bytes([0, 2, 0xFF])
+    pck_path.write_bytes(new_frame + new_frame)
+    os.utime(pck_path, (cached_mtime + 10, cached_mtime + 10))
+
+    assert ex.get_basebit_sprite(0).getpixel((0, 0)) == (0, 0, 0, 255)
+
+    # Update PALETTES.DAT so index 2 becomes blue and bump mtime beyond the new PNG.
+    new_cached_mtime = cached_png.stat().st_mtime
+    pal_path = fake_game_dir / "geodata" / "palettes.dat"
+    pal_bytes = bytearray(pal_path.read_bytes())
+    for i in range(5):
+        offset = i * pd.PALETTE_RECORD_SIZE + 6
+        pal_bytes[offset : offset + 3] = bytes([0, 0, 63])
+    pal_path.write_bytes(bytes(pal_bytes))
+    os.utime(pal_path, (new_cached_mtime + 10, new_cached_mtime + 10))
+
+    assert ex.get_basebit_sprite(0).getpixel((0, 0)) == (0, 0, 252, 255)
+
+
 def test_extractor_missing_files(tmp_path):
     ex = pd.VanillaAssetExtractor(tmp_path / "nothing", tmp_path / "cache")
     with pytest.raises(FileNotFoundError):

@@ -615,77 +615,93 @@ class VanillaAssetExtractor:
         safe_name = archive_name.replace("/", "_").replace("\\", "_").replace(".", "_")
         return self.cache_dir / f"{safe_name}_pal{palette_index}_{sprite_index:04d}.png"
 
-    def get_basebit_sprite(self, sprite_index: int) -> Image.Image:
-        """Extract a 32x40 facility/craft/rank sprite from ``BASEBITS.PCK`` (#26)."""
+    def _is_cache_fresh(self, cached_path: Path, pck_rel_path: str) -> bool:
+        """Return True if cached PNG exists and is no older than its source files."""
+        if not cached_path.is_file():
+            return False
+
+        cached_mtime = cached_path.stat().st_mtime
+        for rel_path in (pck_rel_path, "GEODATA/PALETTES.DAT"):
+            src_path = self._resolve_case_insensitive(rel_path)
+            if src_path is not None and src_path.stat().st_mtime > cached_mtime:
+                return False
+
+        return True
+
+    def _get_archive_sprite(
+        self,
+        pck_rel_path: str,
+        tab_rel_path: str,
+        palette_index: int,
+        sprite_index: int,
+        width: int = DEFAULT_PCK_WIDTH,
+        height: int = DEFAULT_PCK_HEIGHT,
+    ) -> Image.Image:
+        """Extract a single frame from a PCK archive with source-fresh PNG caching."""
         cached_path = self.get_cached_sprite_path(
-            "GEOGRAPH/BASEBITS.PCK", sprite_index, PALETTE_BASESCAPE
+            pck_rel_path, sprite_index, palette_index
         )
-        if cached_path.is_file():
+        if self._is_cache_fresh(cached_path, pck_rel_path):
             return Image.open(cached_path).convert("RGBA")
 
+        if cached_path.is_file():
+            self._archive_cache.pop((pck_rel_path.upper(), palette_index), None)
+            pal_path = self._resolve_case_insensitive("GEODATA/PALETTES.DAT")
+            if (
+                pal_path is not None
+                and pal_path.stat().st_mtime > cached_path.stat().st_mtime
+            ):
+                self._palettes = None
+
         frames = self._load_archive(
+            pck_rel_path=pck_rel_path,
+            tab_rel_path=tab_rel_path,
+            palette_index=palette_index,
+            width=width,
+            height=height,
+        )
+        if not (0 <= sprite_index < len(frames)):
+            archive_name = Path(pck_rel_path).name
+            raise IndexError(
+                f"{archive_name} sprite index {sprite_index} out of range "
+                f"(0..{len(frames) - 1})"
+            )
+        img = frames[sprite_index]
+        img.save(cached_path, format="PNG")
+        return img
+
+    def get_basebit_sprite(self, sprite_index: int) -> Image.Image:
+        """Extract a 32x40 facility/craft/rank sprite from ``BASEBITS.PCK`` (#26)."""
+        return self._get_archive_sprite(
             pck_rel_path="GEOGRAPH/BASEBITS.PCK",
             tab_rel_path="GEOGRAPH/BASEBITS.TAB",
             palette_index=PALETTE_BASESCAPE,
+            sprite_index=sprite_index,
             width=DEFAULT_PCK_WIDTH,
             height=DEFAULT_PCK_HEIGHT,
         )
-        if not (0 <= sprite_index < len(frames)):
-            raise IndexError(
-                f"BASEBITS.PCK sprite index {sprite_index} out of range "
-                f"(0..{len(frames) - 1})"
-            )
-        img = frames[sprite_index]
-        img.save(cached_path, format="PNG")
-        return img
 
     def get_bigob_sprite(self, sprite_index: int) -> Image.Image:
         """Extract a 32x48 inventory item sprite from ``UNITS/BIGOBS.PCK`` (#25)."""
-        cached_path = self.get_cached_sprite_path(
-            "UNITS/BIGOBS.PCK", sprite_index, PALETTE_BATTLESCAPE
-        )
-        if cached_path.is_file():
-            return Image.open(cached_path).convert("RGBA")
-
-        frames = self._load_archive(
+        return self._get_archive_sprite(
             pck_rel_path="UNITS/BIGOBS.PCK",
             tab_rel_path="UNITS/BIGOBS.TAB",
             palette_index=PALETTE_BATTLESCAPE,
+            sprite_index=sprite_index,
             width=DEFAULT_PCK_WIDTH,
             height=BIGOBS_PCK_HEIGHT,
         )
-        if not (0 <= sprite_index < len(frames)):
-            raise IndexError(
-                f"BIGOBS.PCK sprite index {sprite_index} out of range "
-                f"(0..{len(frames) - 1})"
-            )
-        img = frames[sprite_index]
-        img.save(cached_path, format="PNG")
-        return img
 
     def get_smoke_sprite(self, sprite_index: int) -> Image.Image:
         """Extract a 32x40 smoke/rank sprite from ``UFOGRAPH/SMOKE.PCK``."""
-        cached_path = self.get_cached_sprite_path(
-            "UFOGRAPH/SMOKE.PCK", sprite_index, PALETTE_BATTLESCAPE
-        )
-        if cached_path.is_file():
-            return Image.open(cached_path).convert("RGBA")
-
-        frames = self._load_archive(
+        return self._get_archive_sprite(
             pck_rel_path="UFOGRAPH/SMOKE.PCK",
             tab_rel_path="UFOGRAPH/SMOKE.TAB",
             palette_index=PALETTE_BATTLESCAPE,
+            sprite_index=sprite_index,
             width=DEFAULT_PCK_WIDTH,
             height=DEFAULT_PCK_HEIGHT,
         )
-        if not (0 <= sprite_index < len(frames)):
-            raise IndexError(
-                f"SMOKE.PCK sprite index {sprite_index} out of range "
-                f"(0..{len(frames) - 1})"
-            )
-        img = frames[sprite_index]
-        img.save(cached_path, format="PNG")
-        return img
 
 
 def _extract_all(extractor: VanillaAssetExtractor) -> int:

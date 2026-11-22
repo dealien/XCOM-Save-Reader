@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
+import shutil
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -12,18 +15,49 @@ from pck_decoder import VanillaAssetExtractor
 
 logger = logging.getLogger(__name__)
 
+VANILLA_ARCHIVE_TYPES = {
+    "BASEBITS.PCK",
+    "BASEBITS",
+    "BIGOBS.PCK",
+    "BIGOBS",
+    "SMOKE.PCK",
+    "SMOKE",
+}
+
 
 class ResourceManager:
     def __init__(
         self,
         data_manager: Any,
         vanilla_extractor: VanillaAssetExtractor | None = None,
-        cache_dir: str | Path = Path("user/cache/sprites"),
+        cache_dir: str | Path | None = None,
     ) -> None:
         self.data_manager = data_manager
         self.image_cache: dict[str, Any] = {}
-        self.cache_dir = Path(cache_dir)
+        self.cache_dir = (
+            Path(cache_dir)
+            if cache_dir is not None
+            else Path(tempfile.gettempdir()) / "xcom-save-reader" / "sprite_cache"
+        )
         self.vanilla_extractor = vanilla_extractor
+        self._injected_extractor = vanilla_extractor is not None
+
+    def reset(self) -> None:
+        """Clear in-memory image cache and reset auto-initialized vanilla extractor."""
+        self.image_cache.clear()
+        if not self._injected_extractor:
+            self.vanilla_extractor = None
+
+    def clear_cache(self) -> None:
+        """Reset in-memory caches and remove on-disk decoded sprite cache."""
+        self.reset()
+        if self.cache_dir.is_dir():
+            try:
+                shutil.rmtree(self.cache_dir)
+            except OSError as e:
+                logger.warning(
+                    "Failed to remove sprite cache %s: %s", self.cache_dir, e
+                )
 
     def _format_image(
         self,
@@ -87,8 +121,15 @@ class ResourceManager:
                 )
                 if pal_match is not None:
                     try:
+                        key_raw = (
+                            f"{candidate_dir.resolve()}|{pal_match.stat().st_mtime}"
+                        )
+                        cache_subdir = (
+                            self.cache_dir
+                            / hashlib.sha256(key_raw.encode("utf-8")).hexdigest()[:12]
+                        )
                         self.vanilla_extractor = VanillaAssetExtractor(
-                            game_dir=candidate_dir, cache_dir=self.cache_dir
+                            game_dir=candidate_dir, cache_dir=cache_subdir
                         )
                         logger.info(
                             "Initialized VanillaAssetExtractor with game_dir: %s",
@@ -97,12 +138,84 @@ class ResourceManager:
                         return self.vanilla_extractor
                     except Exception as e:
                         logger.warning(
-                            "Failed to initialize VanillaAssetExtractor for %s: %e",
+                            "Failed to initialize VanillaAssetExtractor for %s: %s",
                             candidate_dir,
                             e,
                         )
 
         return None
+
+    def _get_mod_sprite(
+        self,
+        sprite_type: str,
+        index: int = 0,
+        ctk_image: bool = True,
+        size: tuple[int, int] | None = None,
+        allow_first_fallback: bool = True,
+    ) -> ctk.CTkImage | Image.Image | None:
+        """Resolve and load a sprite defined in mod extraSprites."""
+        extra_sprites = (
+            getattr(self.data_manager, "extraSprites", {}) if self.data_manager else {}
+        )
+        if sprite_type not in extra_sprites:
+            return None
+
+        sprite_def = extra_sprites[sprite_type]
+        files = sprite_def.get("files", {})
+        if not isinstance(files, dict) or not files:
+            return None
+
+        if index in files:
+            matched_key: int | str = index
+        elif str(index) in files:
+            matched_key = str(index)
+        elif allow_first_fallback:
+            matched_key = next(iter(files.keys()))
+        else:
+            return None
+
+        rel_path = files[matched_key]
+        file_sources = sprite_def.get("_file_sources", {})
+        source_dir = (
+            (
+                file_sources.get(matched_key)
+                or file_sources.get(str(matched_key))
+                or sprite_def.get("_source_dir", "")
+            )
+            if isinstance(file_sources, dict)
+            else sprite_def.get("_source_dir", "")
+        )
+        if not source_dir:
+            return None
+
+        # OXCE paths are relative to the mod/standard dir
+        abs_path = os.path.join(source_dir, rel_path)
+
+        # Prevent path traversal (e.g. "../../secrets")
+        resolved = os.path.realpath(abs_path)
+        root = os.path.realpath(source_dir)
+        if os.path.commonpath([root, resolved]) != root:
+            logger.warning(f"Blocked path traversal attempt: {rel_path}")
+            return None
+
+        if not os.path.exists(resolved):
+            logger.warning(f"Sprite file missing: {resolved}")
+            return None
+
+        cache_key = f"{resolved}_{matched_key}_{size}_{ctk_image}"
+        if cache_key in self.image_cache:
+            return self.image_cache[cache_key]
+
+        try:
+            with Image.open(resolved) as img:
+                img.load()
+                result = self._format_image(img, size=size, ctk_image=ctk_image)
+
+            self.image_cache[cache_key] = result
+            return result
+        except Exception as e:
+            logger.error(f"Failed to load sprite {resolved}: {e}")
+            return None
 
     def get_sprite(
         self,
@@ -118,62 +231,63 @@ class ResourceManager:
         :param ctk_image: Whether to return a CustomTkinter CTkImage or a PIL Image.
         :param size: Tuple (width, height) to resize or frame the image.
         """
-        # 1. Try extraSprites definitions (modded assets)
-        extra_sprites = (
-            getattr(self.data_manager, "extraSprites", {}) if self.data_manager else {}
-        )
-        if sprite_type in extra_sprites:
-            sprite_def = extra_sprites[sprite_type]
-            files = sprite_def.get("files", {})
-
-            # files is a dict mapping index -> path (e.g. {0: "Resources/UI/icon.png"})
-            if index not in files:
-                if files:
-                    index = list(files.keys())[0]
-                else:
-                    return None
-
-            rel_path = files[index]
-            source_dir = sprite_def.get("_source_dir", "")
-
-            # OXCE paths are relative to the mod/standard dir
-            abs_path = os.path.join(source_dir, rel_path)
-
-            # Prevent path traversal (e.g. "../../secrets")
-            resolved = os.path.realpath(abs_path)
-            root = os.path.realpath(source_dir)
-            if os.path.commonpath([root, resolved]) != root:
-                logger.warning(f"Blocked path traversal attempt: {rel_path}")
-                return None
-
-            if not os.path.exists(resolved):
-                logger.warning(f"Sprite file missing: {resolved}")
-                return None
-
-            cache_key = f"{resolved}_{index}_{size}_{ctk_image}"
-            if cache_key in self.image_cache:
-                return self.image_cache[cache_key]
-
-            try:
-                with Image.open(resolved) as img:
-                    img.load()
-                    result = self._format_image(img, size=size, ctk_image=ctk_image)
-
-                self.image_cache[cache_key] = result
-                return result
-
-            except Exception as e:
-                logger.error(f"Failed to load sprite {resolved}: {e}")
-                return None
-
-        # 2. Check for vanilla archive names as fallback
         upper_type = sprite_type.upper()
+        is_vanilla_archive = upper_type in VANILLA_ARCHIVE_TYPES
+        mod_sprite = self._get_mod_sprite(
+            sprite_type,
+            index=index,
+            ctk_image=ctk_image,
+            size=size,
+            allow_first_fallback=not is_vanilla_archive,
+        )
+        if mod_sprite is not None:
+            return mod_sprite
+
         if upper_type in ("BASEBITS.PCK", "BASEBITS"):
             return self.get_basebit_sprite(index, ctk_image=ctk_image, size=size)
         if upper_type in ("BIGOBS.PCK", "BIGOBS"):
             return self.get_bigob_sprite(index, ctk_image=ctk_image, size=size)
         if upper_type in ("SMOKE.PCK", "SMOKE"):
             return self.get_smoke_sprite(index, ctk_image=ctk_image, size=size)
+
+        return None
+
+    def _get_archive_sprite(
+        self,
+        cache_prefix: str,
+        archive_name: str,
+        extractor_method: str,
+        index: int,
+        ctk_image: bool = True,
+        size: tuple[int, int] | None = None,
+    ) -> ctk.CTkImage | Image.Image | None:
+        """Retrieve sprite from mod extraSprites or fall back to vanilla extractor."""
+        cache_key = f"{cache_prefix}_{index}_{size}_{ctk_image}"
+        if cache_key in self.image_cache:
+            return self.image_cache[cache_key]
+
+        mod_sprite = self._get_mod_sprite(
+            archive_name,
+            index=index,
+            ctk_image=ctk_image,
+            size=size,
+            allow_first_fallback=False,
+        )
+        if mod_sprite is not None:
+            self.image_cache[cache_key] = mod_sprite
+            return mod_sprite
+
+        extractor = self._get_vanilla_extractor()
+        if extractor is not None:
+            try:
+                pil_img = getattr(extractor, extractor_method)(index)
+                result = self._format_image(pil_img, size=size, ctk_image=ctk_image)
+                self.image_cache[cache_key] = result
+                return result
+            except (IndexError, FileNotFoundError) as e:
+                logger.warning(
+                    "Failed to load vanilla %s sprite %s: %s", cache_prefix, index, e
+                )
 
         return None
 
@@ -184,34 +298,14 @@ class ResourceManager:
         size: tuple[int, int] | None = None,
     ) -> ctk.CTkImage | Image.Image | None:
         """Retrieve a 32x40 base facility/craft/rank sprite from BASEBITS.PCK."""
-        cache_key = f"basebit_{index}_{size}_{ctk_image}"
-        if cache_key in self.image_cache:
-            return self.image_cache[cache_key]
-
-        # Check if a mod overrode BASEBITS.PCK via extraSprites
-        extra_sprites = (
-            getattr(self.data_manager, "extraSprites", {}) if self.data_manager else {}
+        return self._get_archive_sprite(
+            "basebit",
+            "BASEBITS.PCK",
+            "get_basebit_sprite",
+            index,
+            ctk_image=ctk_image,
+            size=size,
         )
-        if "BASEBITS.PCK" in extra_sprites:
-            sprite = self.get_sprite(
-                "BASEBITS.PCK", index=index, ctk_image=ctk_image, size=size
-            )
-            if sprite is not None:
-                self.image_cache[cache_key] = sprite
-                return sprite
-
-        # Fallback to vanilla archive decoder
-        extractor = self._get_vanilla_extractor()
-        if extractor is not None:
-            try:
-                pil_img = extractor.get_basebit_sprite(index)
-                result = self._format_image(pil_img, size=size, ctk_image=ctk_image)
-                self.image_cache[cache_key] = result
-                return result
-            except (IndexError, FileNotFoundError) as e:
-                logger.warning(f"Failed to load vanilla basebit sprite {index}: {e}")
-
-        return None
 
     def get_bigob_sprite(
         self,
@@ -220,34 +314,14 @@ class ResourceManager:
         size: tuple[int, int] | None = None,
     ) -> ctk.CTkImage | Image.Image | None:
         """Retrieve a 32x48 inventory item sprite from BIGOBS.PCK."""
-        cache_key = f"bigob_{index}_{size}_{ctk_image}"
-        if cache_key in self.image_cache:
-            return self.image_cache[cache_key]
-
-        # Check if a mod overrode BIGOBS.PCK via extraSprites
-        extra_sprites = (
-            getattr(self.data_manager, "extraSprites", {}) if self.data_manager else {}
+        return self._get_archive_sprite(
+            "bigob",
+            "BIGOBS.PCK",
+            "get_bigob_sprite",
+            index,
+            ctk_image=ctk_image,
+            size=size,
         )
-        if "BIGOBS.PCK" in extra_sprites:
-            sprite = self.get_sprite(
-                "BIGOBS.PCK", index=index, ctk_image=ctk_image, size=size
-            )
-            if sprite is not None:
-                self.image_cache[cache_key] = sprite
-                return sprite
-
-        # Fallback to vanilla archive decoder
-        extractor = self._get_vanilla_extractor()
-        if extractor is not None:
-            try:
-                pil_img = extractor.get_bigob_sprite(index)
-                result = self._format_image(pil_img, size=size, ctk_image=ctk_image)
-                self.image_cache[cache_key] = result
-                return result
-            except (IndexError, FileNotFoundError) as e:
-                logger.warning(f"Failed to load vanilla bigob sprite {index}: {e}")
-
-        return None
 
     def get_smoke_sprite(
         self,
@@ -256,34 +330,14 @@ class ResourceManager:
         size: tuple[int, int] | None = None,
     ) -> ctk.CTkImage | Image.Image | None:
         """Retrieve a 32x40 smoke or rank sprite from SMOKE.PCK."""
-        cache_key = f"smoke_{index}_{size}_{ctk_image}"
-        if cache_key in self.image_cache:
-            return self.image_cache[cache_key]
-
-        # Check if a mod overrode SMOKE.PCK via extraSprites
-        extra_sprites = (
-            getattr(self.data_manager, "extraSprites", {}) if self.data_manager else {}
+        return self._get_archive_sprite(
+            "smoke",
+            "SMOKE.PCK",
+            "get_smoke_sprite",
+            index,
+            ctk_image=ctk_image,
+            size=size,
         )
-        if "SMOKE.PCK" in extra_sprites:
-            sprite = self.get_sprite(
-                "SMOKE.PCK", index=index, ctk_image=ctk_image, size=size
-            )
-            if sprite is not None:
-                self.image_cache[cache_key] = sprite
-                return sprite
-
-        # Fallback to vanilla archive decoder
-        extractor = self._get_vanilla_extractor()
-        if extractor is not None:
-            try:
-                pil_img = extractor.get_smoke_sprite(index)
-                result = self._format_image(pil_img, size=size, ctk_image=ctk_image)
-                self.image_cache[cache_key] = result
-                return result
-            except (IndexError, FileNotFoundError) as e:
-                logger.warning(f"Failed to load vanilla smoke sprite {index}: {e}")
-
-        return None
 
     def get_facility_sprite(
         self,
