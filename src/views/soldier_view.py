@@ -4,7 +4,7 @@ from functools import partial
 import customtkinter as ctk
 
 import view_utils
-from inventory_formatter import format_inventory_for_display
+from inventory_formatter import format_inventory_entries
 
 # Configure logger for this module
 logger = logging.getLogger(__name__)
@@ -20,11 +20,15 @@ class SoldierView(ctk.CTkFrame):
         back_button = ctk.CTkButton(self, text="←", command=self.back_to_list, width=30)
         back_button.grid(row=0, column=0, padx=(20, 0), pady=20, sticky="w")
 
-        # Name Banner (Top Left)
+        # Name & Rank Banner (Top Left)
+        name_banner = ctk.CTkFrame(self, fg_color="transparent")
+        name_banner.grid(row=0, column=1, padx=20, pady=20, sticky="w")
+        self.rank_icon_label = ctk.CTkLabel(name_banner, text="")
+        self.rank_icon_label.pack(side="left", padx=(0, 10))
         self.name_label = ctk.CTkLabel(
-            self, text="", font=ctk.CTkFont(size=24, weight="bold")
+            name_banner, text="", font=ctk.CTkFont(size=24, weight="bold")
         )
-        self.name_label.grid(row=0, column=1, padx=20, pady=20, sticky="w")
+        self.name_label.pack(side="left")
 
         # Stats Frame (Left)
         stats_frame = ctk.CTkFrame(self)
@@ -114,8 +118,18 @@ class SoldierView(ctk.CTkFrame):
             return
 
         tr = self.controller.translation_manager.get
+        rank_key = self.controller.translation_manager.get_rank_string(
+            soldier.rank, getattr(soldier, "type", "STR_SOLDIER")
+        )
+        self.name_label.configure(text=f"{soldier.name} ({tr(rank_key)})")
 
-        self.name_label.configure(text=f"{soldier.name} ({tr(soldier.rank)})")
+        rm = getattr(self.controller, "resource_manager", None)
+        rank_sprite = (
+            rm.get_rank_sprite(soldier.rank, getattr(soldier, "type", None))
+            if rm is not None
+            else None
+        )
+        self.rank_icon_label.configure(image=rank_sprite)
 
         # Current Stats
         current_stats = soldier.currentstats
@@ -159,13 +173,13 @@ class SoldierView(ctk.CTkFrame):
         for widget in self.inventory_frame.winfo_children():
             widget.destroy()
 
-        inventory_data = format_inventory_for_display(
+        inventory_data = format_inventory_entries(
             getattr(soldier, "equipmentLayout", None), translator=tr
         )
 
         if inventory_data:
             row = 0
-            for slot, items in sorted(inventory_data.items()):
+            for slot, entries in sorted(inventory_data.items()):
                 slot_label = ctk.CTkLabel(
                     self.inventory_frame,
                     text=slot,
@@ -173,9 +187,22 @@ class SoldierView(ctk.CTkFrame):
                 )
                 slot_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
                 row += 1
-                for item_text in items:
-                    item_label = ctk.CTkLabel(self.inventory_frame, text=item_text)
-                    item_label.grid(row=row, column=0, padx=20, pady=2, sticky="w")
+                for entry in entries:
+                    item_row = ctk.CTkFrame(
+                        self.inventory_frame, fg_color="transparent"
+                    )
+                    item_row.grid(row=row, column=0, padx=20, pady=2, sticky="w")
+                    item_sprite = (
+                        rm.get_item_sprite(entry["item_type"], size=(24, 36))
+                        if rm is not None
+                        else None
+                    )
+                    if item_sprite is not None:
+                        ctk.CTkLabel(item_row, text="", image=item_sprite).pack(
+                            side="left", padx=(0, 6)
+                        )
+                    item_label = ctk.CTkLabel(item_row, text=entry["text"])
+                    item_label.pack(side="left")
                     row += 1
         else:
             no_inventory_label = ctk.CTkLabel(

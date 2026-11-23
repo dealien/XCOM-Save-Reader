@@ -19,24 +19,50 @@ REFERENCE = Path(__file__).resolve().parent.parent / "reference"
 UFO_DIR = REFERENCE / "UFO"
 
 
-def _make_synthetic_vanilla_ufo(base_dir: Path) -> Path:
-    """Create minimal UFO/GEODATA and GEOGRAPH/BASEBITS files for offline tests."""
+def _make_synthetic_basebits_ufo(
+    base_dir: Path, frame_colors: dict[int, int] | None = None
+) -> Path:
+    """Create minimal UFO assets with multi-frame BASEBITS.PCK for layout tests."""
     ufo_dir = base_dir / "UFO"
-    (ufo_dir / "GEODATA").mkdir(parents=True)
+    (ufo_dir / "GEODATA").mkdir(parents=True, exist_ok=True)
     pal = bytearray(pd.PALETTE_RECORD_SIZE * 5)
-    for i in range(5):
-        pal[i * pd.PALETTE_RECORD_SIZE + 3 : i * pd.PALETTE_RECORD_SIZE + 6] = bytes(
-            [63, 0, 0]
-        )
+    # Index 1=red, 2=green, 3=blue, 4=yellow, 5=magenta, 6=cyan, 7=gray
+    vga_colors = {
+        1: (63, 0, 0),
+        2: (0, 63, 0),
+        3: (0, 0, 63),
+        4: (63, 63, 0),
+        5: (63, 0, 63),
+        6: (0, 63, 63),
+        7: (10, 10, 10),
+    }
+    for pal_idx in range(5):
+        pal_off = pal_idx * pd.PALETTE_RECORD_SIZE
+        for color_idx, rgb in vga_colors.items():
+            pal[pal_off + color_idx * 3 : pal_off + color_idx * 3 + 3] = bytes(rgb)
     (ufo_dir / "GEODATA" / "PALETTES.DAT").write_bytes(bytes(pal))
 
-    (ufo_dir / "GEOGRAPH").mkdir(parents=True)
-    frame = bytes([0, 1, 0xFF])
-    (ufo_dir / "GEOGRAPH" / "BASEBITS.PCK").write_bytes(frame + frame)
+    colors = frame_colors or {}
+    total_frames = max([2, *colors.keys()]) + 1
+    pck_buf = bytearray()
+    offsets: list[int] = []
+    for idx in range(total_frames):
+        offsets.append(len(pck_buf))
+        color = colors.get(idx, 1)
+        # Skip 0 rows, draw pixel 0 with `color`, end of frame
+        pck_buf.extend(bytes([0, color, 0xFF]))
+
+    (ufo_dir / "GEOGRAPH").mkdir(parents=True, exist_ok=True)
+    (ufo_dir / "GEOGRAPH" / "BASEBITS.PCK").write_bytes(bytes(pck_buf))
     (ufo_dir / "GEOGRAPH" / "BASEBITS.TAB").write_bytes(
-        struct.pack("<HH", 0, len(frame))
+        struct.pack(f"<{len(offsets)}H", *offsets)
     )
     return ufo_dir
+
+
+def _make_synthetic_vanilla_ufo(base_dir: Path) -> Path:
+    """Create minimal UFO/GEODATA and GEOGRAPH/BASEBITS files for offline tests."""
+    return _make_synthetic_basebits_ufo(base_dir, frame_colors={0: 1, 1: 1})
 
 
 def test_resource_manager_mod_sprite(tmp_path):
@@ -274,3 +300,116 @@ def test_reset_and_clear_cache(tmp_path):
     assert rm.image_cache == {}
     assert rm.vanilla_extractor is None
     assert not cache_dir.exists()
+
+
+def test_get_craft_and_rank_sprites(tmp_path):
+    """Craft and rank helpers resolve expected BASEBITS sprite offsets."""
+    _make_synthetic_basebits_ufo(tmp_path, frame_colors={33: 2, 44: 3})
+
+    dm = MagicMock()
+    dm.base_path = str(tmp_path)
+    dm.master = "xcom1"
+    dm.extraSprites = {}
+    dm.crafts = {"STR_SKYRANGER": {"sprite": 0}}
+    dm.soldiers = {"STR_SOLDIER": {}}
+
+    rm = ResourceManager(dm, cache_dir=tmp_path / "cache")
+
+    craft_img = rm.get_craft_sprite("STR_SKYRANGER", ctk_image=False)
+    assert craft_img is not None
+    assert craft_img.getpixel((0, 0)) == (0, 252, 0, 255)
+
+    rank_img = rm.get_rank_sprite(2, "STR_SOLDIER", ctk_image=False)
+    assert rank_img is not None
+    assert rank_img.getpixel((0, 0)) == (0, 0, 252, 255)
+
+    assert rm.get_rank_sprite(-1) is None
+    assert rm.get_rank_sprite(True) is None
+
+
+def test_render_base_layout_hangars_and_parked_craft(tmp_path):
+    """Base layout composites 1x1 facilities, 2x2 hangars, construction, and craft."""
+    frame_colors = {
+        0: 7,  # dirt (dark gray)
+        1: 6,  # lift shape (cyan)
+        2: 1,  # lift facility (red)
+        9: 2,  # hangar UL (green)
+        10: 2,  # hangar UR
+        11: 2,  # hangar LL
+        12: 2,  # hangar LR
+        13: 4,  # construction UL (yellow)
+        14: 4,  # construction UR
+        15: 4,  # construction LL
+        16: 4,  # construction LR
+        33: 5,  # Skyranger (magenta)
+    }
+    _make_synthetic_basebits_ufo(tmp_path, frame_colors=frame_colors)
+
+    dm = MagicMock()
+    dm.base_path = str(tmp_path)
+    dm.master = "xcom1"
+    dm.extraSprites = {}
+    dm.facilities = {
+        "STR_ACCESS_LIFT": {"spriteShape": 1, "spriteFacility": 2},
+        "STR_HANGAR": {"spriteShape": 9, "spriteFacility": 9, "size": 2, "crafts": 1},
+    }
+    dm.crafts = {"STR_SKYRANGER": {"sprite": 0}}
+
+    fac_lift = MagicMock(type="STR_ACCESS_LIFT", x=2, y=2, build_time=0)
+    fac_hangar_done = MagicMock(type="STR_HANGAR", x=0, y=0, build_time=0)
+    fac_hangar_wip = MagicMock(type="STR_HANGAR", x=4, y=0, build_time=5)
+    craft_parked = MagicMock(type="STR_SKYRANGER", status="STR_READY")
+    craft_extra = MagicMock(type="STR_SKYRANGER", status="STR_READY")
+    base = MagicMock(
+        facilities=[fac_lift, fac_hangar_done, fac_hangar_wip],
+        crafts=[craft_parked, craft_extra],
+    )
+
+    rm = ResourceManager(dm, cache_dir=tmp_path / "cache")
+    img = rm.render_base_layout(base, scale=2, ctk_image=False)
+
+    assert img is not None
+    assert img.size == (384, 384)
+    # Completed 2x2 hangar corners at (0,0), (1,0), (0,1), (1,1) -> green
+    for gx, gy in ((0, 0), (1, 0), (0, 1), (1, 1)):
+        assert img.getpixel((gx * 64, gy * 64)) == (0, 252, 0, 255)
+    # Parked Skyranger centered inside 2x2 hangar at (0, 0) -> (32, 24)
+    assert img.getpixel((32, 24)) == (252, 0, 252, 255)
+    # Under-construction 2x2 hangar at (4, 0) -> yellow, and no craft parked inside
+    for gx, gy in ((4, 0), (5, 0), (4, 1), (5, 1)):
+        assert img.getpixel((gx * 64, gy * 64)) == (252, 252, 0, 255)
+    assert img.getpixel((4 * 64 + 32, 24)) != (252, 0, 252, 255)
+    # Lift at (2, 2) -> facility red overrides shape cyan at (0, 0)
+    assert img.getpixel((2 * 64, 2 * 64)) == (252, 0, 0, 255)
+    # Empty dirt cell at (5, 5)
+    assert img.getpixel((5 * 64, 5 * 64)) == (40, 40, 40, 255)
+
+
+def test_render_base_layout_real_ufo(tmp_path):
+    """Verify render_base_layout works end-to-end with real UFO BASEBITS.PCK."""
+    if not (UFO_DIR / "GEODATA" / "PALETTES.DAT").is_file():
+        return
+
+    dm = MagicMock()
+    dm.base_path = str(REFERENCE)
+    dm.master = "xcom1"
+    dm.extraSprites = {}
+    dm.facilities = {
+        "STR_ACCESS_LIFT": {"spriteShape": 2, "spriteFacility": 17},
+        "STR_HANGAR": {"spriteShape": 9, "spriteFacility": 9, "size": 2, "crafts": 1},
+    }
+    dm.crafts = {"STR_SKYRANGER": {"sprite": 0}}
+
+    base = MagicMock(
+        facilities=[
+            MagicMock(type="STR_ACCESS_LIFT", x=2, y=2, build_time=0),
+            MagicMock(type="STR_HANGAR", x=0, y=0, build_time=0),
+        ],
+        crafts=[MagicMock(type="STR_SKYRANGER", status="STR_READY")],
+    )
+
+    rm = ResourceManager(dm, cache_dir=tmp_path / "cache")
+    img = rm.render_base_layout(base, scale=2, ctk_image=False)
+    assert img is not None
+    assert img.size == (384, 384)
+    assert img.getbbox() == (0, 0, 384, 384)

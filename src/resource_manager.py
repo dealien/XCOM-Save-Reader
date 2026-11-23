@@ -24,6 +24,34 @@ VANILLA_ARCHIVE_TYPES = {
     "SMOKE",
 }
 
+BASE_TILE_WIDTH = 32
+BASE_TILE_HEIGHT = 40
+BASE_TILE_SIZE = 32
+BASE_GRID_SIZE = 6
+BASEBIT_EMPTY_DIRT = 0
+BASEBIT_CONSTRUCTION = 13
+BASEBIT_CRAFT_OFFSET = 33
+BASEBIT_RANK_OFFSET = 42
+
+
+def _composite_tile(
+    canvas: Image.Image,
+    tile: Image.Image | None,
+    gx: int,
+    gy: int,
+) -> bool:
+    """Alpha-composite a 32x32 tile sprite onto the 6x6 base canvas."""
+    if tile is None:
+        return False
+    rgba = tile.convert("RGBA")
+    if rgba.size == (BASE_TILE_WIDTH, BASE_TILE_HEIGHT):
+        # Vanilla BASEBITS tiles only occupy the top 32x32 of their 32x40 frame.
+        rgba = rgba.crop((0, 0, BASE_TILE_SIZE, BASE_TILE_SIZE))
+    elif rgba.size != (BASE_TILE_SIZE, BASE_TILE_SIZE):
+        rgba = rgba.resize((BASE_TILE_SIZE, BASE_TILE_SIZE), Image.Resampling.NEAREST)
+    canvas.alpha_composite(rgba, dest=(gx * BASE_TILE_SIZE, gy * BASE_TILE_SIZE))
+    return True
+
 
 class ResourceManager:
     def __init__(
@@ -339,6 +367,37 @@ class ResourceManager:
             size=size,
         )
 
+    def _resolve_ruleset_sprite(
+        self,
+        entity: str | dict[str, Any],
+        collection_attr: str,
+        sprite_key: str,
+        getter: Any,
+        offset: int = 0,
+        ctk_image: bool = True,
+        size: tuple[int, int] | None = None,
+    ) -> ctk.CTkImage | Image.Image | None:
+        """Resolve an indexed sprite field from a ruleset dict or type name."""
+        if isinstance(entity, dict):
+            entity_def = entity
+        else:
+            collection = (
+                getattr(self.data_manager, collection_attr, {})
+                if self.data_manager
+                else {}
+            )
+            entity_def = collection.get(entity, {})
+
+        sprite_val = entity_def.get(sprite_key)
+        if sprite_val is not None:
+            try:
+                sprite_index = int(sprite_val) + offset
+                return getter(sprite_index, ctk_image=ctk_image, size=size)
+            except ValueError, TypeError:
+                logger.warning("Invalid %s value: %s", sprite_key, sprite_val)
+
+        return None
+
     def get_facility_sprite(
         self,
         facility_type: str | dict[str, Any],
@@ -346,27 +405,14 @@ class ResourceManager:
         size: tuple[int, int] | None = None,
     ) -> ctk.CTkImage | Image.Image | None:
         """Retrieve a facility sprite using ruleset data, resolving spriteFacility."""
-        if isinstance(facility_type, dict):
-            facility_def = facility_type
-        else:
-            facilities = (
-                getattr(self.data_manager, "facilities", {})
-                if self.data_manager
-                else {}
-            )
-            facility_def = facilities.get(facility_type, {})
-
-        sprite_facility = facility_def.get("spriteFacility")
-        if sprite_facility is not None:
-            try:
-                sprite_index = int(sprite_facility)
-                return self.get_basebit_sprite(
-                    sprite_index, ctk_image=ctk_image, size=size
-                )
-            except ValueError, TypeError:
-                logger.warning(f"Invalid spriteFacility value: {sprite_facility}")
-
-        return None
+        return self._resolve_ruleset_sprite(
+            facility_type,
+            "facilities",
+            "spriteFacility",
+            self.get_basebit_sprite,
+            ctk_image=ctk_image,
+            size=size,
+        )
 
     def get_item_sprite(
         self,
@@ -375,20 +421,183 @@ class ResourceManager:
         size: tuple[int, int] | None = None,
     ) -> ctk.CTkImage | Image.Image | None:
         """Retrieve an inventory item sprite using ruleset data, resolving bigSprite."""
-        if isinstance(item_type, dict):
-            item_def = item_type
-        else:
-            items = getattr(self.data_manager, "items", {}) if self.data_manager else {}
-            item_def = items.get(item_type, {})
+        return self._resolve_ruleset_sprite(
+            item_type,
+            "items",
+            "bigSprite",
+            self.get_bigob_sprite,
+            ctk_image=ctk_image,
+            size=size,
+        )
 
-        big_sprite = item_def.get("bigSprite")
-        if big_sprite is not None:
+    def get_craft_sprite(
+        self,
+        craft_type: str | dict[str, Any],
+        ctk_image: bool = True,
+        size: tuple[int, int] | None = None,
+    ) -> ctk.CTkImage | Image.Image | None:
+        """Retrieve a craft sprite from BASEBITS using ruleset sprite + offset 33."""
+        return self._resolve_ruleset_sprite(
+            craft_type,
+            "crafts",
+            "sprite",
+            self.get_basebit_sprite,
+            offset=BASEBIT_CRAFT_OFFSET,
+            ctk_image=ctk_image,
+            size=size,
+        )
+
+    def get_rank_sprite(
+        self,
+        rank_index: int,
+        soldier_type: str | None = None,
+        ctk_image: bool = True,
+        size: tuple[int, int] | None = None,
+    ) -> ctk.CTkImage | Image.Image | None:
+        """Retrieve a soldier rank insignia sprite from BASEBITS."""
+        if (
+            not isinstance(rank_index, int)
+            or isinstance(rank_index, bool)
+            or rank_index < 0
+        ):
+            return None
+
+        soldiers = (
+            getattr(self.data_manager, "soldiers", {}) if self.data_manager else {}
+        )
+        soldier_def = soldiers.get(soldier_type, {}) if soldier_type else {}
+        rank_sprite = soldier_def.get("rankSprite", BASEBIT_RANK_OFFSET)
+        try:
+            if isinstance(rank_sprite, list):
+                if rank_index >= len(rank_sprite):
+                    return None
+                sprite_index = int(rank_sprite[rank_index])
+            else:
+                sprite_index = int(rank_sprite) + rank_index
+            return self.get_basebit_sprite(sprite_index, ctk_image=ctk_image, size=size)
+        except ValueError, TypeError:
+            logger.warning("Invalid rankSprite value: %s", rank_sprite)
+            return None
+
+    def render_base_layout(
+        self,
+        base: Any,
+        scale: int = 2,
+        ctk_image: bool = True,
+    ) -> ctk.CTkImage | Image.Image | None:
+        """Render the 6x6 base facility grid including 2x2 hangars and parked craft."""
+        width = BASE_GRID_SIZE * BASE_TILE_SIZE
+        height = BASE_GRID_SIZE * BASE_TILE_SIZE
+        canvas = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+        has_any_sprite = False
+
+        dirt = self.get_basebit_sprite(BASEBIT_EMPTY_DIRT, ctk_image=False)
+        if dirt is not None:
+            for gy in range(BASE_GRID_SIZE):
+                for gx in range(BASE_GRID_SIZE):
+                    if _composite_tile(canvas, dirt, gx, gy):
+                        has_any_sprite = True
+
+        facilities_db = (
+            getattr(self.data_manager, "facilities", {}) if self.data_manager else {}
+        )
+        hangars: list[tuple[int, int, int]] = []
+
+        for fac in getattr(base, "facilities", []) or []:
+            fx = getattr(fac, "x", None)
+            fy = getattr(fac, "y", None)
+            if (
+                not isinstance(fx, int)
+                or isinstance(fx, bool)
+                or not isinstance(fy, int)
+                or isinstance(fy, bool)
+                or not (0 <= fx < BASE_GRID_SIZE and 0 <= fy < BASE_GRID_SIZE)
+            ):
+                continue
+
+            fac_type = getattr(fac, "type", None)
+            fac_def = facilities_db.get(fac_type, {})
             try:
-                sprite_index = int(big_sprite)
-                return self.get_bigob_sprite(
-                    sprite_index, ctk_image=ctk_image, size=size
-                )
+                fac_size = max(1, int(fac_def.get("size", 1)))
             except ValueError, TypeError:
-                logger.warning(f"Invalid bigSprite value: {big_sprite}")
+                fac_size = 1
 
-        return None
+            build_time = getattr(fac, "build_time", 0) or 0
+            is_hangar = (fac_def.get("crafts", 0) or 0) > 0 or fac_type == "STR_HANGAR"
+            if build_time == 0 and is_hangar:
+                hangars.append((fx, fy, fac_size))
+
+            for dy in range(fac_size):
+                for dx in range(fac_size):
+                    gx, gy = fx + dx, fy + dy
+                    if not (0 <= gx < BASE_GRID_SIZE and 0 <= gy < BASE_GRID_SIZE):
+                        continue
+                    tile_offset = dy * fac_size + dx
+
+                    if build_time > 0:
+                        tile = self.get_basebit_sprite(
+                            BASEBIT_CONSTRUCTION + tile_offset, ctk_image=False
+                        )
+                        if _composite_tile(canvas, tile, gx, gy):
+                            has_any_sprite = True
+                        continue
+
+                    shape_idx = fac_def.get("spriteShape")
+                    fac_idx = fac_def.get("spriteFacility")
+                    if shape_idx is not None:
+                        try:
+                            tile = self.get_basebit_sprite(
+                                int(shape_idx) + tile_offset, ctk_image=False
+                            )
+                            if _composite_tile(canvas, tile, gx, gy):
+                                has_any_sprite = True
+                        except ValueError, TypeError:
+                            pass
+
+                    if fac_idx is not None and fac_idx != shape_idx:
+                        try:
+                            tile = self.get_basebit_sprite(
+                                int(fac_idx) + tile_offset, ctk_image=False
+                            )
+                            if _composite_tile(canvas, tile, gx, gy):
+                                has_any_sprite = True
+                        except ValueError, TypeError:
+                            pass
+
+        parked_crafts = [
+            c
+            for c in (getattr(base, "crafts", []) or [])
+            if getattr(c, "status", "STR_READY") != "STR_OUT"
+        ]
+        for craft, (hx, hy, fac_size) in zip(parked_crafts, hangars, strict=False):
+            craft_type = getattr(craft, "type", None)
+            if not craft_type:
+                continue
+            craft_img = self.get_craft_sprite(craft_type, ctk_image=False)
+            if craft_img is None:
+                continue
+            craft_rgba = craft_img.convert("RGBA")
+            px = (
+                hx * BASE_TILE_SIZE
+                + (fac_size * BASE_TILE_SIZE - craft_rgba.width) // 2
+            )
+            py = (
+                hy * BASE_TILE_SIZE
+                + (fac_size * BASE_TILE_SIZE - craft_rgba.height) // 2
+            )
+            px = max(0, min(width - craft_rgba.width, px))
+            py = max(0, min(height - craft_rgba.height, py))
+            canvas.alpha_composite(craft_rgba, dest=(px, py))
+            has_any_sprite = True
+
+        if not has_any_sprite:
+            return None
+
+        if scale > 1:
+            canvas = canvas.resize(
+                (width * scale, height * scale), Image.Resampling.NEAREST
+            )
+
+        if ctk_image:
+            return ctk.CTkImage(light_image=canvas, dark_image=canvas, size=canvas.size)
+        return canvas

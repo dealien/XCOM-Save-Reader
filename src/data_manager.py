@@ -8,7 +8,7 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
-CACHE_VERSION = "v2"
+CACHE_VERSION = "v3"
 
 
 def _to_int_key(key):
@@ -41,6 +41,7 @@ class GameDataManager:
         self.soldiers = {}
         self.manufacture = {}
         self.facilities = {}
+        self.crafts = {}
         self.extraSprites = {}
 
         # Cache directory in OS temp folder
@@ -142,6 +143,7 @@ class GameDataManager:
         self.soldiers = {}
         self.manufacture = {}
         self.facilities = {}
+        self.crafts = {}
         self.extraSprites = {}
 
         # 1. Load Common
@@ -236,6 +238,7 @@ class GameDataManager:
             self.soldiers = data.get("soldiers", {})
             self.manufacture = data.get("manufacture", {})
             self.facilities = data.get("facilities", {})
+            self.crafts = data.get("crafts", {})
             self.extraSprites = data.get("extraSprites", {})
             if isinstance(self.extraSprites, dict):
                 for sprite_def in self.extraSprites.values():
@@ -270,6 +273,7 @@ class GameDataManager:
                 "soldiers": self.soldiers,
                 "manufacture": self.manufacture,
                 "facilities": self.facilities,
+                "crafts": self.crafts,
                 "extraSprites": self.extraSprites,
             }
             with open(path, "w", encoding="utf-8") as f:
@@ -315,6 +319,9 @@ class GameDataManager:
                     )
                     self._merge_list_to_dict(
                         doc.get("facilities", []), self.facilities, source_dir
+                    )
+                    self._merge_list_to_dict(
+                        doc.get("crafts", []), self.crafts, source_dir
                     )
                     self._merge_extra_sprites(doc.get("extraSprites", []), source_dir)
 
@@ -416,3 +423,6 @@ class GameDataManager:
 
     def get_facility(self, facility_type):
         return self.facilities.get(facility_type, {})
+
+    def get_craft(self, craft_type):
+        return self.crafts.get(craft_type, {})

@@ -607,6 +607,43 @@ class TestBaseView(unittest.TestCase):
             self.assertIn("Unknown Shipment", texts)
             self.assertIn("?", texts)
 
+    def test_render_overview_renders_base_layout_and_crafts(self):
+        """Overview requests 6x6 base layout and renders craft status rows."""
+        base = MagicMock()
+        base.facilities = [MagicMock(type="STR_HANGAR", x=0, y=0, build_time=0)]
+        craft = MagicMock()
+        craft.type = "STR_SKYRANGER"
+        craft.id = 1
+        craft.name = "Skyranger-1"
+        craft.status = "STR_READY"
+        base.crafts = [craft]
+
+        with patch("customtkinter.CTkLabel") as MockLabel:
+            self.view.render_overview(base)
+
+            self.mock_controller.resource_manager.render_base_layout.assert_called_once_with(
+                base, scale=2
+            )
+            self.mock_controller.resource_manager.get_craft_sprite.assert_called_once_with(
+                "STR_SKYRANGER"
+            )
+            texts = [c.kwargs.get("text") for c in MockLabel.call_args_list]
+            self.assertIn("Base Layout", texts)
+            self.assertIn("Crafts", texts)
+            self.assertIn("Skyranger-1 (TR[STR_READY])", texts)
+
+    def test_render_storage_requests_item_sprites(self):
+        """Storage view requests item sprites via resource_manager."""
+        base = MagicMock()
+        base.items = {"STR_RIFLE": 10}
+
+        with patch("customtkinter.CTkLabel"):
+            self.view.render_storage(base)
+
+        self.mock_controller.resource_manager.get_item_sprite.assert_called_once_with(
+            "STR_RIFLE", size=(24, 36)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

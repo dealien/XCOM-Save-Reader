@@ -155,6 +155,17 @@ class Base:
             for t in data["transfers"]:
                 self.transfers.append(Transfer(t, mission_data))
 
+        # Crafts stationed at or assigned to this base
+        self.crafts = [Craft(c) for c in data.get("crafts", [])]
+
+
+class Craft:
+    def __init__(self, data):
+        self.type = data.get("type")
+        self.id = data.get("id")
+        self.name = data.get("name")
+        self.status = data.get("status", "STR_READY")
+
 
 class Facility:
     def __init__(self, data):

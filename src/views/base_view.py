@@ -104,8 +104,27 @@ class BaseView(ctk.CTkFrame):
         scroll = ctk.CTkScrollableFrame(frame)
         scroll.pack(fill="both", expand=True)
 
+        rm = getattr(self.controller, "resource_manager", None)
+        layout_img = rm.render_base_layout(base, scale=2) if rm is not None else None
+
+        content = ctk.CTkFrame(scroll, fg_color="transparent")
+        content.pack(fill="both", expand=True, padx=10, pady=5)
+
+        if layout_img is not None:
+            layout_frame = ctk.CTkFrame(content, fg_color="transparent")
+            layout_frame.pack(side="left", anchor="nw", padx=(0, 20), pady=5)
+            ctk.CTkLabel(
+                layout_frame,
+                text="Base Layout",
+                font=ctk.CTkFont(size=16, weight="bold"),
+            ).pack(anchor="w", pady=(0, 5))
+            ctk.CTkLabel(layout_frame, text="", image=layout_img).pack(anchor="w")
+
+        details_frame = ctk.CTkFrame(content, fg_color="transparent")
+        details_frame.pack(side="left", fill="both", expand=True, anchor="nw")
+
         ctk.CTkLabel(
-            scroll, text="Facilities", font=ctk.CTkFont(size=16, weight="bold")
+            details_frame, text="Facilities", font=ctk.CTkFont(size=16, weight="bold")
         ).pack(anchor="w", pady=5)
 
         # Group facilities by type and render with sprite if available
@@ -118,21 +137,51 @@ class BaseView(ctk.CTkFrame):
                 type_to_raw[ftype] = f.type
 
         for ftype, count in counts.items():
-            row = ctk.CTkFrame(scroll, fg_color="transparent")
+            row = ctk.CTkFrame(details_frame, fg_color="transparent")
             row.pack(anchor="w", padx=10, pady=2)
 
             raw_type = type_to_raw.get(ftype, "")
-            sprite = None
-            if (
-                hasattr(self.controller, "resource_manager")
-                and self.controller.resource_manager
-            ):
-                sprite = self.controller.resource_manager.get_facility_sprite(raw_type)
+            sprite = rm.get_facility_sprite(raw_type) if rm is not None else None
 
             if sprite is not None:
                 ctk.CTkLabel(row, text="", image=sprite).pack(side="left", padx=(0, 8))
 
             ctk.CTkLabel(row, text=f"{ftype}: {count}").pack(side="left")
+
+        crafts = getattr(base, "crafts", None)
+        if isinstance(crafts, (list, tuple)) and crafts:
+            ctk.CTkLabel(
+                details_frame, text="Crafts", font=ctk.CTkFont(size=16, weight="bold")
+            ).pack(anchor="w", pady=(15, 5))
+            for c in crafts:
+                row = ctk.CTkFrame(details_frame, fg_color="transparent")
+                row.pack(anchor="w", padx=10, pady=2)
+
+                craft_sprite = (
+                    rm.get_craft_sprite(c.type) if rm is not None and c.type else None
+                )
+                if craft_sprite is not None:
+                    ctk.CTkLabel(row, text="", image=craft_sprite).pack(
+                        side="left", padx=(0, 8)
+                    )
+
+                craft_type_name = (
+                    self.controller.translation_manager.get(c.type)
+                    if c.type
+                    else "Unknown Craft"
+                )
+                craft_label = getattr(c, "name", None) or (
+                    f"{craft_type_name} #{c.id}"
+                    if getattr(c, "id", None)
+                    else craft_type_name
+                )
+                status = (
+                    self.controller.translation_manager.get(c.status)
+                    if getattr(c, "status", None)
+                    else ""
+                )
+                text = f"{craft_label} ({status})" if status else craft_label
+                ctk.CTkLabel(row, text=text).pack(side="left")
 
     def render_soldiers(self, base):
         frame = self.tab_soldiers
@@ -330,17 +379,24 @@ class BaseView(ctk.CTkFrame):
             ctk.CTkLabel(scroll, text="No items in storage.").pack(pady=10)
             return
 
+        rm = getattr(self.controller, "resource_manager", None)
+
         # Sort items by name (translated)
         items_list = []
         for item_key, qty in base.items.items():
             name = self.controller.translation_manager.get(item_key)
-            items_list.append((name, qty))
+            items_list.append((item_key, name, qty))
 
-        items_list.sort(key=lambda x: x[0])
+        items_list.sort(key=lambda x: x[1])
 
-        for name, qty in items_list:
+        for item_key, name, qty in items_list:
             row = ctk.CTkFrame(scroll, fg_color="transparent")
             row.pack(fill="x", pady=2)
+            sprite = (
+                rm.get_item_sprite(item_key, size=(24, 36)) if rm is not None else None
+            )
+            if sprite is not None:
+                ctk.CTkLabel(row, text="", image=sprite).pack(side="left", padx=(10, 4))
             ctk.CTkLabel(row, text=name).pack(side="left", padx=10)
             ctk.CTkLabel(row, text=str(qty)).pack(side="right", padx=10)
 

@@ -251,3 +251,22 @@ class TestGameDataManager:
             58: self.mod1_dir,
             70: self.mod2_dir,
         }
+
+    def test_crafts_loaded_and_cached(self):
+        """Crafts rulesets load into dm.crafts and round-trip through JSON cache."""
+        xcom1_dir = os.path.join(self.test_dir, "standard", "xcom1")
+        with open(os.path.join(xcom1_dir, "crafts.rul"), "w") as f:
+            yaml.dump({"crafts": [{"type": "STR_SKYRANGER", "sprite": 0}]}, f)
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        dm.load_all(["xcom1 ver: 1.0"])
+
+        assert dm.get_craft("STR_SKYRANGER")["sprite"] == 0
+
+        dm2 = GameDataManager(self.test_dir)
+        dm2._cache_dir = dm._cache_dir
+        dm2.index_mods()
+        dm2.load_all(["xcom1 ver: 1.0"])
+        assert dm2.get_craft("STR_SKYRANGER")["sprite"] == 0
