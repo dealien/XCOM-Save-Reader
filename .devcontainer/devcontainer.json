@@ -24,8 +24,7 @@
         "pedroterzero.oxc-yaml-helper",
         "tamasfe.even-better-toml",
         "github.vscode-github-actions",
-        "ldez.ignore-files",
-        "fill-labs.dependi"
+        "ldez.ignore-files"
       ],
       "settings": {
         "python.testing.pytestArgs": [
