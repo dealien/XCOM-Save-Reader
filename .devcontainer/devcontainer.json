@@ -4,7 +4,9 @@
   "features": {
     "ghcr.io/devcontainers/features/desktop-lite:1": {}
   },
-  "forwardPorts": [6080],
+  "forwardPorts": [
+    6080
+  ],
   "portsAttributes": {
     "6080": {
       "label": "Linux desktop",
@@ -19,7 +21,6 @@
         "ms-python.debugpy",
         "ms-python.vscode-pylance",
         "pflannery.vscode-versionlens",
-        "meta.pyrefly",
         "charliermarsh.ruff",
         "pedroterzero.oxc-yaml-helper",
         "tamasfe.even-better-toml",
@@ -27,11 +28,16 @@
         "ldez.ignore-files"
       ],
       "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.diagnosticsSource": "Pylance + Pyrefly",
         "python.testing.pytestArgs": [
           "test"
         ],
         "python.testing.unittestEnabled": false,
-        "python.testing.pytestEnabled": true
+        "python.testing.pytestEnabled": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        }
       }
     }
   }
