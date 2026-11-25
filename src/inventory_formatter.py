@@ -1,15 +1,13 @@
-def format_inventory_for_display(equipment_layout, translator=None):
-    """
-    Formats the soldier's inventory data for display.
+def format_inventory_entries(equipment_layout, translator=None):
+    """Format a soldier's inventory into structured slot entries.
 
     Args:
         equipment_layout: A list of inventory items from the soldier data.
         translator: A callable that takes a key and returns a translated string.
 
     Returns:
-        A dictionary where keys are slot names and values are lists of
-        formatted item strings. Returns an empty dictionary if equipment_layout
-        is None or empty.
+        A dictionary mapping slot names to lists of ``{"item_type", "text"}`` dicts.
+        Returns an empty dictionary if equipment_layout is None or empty.
     """
     if not equipment_layout:
         return {}
@@ -23,10 +21,8 @@ def format_inventory_for_display(equipment_layout, translator=None):
         if slot not in inventory_by_slot:
             inventory_by_slot[slot] = []
 
-        item_type = item["itemType"]
-        if translator:
-            item_type = translator(item_type)
-
+        raw_item_type = item["itemType"]
+        item_type = translator(raw_item_type) if translator else raw_item_type
         item_text = f"  - {item_type}"
 
         if "ammoItemSlots" in item and isinstance(item["ammoItemSlots"], list):
@@ -44,6 +40,26 @@ def format_inventory_for_display(equipment_layout, translator=None):
         if "fuseTimer" in item and item["fuseTimer"] is not None:
             item_text += f" | Active[{item['fuseTimer']}]"
 
-        inventory_by_slot[slot].append(item_text)
+        inventory_by_slot[slot].append({"item_type": raw_item_type, "text": item_text})
 
     return inventory_by_slot
+
+
+def format_inventory_for_display(equipment_layout, translator=None):
+    """
+    Formats the soldier's inventory data for display.
+
+    Args:
+        equipment_layout: A list of inventory items from the soldier data.
+        translator: A callable that takes a key and returns a translated string.
+
+    Returns:
+        A dictionary where keys are slot names and values are lists of
+        formatted item strings. Returns an empty dictionary if equipment_layout
+        is None or empty.
+    """
+    entries_by_slot = format_inventory_entries(equipment_layout, translator=translator)
+    return {
+        slot: [entry["text"] for entry in entries]
+        for slot, entries in entries_by_slot.items()
+    }

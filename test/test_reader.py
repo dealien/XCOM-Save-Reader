@@ -7,6 +7,8 @@ import pytest
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from src.reader import (
+    Base,
+    Craft,
     ServiceRecord,
     Soldier,
     load_data_from_yaml,
@@ -146,3 +148,28 @@ class TestReader:
             assert "Expected 2 YAML documents" in str(e)
         finally:
             os.remove(tmp_path_3)
+
+    def test_read_base_crafts_and_missing_crafts(self):
+        """Base parses crafts list when present and defaults to empty list."""
+        base_with_craft = Base(
+            {
+                "name": "Alpha",
+                "crafts": [
+                    {
+                        "type": "STR_SKYRANGER",
+                        "id": 1,
+                        "name": "Skyranger-1",
+                        "status": "STR_READY",
+                    }
+                ],
+            },
+            {},
+        )
+        assert len(base_with_craft.crafts) == 1
+        assert isinstance(base_with_craft.crafts[0], Craft)
+        assert base_with_craft.crafts[0].type == "STR_SKYRANGER"
+        assert base_with_craft.crafts[0].name == "Skyranger-1"
+        assert base_with_craft.crafts[0].status == "STR_READY"
+
+        base_no_craft = Base({"name": "Beta"}, {})
+        assert base_no_craft.crafts == []

@@ -4,7 +4,7 @@ from functools import partial
 import customtkinter as ctk
 
 import view_utils
-from inventory_formatter import format_inventory_for_display
+from inventory_formatter import format_inventory_entries
 
 # Configure logger for this module
 logger = logging.getLogger(__name__)
@@ -14,21 +14,25 @@ class SoldierView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.grid_columnconfigure(1, weight=1)  # Make the title column expandable
+        self.grid_columnconfigure(2, weight=1)  # Make the inventory column expandable
 
         # Back Button
         back_button = ctk.CTkButton(self, text="←", command=self.back_to_list, width=30)
         back_button.grid(row=0, column=0, padx=(20, 0), pady=20, sticky="w")
 
-        # Name Banner (Top Left)
+        # Name & Rank Banner (Top Left)
+        name_banner = ctk.CTkFrame(self, fg_color="transparent")
+        name_banner.grid(row=0, column=1, columnspan=2, padx=20, pady=20, sticky="w")
+        self.rank_icon_label = ctk.CTkLabel(name_banner, text="")
+        self.rank_icon_label.pack(side="left", padx=(0, 10))
         self.name_label = ctk.CTkLabel(
-            self, text="", font=ctk.CTkFont(size=24, weight="bold")
+            name_banner, text="", font=ctk.CTkFont(size=24, weight="bold")
         )
-        self.name_label.grid(row=0, column=1, padx=20, pady=20, sticky="w")
+        self.name_label.pack(side="left")
 
         # Stats Frame (Left)
         stats_frame = ctk.CTkFrame(self)
-        stats_frame.grid(row=1, column=0, padx=20, pady=10, sticky="nsew")
+        stats_frame.grid(row=1, column=0, padx=(20, 10), pady=10, sticky="nsew")
         self.stats_labels = {}
 
         stat_names = [
@@ -51,15 +55,23 @@ class SoldierView(ctk.CTkFrame):
             value.grid(row=i, column=1, padx=10, pady=5, sticky="w")
             self.stats_labels[stat] = value
 
+        # Soldier Sprite Frame (Center, between Stats and Inventory)
+        sprite_frame = ctk.CTkFrame(self)
+        sprite_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
+        self.soldier_sprite_label = ctk.CTkLabel(sprite_frame, text="")
+        self.soldier_sprite_label.pack(expand=True, padx=15, pady=15)
+
         # Inventory Frame (Right)
         self.inventory_frame = ctk.CTkScrollableFrame(self, label_text="Inventory")
-        self.inventory_frame.grid(row=1, column=1, padx=20, pady=10, sticky="nsew")
+        self.inventory_frame.grid(
+            row=1, column=2, padx=(10, 20), pady=10, sticky="nsew"
+        )
         self.inventory_frame.grid_columnconfigure(0, weight=1)
 
-        # Service Record Frame (Bottom, spanning both columns)
+        # Service Record Frame (Bottom, spanning all columns)
         service_record_frame = ctk.CTkFrame(self)
         service_record_frame.grid(
-            row=2, column=0, columnspan=2, padx=20, pady=10, sticky="nsew"
+            row=2, column=0, columnspan=3, padx=20, pady=10, sticky="nsew"
         )
         service_record_frame.grid_columnconfigure((0, 1), weight=1)
 
@@ -114,8 +126,25 @@ class SoldierView(ctk.CTkFrame):
             return
 
         tr = self.controller.translation_manager.get
+        rank_key = self.controller.translation_manager.get_rank_string(
+            soldier.rank, getattr(soldier, "type", "STR_SOLDIER")
+        )
+        self.name_label.configure(text=f"{soldier.name} ({tr(rank_key)})")
 
-        self.name_label.configure(text=f"{soldier.name} ({tr(soldier.rank)})")
+        rm = getattr(self.controller, "resource_manager", None)
+        rank_sprite = (
+            rm.get_rank_sprite(soldier.rank, getattr(soldier, "type", None))
+            if rm is not None
+            else None
+        )
+        self.rank_icon_label.configure(image=rank_sprite)
+
+        soldier_sprite = (
+            rm.get_soldier_sprite(soldier, ctk_image=True, size=(160, 200))
+            if rm is not None
+            else None
+        )
+        self.soldier_sprite_label.configure(image=soldier_sprite)
 
         # Current Stats
         current_stats = soldier.currentstats
@@ -159,13 +188,13 @@ class SoldierView(ctk.CTkFrame):
         for widget in self.inventory_frame.winfo_children():
             widget.destroy()
 
-        inventory_data = format_inventory_for_display(
+        inventory_data = format_inventory_entries(
             getattr(soldier, "equipmentLayout", None), translator=tr
         )
 
         if inventory_data:
             row = 0
-            for slot, items in sorted(inventory_data.items()):
+            for slot, entries in sorted(inventory_data.items()):
                 slot_label = ctk.CTkLabel(
                     self.inventory_frame,
                     text=slot,
@@ -173,9 +202,22 @@ class SoldierView(ctk.CTkFrame):
                 )
                 slot_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
                 row += 1
-                for item_text in items:
-                    item_label = ctk.CTkLabel(self.inventory_frame, text=item_text)
-                    item_label.grid(row=row, column=0, padx=20, pady=2, sticky="w")
+                for entry in entries:
+                    item_row = ctk.CTkFrame(
+                        self.inventory_frame, fg_color="transparent"
+                    )
+                    item_row.grid(row=row, column=0, padx=20, pady=2, sticky="w")
+                    item_sprite = (
+                        rm.get_item_sprite(entry["item_type"], size=(24, 36))
+                        if rm is not None
+                        else None
+                    )
+                    if item_sprite is not None:
+                        ctk.CTkLabel(item_row, text="", image=item_sprite).pack(
+                            side="left", padx=(0, 6)
+                        )
+                    item_label = ctk.CTkLabel(item_row, text=entry["text"])
+                    item_label.pack(side="left")
                     row += 1
         else:
             no_inventory_label = ctk.CTkLabel(

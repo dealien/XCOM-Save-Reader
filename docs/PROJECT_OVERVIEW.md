@@ -55,6 +55,7 @@ XCOM Save Reader is a Python desktop application and CLI utility that reads, par
 | CLI (`src/main.py`) | ✅ Complete | `save_file`, `--debug`, `--json-dump`, `--clear-cache` (see [Running](#running-the-app)). |
 | Tests & linting (`test/`, `.github/workflows/ruff.yml`) | ✅ Complete | `pytest` + `pytest-cov`; Ruff in GitHub Actions. |
 | TFTD support | ⏳ Planned | [#2](https://github.com/dealien/XCOM-Save-Reader/issues/2) |
+| Vanilla binary decoder (`src/pck_decoder.py`) | 🧪 Experimental | Decodes palettes, PCK/SPK/BDY/SCR images, and UFO save DATs; tested, but not used by the GUI yet. See [VANILLA_BINARY_FORMATS.md](VANILLA_BINARY_FORMATS.md#51-pure-python-sprite-and-palette-decoder--recommended-fixes-25-26). |
 
 ---
 
@@ -85,6 +86,7 @@ XCOM-Save-Reader/
 │   ├── translation_manager.py   # TranslationManager: string ID -> localized text
 │   ├── resource_manager.py      # ResourceManager: image/asset path resolution
 │   ├── inventory_formatter.py   # Soldier equipment slot formatting
+│   ├── pck_decoder.py           # Experimental vanilla binary decoder (PCK/SPK/DAT); not wired in yet
 │   ├── config.py                # Config: persists preferences to user/config.json
 │   ├── view_utils.py            # Shared UI helpers
 │   └── views/

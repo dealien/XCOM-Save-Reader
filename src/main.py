@@ -150,6 +150,8 @@ class App(ctk.CTk):
             try:
                 self.data_manager.load_all(mod_list)
                 self.translation_manager.load_all(mod_list)
+                if getattr(self, "resource_manager", None) is not None:
+                    self.resource_manager.reset()
             except Exception as e:
                 logger.error(f"Error loading rulesets or translations: {e}")
                 from tkinter import messagebox
@@ -251,6 +253,7 @@ if __name__ == "__main__":
 
     if args.clear_cache:
         app.data_manager.clear_cache()
+        app.resource_manager.clear_cache()
 
     # Determine save file to load
     save_path = args.save_file

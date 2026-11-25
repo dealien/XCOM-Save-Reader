@@ -176,3 +176,131 @@ class TestGameDataManager:
         key_b = dm._compute_cache_key(list_b)
 
         assert key_a != key_b
+
+    def test_standard_root_rulesets_loaded_and_keyed(self):
+        """Root standard/<master>/*.rul files should load and affect cache key."""
+        xcom1_dir = os.path.join(self.test_dir, "standard", "xcom1")
+        fac_rul = os.path.join(xcom1_dir, "facilities.rul")
+        items_rul = os.path.join(xcom1_dir, "items.rul")
+        with open(fac_rul, "w") as f:
+            yaml.dump(
+                {"facilities": [{"type": "STR_ACCESS_LIFT", "spriteFacility": 17}]}, f
+            )
+        with open(items_rul, "w") as f:
+            yaml.dump({"items": [{"type": "STR_RIFLE", "bigSprite": 1}]}, f)
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        dm.load_all(["xcom1 ver: 1.0"])
+
+        assert dm.facilities["STR_ACCESS_LIFT"]["spriteFacility"] == 17
+        assert dm.items["STR_RIFLE"]["bigSprite"] == 1
+
+        key_before = dm._compute_cache_key(["xcom1 ver: 1.0"])
+        mtime = os.path.getmtime(fac_rul) + 10
+        os.utime(fac_rul, (mtime, mtime))
+        key_after = dm._compute_cache_key(["xcom1 ver: 1.0"])
+        assert key_before != key_after
+
+    def test_merge_extra_sprites_across_mods_and_cache_reload(self):
+        """extraSprites merges per-index files and preserves int keys across cache."""
+        self._create_ruleset(
+            self.mod1_dir,
+            {
+                "extraSprites": [
+                    {"type": "BIGOBS.PCK", "files": {57: "a.png"}},
+                    {"type": "BIGOBS.PCK", "files": {58: "b.png"}},
+                ]
+            },
+        )
+        self._create_ruleset(
+            self.mod2_dir,
+            {
+                "extraSprites": [
+                    {"type": "BIGOBS.PCK", "files": {70: "c.png"}},
+                ]
+            },
+        )
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        mod_list = ["xcom1 ver: 1.0", "mod1 ver: 1.0", "mod2 ver: 1.0"]
+        dm.load_all(mod_list)
+
+        bigobs = dm.extraSprites["BIGOBS.PCK"]
+        assert bigobs["files"] == {57: "a.png", 58: "b.png", 70: "c.png"}
+        assert bigobs["_file_sources"] == {
+            57: self.mod1_dir,
+            58: self.mod1_dir,
+            70: self.mod2_dir,
+        }
+
+        dm2 = GameDataManager(self.test_dir)
+        dm2._cache_dir = dm._cache_dir
+        dm2.index_mods()
+        dm2.load_all(mod_list)
+
+        reloaded = dm2.extraSprites["BIGOBS.PCK"]
+        assert all(isinstance(k, int) for k in reloaded["files"])
+        assert all(isinstance(k, int) for k in reloaded["_file_sources"])
+        assert reloaded["files"] == {57: "a.png", 58: "b.png", 70: "c.png"}
+        assert reloaded["_file_sources"] == {
+            57: self.mod1_dir,
+            58: self.mod1_dir,
+            70: self.mod2_dir,
+        }
+
+    def test_crafts_loaded_and_cached(self):
+        """Crafts rulesets load into dm.crafts and round-trip through JSON cache."""
+        xcom1_dir = os.path.join(self.test_dir, "standard", "xcom1")
+        with open(os.path.join(xcom1_dir, "crafts.rul"), "w") as f:
+            yaml.dump({"crafts": [{"type": "STR_SKYRANGER", "sprite": 0}]}, f)
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        dm.load_all(["xcom1 ver: 1.0"])
+
+        assert dm.get_craft("STR_SKYRANGER")["sprite"] == 0
+
+        dm2 = GameDataManager(self.test_dir)
+        dm2._cache_dir = dm._cache_dir
+        dm2.index_mods()
+        dm2.load_all(["xcom1 ver: 1.0"])
+        assert dm2.get_craft("STR_SKYRANGER")["sprite"] == 0
+
+    def test_duplicate_anchor_safe_loader_and_armors_cache(self):
+        """Duplicate YAML anchors parse cleanly and armors round-trip via JSON cache."""
+        ruleset_dir = os.path.join(self.mod1_dir, "Ruleset")
+        os.makedirs(ruleset_dir, exist_ok=True)
+        rul_text = (
+            "armors:\n"
+            "  - type: STR_A1\n"
+            "    stats: &DupStats\n"
+            "      tu: 10\n"
+            "    spriteSheet: XCOM_0.PCK\n"
+            "  - type: STR_A2\n"
+            "    stats: &DupStats\n"
+            "      tu: 20\n"
+            "    spriteSheet: XCOM_1.PCK\n"
+        )
+        with open(os.path.join(ruleset_dir, "armors.rul"), "w") as f:
+            f.write(rul_text)
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        mod_list = ["xcom1 ver: 1.0", "mod1 ver: 1.0"]
+        dm.load_all(mod_list)
+
+        assert dm.get_armor("STR_A1")["stats"]["tu"] == 10
+        assert dm.get_armor("STR_A2")["stats"]["tu"] == 20
+        assert dm.get_armor("STR_A2")["spriteSheet"] == "XCOM_1.PCK"
+
+        dm2 = GameDataManager(self.test_dir)
+        dm2._cache_dir = dm._cache_dir
+        dm2.index_mods()
+        dm2.load_all(mod_list)
+        assert dm2.get_armor("STR_A2")["spriteSheet"] == "XCOM_1.PCK"

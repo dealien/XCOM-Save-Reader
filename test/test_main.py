@@ -279,6 +279,32 @@ class TestMain(unittest.TestCase):
             app.load_save_file()
             mock_load.assert_not_called()
 
+    def test_load_save_file_resets_resource_manager(self):
+        """Test load_save_file resets ResourceManager after loading rulesets."""
+        import main
+
+        app = self.AppClass.__new__(self.AppClass)
+        app.save_data = None
+        app.bases = []
+        app.soldiers = []
+        app.missions = {}
+        app.mission_participants = {}
+        app.data_manager = MagicMock()
+        app.translation_manager = MagicMock()
+        app.resource_manager = MagicMock()
+        app.frames = {main.MainMenu: MagicMock()}
+
+        with unittest.mock.patch("reader.load_data_from_yaml") as mock_load:
+            mock_load.return_value = {"mods": [], "difficulty": 0}
+            with unittest.mock.patch("reader.read_missions", return_value={}):
+                with unittest.mock.patch("reader.read_bases", return_value=[]):
+                    with unittest.mock.patch(
+                        "reader.read_soldiers", return_value=([], {})
+                    ):
+                        app.load_save_file(file_path="test/Test Save.sav")
+
+        app.resource_manager.reset.assert_called_once()
+
     def test_clear_cache(self):
         """Test data_manager.clear_cache removes cache files."""
         import os

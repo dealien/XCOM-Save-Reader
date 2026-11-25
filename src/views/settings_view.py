@@ -118,9 +118,11 @@ class SettingsView(ctk.CTkToplevel):
         try:
             if os.path.isdir(cache_dir):
                 shutil.rmtree(cache_dir)
+            if getattr(self.controller, "resource_manager", None) is not None:
+                self.controller.resource_manager.clear_cache()
             messagebox.showinfo(
                 "Cache Cleared",
-                "Ruleset cache has been cleared.",
+                "Ruleset and sprite caches have been cleared.",
             )
         except Exception as e:
             messagebox.showerror(

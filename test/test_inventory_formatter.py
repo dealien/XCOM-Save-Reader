@@ -6,7 +6,7 @@ sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 )
 
-from inventory_formatter import format_inventory_for_display
+from inventory_formatter import format_inventory_entries, format_inventory_for_display
 
 
 def test_format_inventory_for_display_full():
@@ -57,3 +57,25 @@ def test_format_inventory_fuse_timer_zero():
     equipment_layout = [{"itemType": "STR_GRENADE", "slot": "STR_BELT", "fuseTimer": 0}]
     expected_output = {"STR_BELT": ["  - STR_GRENADE | Active[0]"]}
     assert format_inventory_for_display(equipment_layout) == expected_output
+
+
+def test_format_inventory_entries_preserves_item_type():
+    """format_inventory_entries preserves raw itemType alongside formatted text."""
+    equipment_layout = [
+        {
+            "itemType": "STR_RIFLE",
+            "slot": "STR_RIGHT_HAND",
+            "ammoItem": "STR_RIFLE_CLIP",
+        }
+    ]
+    entries = format_inventory_entries(
+        equipment_layout, translator=lambda k: f"TR[{k}]"
+    )
+    assert entries == {
+        "TR[STR_RIGHT_HAND]": [
+            {
+                "item_type": "STR_RIFLE",
+                "text": "  - TR[STR_RIFLE] (Loaded with: TR[STR_RIFLE_CLIP])",
+            }
+        ]
+    }

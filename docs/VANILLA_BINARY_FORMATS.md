@@ -110,19 +110,23 @@ Used by original saves and static game data.
 | `0x42` | Gender (`0` = M, `1` = F) |
 | `0x43` | Appearance (`0–3`) |
 
-### BASE.DAT — [TFTD spec](https://www.ufopaedia.org/BASE.DAT_(TFTD)), [Base Facilities (EU)](https://www.ufopaedia.org/Base_Facilities_(EU))
+> [!NOTE]
+> This layout is for UFO. TFTD's `SOLDIER.DAT` is 17,500 bytes (250 × 70) and is **not supported** by `parse_soldier_dat_bytes` yet.
 
-Up to 8 records × 292 bytes (UFO) or 296 bytes (TFTD).
+### BASE.DAT — [UFO spec](https://www.ufopaedia.org/BASE.DAT), [TFTD spec](https://www.ufopaedia.org/BASE.DAT_(TFTD))
 
-| Offset | Field |
-| --- | --- |
-| `0x00–0x0F` | Base name (16-byte null-terminated) |
-| `0x10–0xD3` | Item store counts (`int16` LE array) |
-| `0xD4–0xD8` | Radar/sonar detection values |
-| `0xDA–0xFD` | 6×6 facility type grid (`0x00` = Access Lift/Air Lock, `0xFF` = empty) |
-| `0xFE–0x121` | 6×6 days-until-complete grid (`0x00` = done, `0xFF` = empty) |
-| `0x122` | Engineers/Technicians (`uint8`) |
-| `0x123` | Scientists (`uint8`) |
+Exactly 8 records: 292 bytes each in UFO, 296 in TFTD. **The two games use different layouts.**
+
+| Field | UFO offset | TFTD offset |
+| --- | --- | --- |
+| Base name (null-terminated) | `0x00–0x0F` | `0x00–0x0F` |
+| Detection values (short / long / hyperwave or resolver, `int16`) | `0x10–0x15` | `0xD4–0xD9` |
+| 6×6 facility type grid (`0x00` = Access Lift/Air Lock, `0x10–0x13` = hangar/sub pen quarters, `0xFF` = empty) | `0x16–0x39` | `0xDA–0xFD` |
+| 6×6 days-until-complete grid (`0xFF` = empty) | `0x3A–0x5D` | `0xFE–0x121` |
+| Engineers / Technicians (`uint8`) | `0x5E` | `0x122` |
+| Scientists (`uint8`) | `0x5F` | `0x123` |
+| Item store counts (`int16` LE array) | `0x60–0x11F` | `0x10–0xD3` |
+| Disabled flag (`1` = unused slot) | `0x120` | `0x124` |
 
 ### LOC.DAT — [spec](https://www.ufopaedia.org/LOC.DAT)
 
@@ -150,18 +154,38 @@ Up to 8 records × 292 bytes (UFO) or 296 bytes (TFTD).
 
 ### 5.1 Pure-Python sprite and palette decoder — *recommended (fixes #25, #26)*
 
-Add `src/pck_decoder.py`, using `struct` and Pillow to decode `PALETTES.DAT`, `.TAB`/`.PCK`, `.SPK`, and `.BDY` straight from the user's game directory.
+**Status: implemented as a standalone module, not yet wired into the app.**
+[src/pck_decoder.py](../src/pck_decoder.py) uses `struct` and Pillow to decode `PALETTES.DAT`, `.TAB`/`.PCK`, `.SPK`, `.BDY`, `.SCR`, `SOLDIER.DAT` (UFO), and `BASE.DAT` (UFO + TFTD). Verified against the real UFO files in `reference/UFO`.
 
-- **Fallback in `ResourceManager`:** if no mod `extraSprites` PNG exists, take the sprite index from the ruleset and decode it from the vanilla archive:
-  - Facilities (`spriteShape`, `spriteFacility`): `GEOGRAPH/BASEBITS.PCK`, Basescape palette #2 (#26)
-  - Inventory items (`bigSprite`): `UNITS/BIGOBS.PCK`, Tactical palette #5
-  - Rank icons: `UFOGRAPH/SMOKE.PCK` or `BASEBITS.PCK`
-- **Caching:** save decoded sprites as PNGs under `user/cache/sprites/` with `0o700` permissions. Decoding then only happens once per install.
-- **Prototype:** A reference implementation (`pck_decoder.py`) exists in the project's [Google Drive folder](https://drive.google.com/drive/folders/1rLGKLO6RnYuF7Po5l-w-gQBLiEWKrihQ) ([file](https://drive.google.com/file/d/1q_MaR9AmuWVCKvuNbAQ0dPlqJI6eI62t/view?usp=drivesdk)). It provides:
-  - `parse_palettes_bytes`
-  - `decode_pck_archive`, `decode_spk_bytes`, `decode_bdy_bytes`, `decode_scr_bytes`
-  - `parse_soldier_dat_bytes`, `parse_base_dat_bytes`
-  - `VanillaAssetExtractor`, a class that can be dropped into the existing code
+| API | Purpose |
+| --- | --- |
+| `parse_palettes_bytes`, `load_palettes_dat`, `apply_backpals` | Palettes |
+| `parse_tab_bytes`, `decode_pck_frame`, `decode_pck_archive` | Sprite archives |
+| `decode_spk_bytes`, `decode_bdy_bytes`, `decode_scr_bytes` | Full-screen images |
+| `parse_soldier_dat_bytes`, `parse_base_dat_bytes` | Legacy save records |
+| `VanillaAssetExtractor` | Case-insensitive file lookup, decoding, and PNG caching for BASEBITS/BIGOBS |
+
+Palette indices used (0-based, constants in the module): `PALETTE_BASESCAPE = 1` for `BASEBITS.PCK`, `PALETTE_BATTLESCAPE = 4` for `BIGOBS.PCK` and `SMOKE.PCK`.
+
+**Testing it:**
+
+```powershell
+# Automated: synthetic unit tests + real-file tests (auto-skipped if reference/UFO or reference/TFTD is missing)
+.\.venv\Scripts\python.exe -m pytest test/test_pck_decoder.py
+
+# Visual: dump every BASEBITS and BIGOBS sprite to PNGs and inspect them
+.\.venv\Scripts\python.exe src/pck_decoder.py --game-dir reference/UFO --cache-dir user/cache/sprites
+```
+
+**Remaining work:**
+
+- **`ResourceManager` fallback:** if no mod `extraSprites` PNG exists, decode the ruleset's sprite index from the vanilla archive:
+  - Facilities (`spriteShape`, `spriteFacility`): `GEOGRAPH/BASEBITS.PCK` (#26)
+  - Inventory items (`bigSprite`): `UNITS/BIGOBS.PCK`
+  - Rank icons: `UFOGRAPH/SMOKE.PCK` or `BASEBITS.PCK` (no extractor helper yet)
+- **Cache invalidation:** the PNG cache is keyed only by archive, palette, and index. It must also be invalidated when the game files change (see the cache convention in [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)).
+- **TFTD:** `SOLDIER.DAT` (70-byte records) and TFTD units' 4-byte `.TAB` offsets are not handled by the extractor yet.
+- **UFOpaedia images:** `UP*.SPK` decode correctly but each needs its own palette; the right one isn't documented yet.
 
 ### 5.2 Use OpenXcom's `standard/xcom1` and `standard/xcom2` YAML for non-graphical data
 

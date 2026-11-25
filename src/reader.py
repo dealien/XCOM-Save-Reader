@@ -16,6 +16,10 @@ class Soldier:
         self.initialstats = Stats(data["initialStats"])
         self.currentstats = Stats(data["currentStats"])
         self.rank = data["rank"]
+        self.gender = data.get("gender", 0)
+        self.look = data.get("look", 0)
+        self.look_variant = data.get("lookVariant", 0)
+        self.armor = data.get("armor", "STR_NONE_UC")
         self.missions = data.get("missions", 0)
         self.kills = data.get("kills", 0)
         self.base = base_name
@@ -154,6 +158,17 @@ class Base:
         if "transfers" in data:
             for t in data["transfers"]:
                 self.transfers.append(Transfer(t, mission_data))
+
+        # Crafts stationed at or assigned to this base
+        self.crafts = [Craft(c) for c in data.get("crafts", [])]
+
+
+class Craft:
+    def __init__(self, data):
+        self.type = data.get("type")
+        self.id = data.get("id")
+        self.name = data.get("name")
+        self.status = data.get("status", "STR_READY")
 
 
 class Facility:

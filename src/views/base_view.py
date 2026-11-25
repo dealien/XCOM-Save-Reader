@@ -1,9 +1,15 @@
 import logging
 from tkinter import ttk
+from typing import Any
 
 import customtkinter as ctk
 
 import view_utils
+
+try:
+    from PIL import ImageTk
+except Exception:  # pragma: no cover - fallback when PIL is mocked in tests
+    ImageTk = None
 
 logger = logging.getLogger(__name__)
 
@@ -15,9 +21,11 @@ class BaseView(ctk.CTkFrame):
         logger.debug("Called super().__init__")
         self.controller = controller
 
-        # Sort state for soldier list
+        # Sort state for soldier list and storage grid
         self.soldier_sort_col = "Rank"
         self.soldier_sort_reverse = False
+        self.storage_sort_mode = "Name"
+        self._soldier_row_images: list[Any] = []
 
         # Configure grid
         self.grid_rowconfigure(1, weight=1)
@@ -104,20 +112,84 @@ class BaseView(ctk.CTkFrame):
         scroll = ctk.CTkScrollableFrame(frame)
         scroll.pack(fill="both", expand=True)
 
+        rm = getattr(self.controller, "resource_manager", None)
+        layout_img = rm.render_base_layout(base, scale=2) if rm is not None else None
+
+        content = ctk.CTkFrame(scroll, fg_color="transparent")
+        content.pack(fill="both", expand=True, padx=10, pady=5)
+
+        if layout_img is not None:
+            layout_frame = ctk.CTkFrame(content, fg_color="transparent")
+            layout_frame.pack(side="left", anchor="nw", padx=(0, 20), pady=5)
+            ctk.CTkLabel(
+                layout_frame,
+                text="Base Layout",
+                font=ctk.CTkFont(size=16, weight="bold"),
+            ).pack(anchor="w", pady=(0, 5))
+            ctk.CTkLabel(layout_frame, text="", image=layout_img).pack(anchor="w")
+
+        details_frame = ctk.CTkFrame(content, fg_color="transparent")
+        details_frame.pack(side="left", fill="both", expand=True, anchor="nw")
+
         ctk.CTkLabel(
-            scroll, text="Facilities", font=ctk.CTkFont(size=16, weight="bold")
+            details_frame, text="Facilities", font=ctk.CTkFont(size=16, weight="bold")
         ).pack(anchor="w", pady=5)
 
-        # Simple list of facilities for now
-        # Could grouping by type count? e.g. "Living Quarters x3"
-        counts = {}
+        # Group facilities by type and render with sprite if available
+        counts: dict[str, int] = {}
+        type_to_raw: dict[str, str] = {}
         for f in base.facilities:
             if f.type:
                 ftype = self.controller.translation_manager.get(f.type)
                 counts[ftype] = counts.get(ftype, 0) + 1
+                type_to_raw[ftype] = f.type
 
         for ftype, count in counts.items():
-            ctk.CTkLabel(scroll, text=f"{ftype}: {count}").pack(anchor="w", padx=10)
+            row = ctk.CTkFrame(details_frame, fg_color="transparent")
+            row.pack(anchor="w", padx=10, pady=2)
+
+            raw_type = type_to_raw.get(ftype, "")
+            sprite = rm.get_facility_sprite(raw_type) if rm is not None else None
+
+            if sprite is not None:
+                ctk.CTkLabel(row, text="", image=sprite).pack(side="left", padx=(0, 8))
+
+            ctk.CTkLabel(row, text=f"{ftype}: {count}").pack(side="left")
+
+        crafts = getattr(base, "crafts", None)
+        if isinstance(crafts, (list, tuple)) and crafts:
+            ctk.CTkLabel(
+                details_frame, text="Crafts", font=ctk.CTkFont(size=16, weight="bold")
+            ).pack(anchor="w", pady=(15, 5))
+            for c in crafts:
+                row = ctk.CTkFrame(details_frame, fg_color="transparent")
+                row.pack(anchor="w", padx=10, pady=2)
+
+                craft_sprite = (
+                    rm.get_craft_sprite(c.type) if rm is not None and c.type else None
+                )
+                if craft_sprite is not None:
+                    ctk.CTkLabel(row, text="", image=craft_sprite).pack(
+                        side="left", padx=(0, 8)
+                    )
+
+                craft_type_name = (
+                    self.controller.translation_manager.get(c.type)
+                    if c.type
+                    else "Unknown Craft"
+                )
+                craft_label = getattr(c, "name", None) or (
+                    f"{craft_type_name} #{c.id}"
+                    if getattr(c, "id", None)
+                    else craft_type_name
+                )
+                status = (
+                    self.controller.translation_manager.get(c.status)
+                    if getattr(c, "status", None)
+                    else ""
+                )
+                text = f"{craft_label} ({status})" if status else craft_label
+                ctk.CTkLabel(row, text=text).pack(side="left")
 
     def render_soldiers(self, base):
         frame = self.tab_soldiers
@@ -160,8 +232,36 @@ class BaseView(ctk.CTkFrame):
         self.populate_soldier_tree(base.soldiers)
 
     def create_soldier_tree(self, parent):
+        style = ttk.Style()
+        style.theme_use("default")
+        style.configure(
+            "Treeview",
+            background="#2b2b2b",
+            foreground="white",
+            rowheight=44,
+            fieldbackground="#2b2b2b",
+            bordercolor="#2b2b2b",
+            borderwidth=0,
+            font=("Roboto", 11),
+        )
+        style.map(
+            "Treeview",
+            background=[("selected", "#1f538d")],
+            foreground=[("selected", "white")],
+        )
+        style.configure(
+            "Treeview.Heading",
+            background="#3a3d42",
+            foreground="white",
+            relief="flat",
+            font=("Roboto", 11, "bold"),
+            padding=(10, 5),
+        )
+
         columns = ["Rank", "Name", "Missions", "Kills", "Status"]
-        tree = ttk.Treeview(parent, columns=columns, show="headings")
+        tree = ttk.Treeview(parent, columns=columns, show="tree headings")
+        tree.heading("#0", text="")
+        tree.column("#0", width=50, minwidth=44, stretch=False, anchor="center")
 
         # Configure headers
         for col in columns:
@@ -189,7 +289,8 @@ class BaseView(ctk.CTkFrame):
         return tree
 
     def populate_soldier_tree(self, soldiers):
-        # Clear existing
+        # Clear existing data and retained PhotoImage references
+        self._soldier_row_images.clear()
         for i in self.soldier_tree.get_children():
             self.soldier_tree.delete(i)
 
@@ -218,6 +319,7 @@ class BaseView(ctk.CTkFrame):
             data.append(
                 {
                     "id": s.id,
+                    "soldier": s,
                     "values": [rank_str, s.name, s.missions, s.kills, status_str],
                     "wounded": is_wounded,
                     "raw_sort": {  # For smarter sorting
@@ -233,15 +335,32 @@ class BaseView(ctk.CTkFrame):
         # Sort
         self.sort_data_list(data)
 
+        rm = getattr(self.controller, "resource_manager", None)
+
         # Insert
         for i, item in enumerate(data):
             tags = ["even" if i % 2 == 0 else "odd"]
             if item["wounded"]:
                 tags.append("wounded")
 
-            self.soldier_tree.insert(
-                "", "end", iid=item["id"], values=item["values"], tags=tuple(tags)
-            )
+            insert_kwargs: dict[str, Any] = {
+                "iid": item["id"],
+                "values": item["values"],
+                "tags": tuple(tags),
+            }
+            if rm is not None and ImageTk is not None:
+                pil_img = rm.get_soldier_sprite(
+                    item["soldier"], ctk_image=False, size=(32, 40)
+                )
+                if pil_img is not None:
+                    try:
+                        photo = ImageTk.PhotoImage(pil_img)
+                        self._soldier_row_images.append(photo)
+                        insert_kwargs["image"] = photo
+                    except Exception:
+                        pass
+
+            self.soldier_tree.insert("", "end", **insert_kwargs)
 
     def sort_soldier_tree(self, col):
         if self.soldier_sort_col == col:
@@ -308,26 +427,176 @@ class BaseView(ctk.CTkFrame):
         frame = self.tab_storage
         self.clear_frame(frame)
 
-        scroll = ctk.CTkScrollableFrame(frame)
-        scroll.pack(fill="both", expand=True)
-
         if not base.items:
-            ctk.CTkLabel(scroll, text="No items in storage.").pack(pady=10)
+            ctk.CTkLabel(frame, text="No items in storage.").pack(pady=10)
             return
 
-        # Sort items by name (translated)
         items_list = []
         for item_key, qty in base.items.items():
             name = self.controller.translation_manager.get(item_key)
-            items_list.append((name, qty))
+            items_list.append((item_key, name, qty))
+        self._storage_items = items_list
 
-        items_list.sort(key=lambda x: x[0])
+        container = ctk.CTkFrame(frame, fg_color="transparent")
+        container.pack(fill="both", expand=True, padx=5, pady=5)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=3)
+        container.grid_columnconfigure(1, weight=1)
 
-        for name, qty in items_list:
-            row = ctk.CTkFrame(scroll, fg_color="transparent")
+        # Left pane: single contiguous in-game sprite grid with sort selector
+        left_pane = ctk.CTkFrame(container)
+        left_pane.grid(row=0, column=0, sticky="nsew", padx=(0, 8))
+        left_pane.grid_rowconfigure(1, weight=1)
+        left_pane.grid_columnconfigure(0, weight=1)
+
+        grid_header = ctk.CTkFrame(left_pane, fg_color="transparent")
+        grid_header.grid(row=0, column=0, padx=10, pady=(8, 4), sticky="ew")
+        grid_header.grid_columnconfigure(0, weight=1)
+
+        ctk.CTkLabel(
+            grid_header,
+            text="Storage Grid",
+            font=ctk.CTkFont(size=15, weight="bold"),
+        ).grid(row=0, column=0, sticky="w")
+
+        ctk.CTkLabel(grid_header, text="Sort:").grid(row=0, column=1, padx=(0, 6))
+        self.storage_sort_menu = ctk.CTkOptionMenu(
+            grid_header,
+            values=["Name", "ID", "Type", "Quantity", "List Order"],
+            command=self._on_storage_sort_change,
+        )
+        self.storage_sort_menu.set(self.storage_sort_mode)
+        self.storage_sort_menu.grid(row=0, column=2, sticky="e")
+
+        self.storage_grid_scroll = ctk.CTkScrollableFrame(left_pane)
+        self.storage_grid_scroll.grid(
+            row=1, column=0, sticky="nsew", padx=6, pady=(0, 6)
+        )
+
+        # Right pane: searchable text list
+        right_pane = ctk.CTkFrame(container)
+        right_pane.grid(row=0, column=1, sticky="nsew")
+        right_pane.grid_rowconfigure(1, weight=1)
+        right_pane.grid_columnconfigure(0, weight=1)
+
+        self.storage_search_entry = ctk.CTkEntry(
+            right_pane, placeholder_text="Search items..."
+        )
+        self.storage_search_entry.grid(row=0, column=0, sticky="ew", padx=8, pady=8)
+        self.storage_search_entry.bind(
+            "<KeyRelease>", lambda _event: self._filter_storage_items()
+        )
+
+        self.storage_list_scroll = ctk.CTkScrollableFrame(right_pane)
+        self.storage_list_scroll.grid(
+            row=1, column=0, sticky="nsew", padx=6, pady=(0, 6)
+        )
+
+        self._populate_storage_views(self._storage_items)
+
+    @staticmethod
+    def _item_type_sort_key(item_def):
+        categories = item_def.get("categories")
+        cat = (
+            str(categories[0]).lower()
+            if isinstance(categories, list) and categories
+            else ""
+        )
+        battle_type = item_def.get("battleType")
+        try:
+            bt = int(battle_type) if battle_type is not None else 999
+        except ValueError, TypeError:
+            bt = 999
+        return (cat, bt)
+
+    def _sort_storage_items(self, items):
+        dm = getattr(self.controller, "data_manager", None)
+        items_db = getattr(dm, "items", None)
+        if not isinstance(items_db, dict):
+            items_db = {}
+
+        mode = getattr(self, "storage_sort_mode", "Name")
+        if mode == "ID":
+            return sorted(items, key=lambda x: x[0].lower())
+        if mode == "Quantity":
+            return sorted(items, key=lambda x: (-x[2], x[1].lower()))
+        if mode == "Type":
+            return sorted(
+                items,
+                key=lambda x: (
+                    self._item_type_sort_key(items_db.get(x[0], {})),
+                    x[1].lower(),
+                ),
+            )
+        if mode == "List Order":
+
+            def _list_order(entry):
+                raw = items_db.get(entry[0], {}).get("listOrder")
+                try:
+                    order = int(raw) if raw is not None else 999999
+                except ValueError, TypeError:
+                    order = 999999
+                return (order, entry[1].lower())
+
+            return sorted(items, key=_list_order)
+        return sorted(items, key=lambda x: (x[1].lower(), x[0]))
+
+    def _on_storage_sort_change(self, mode):
+        self.storage_sort_mode = mode
+        self._filter_storage_items()
+
+    def _filter_storage_items(self):
+        query = ""
+        if getattr(self, "storage_search_entry", None) is not None:
+            query = self.storage_search_entry.get().strip().lower()
+        items = getattr(self, "_storage_items", [])
+        if query:
+            filtered = [
+                (key, name, qty)
+                for key, name, qty in items
+                if query in name.lower() or query in key.lower()
+            ]
+        else:
+            filtered = items
+        self._populate_storage_views(filtered)
+
+    def _populate_storage_views(self, items):
+        self.clear_frame(self.storage_grid_scroll)
+        self.clear_frame(self.storage_list_scroll)
+
+        if not items:
+            ctk.CTkLabel(self.storage_grid_scroll, text="No matching items.").pack(
+                pady=10
+            )
+            ctk.CTkLabel(self.storage_list_scroll, text="No matching items.").pack(
+                pady=10
+            )
+            return
+
+        items = self._sort_storage_items(items)
+        rm = getattr(self.controller, "resource_manager", None)
+
+        grid_items = [(item_key, qty) for item_key, _name, qty in items]
+        grid_img = (
+            rm.render_storage_grid(grid_items, grid_cols=16, scale=2)
+            if rm is not None
+            else None
+        )
+        if grid_img is not None:
+            ctk.CTkLabel(self.storage_grid_scroll, text="", image=grid_img).pack(
+                anchor="n", padx=4, pady=4
+            )
+
+        for item_key, name, qty in items:
+            row = ctk.CTkFrame(self.storage_list_scroll, fg_color="transparent")
             row.pack(fill="x", pady=2)
-            ctk.CTkLabel(row, text=name).pack(side="left", padx=10)
-            ctk.CTkLabel(row, text=str(qty)).pack(side="right", padx=10)
+            sprite = (
+                rm.get_item_sprite(item_key, size=(24, 36)) if rm is not None else None
+            )
+            if sprite is not None:
+                ctk.CTkLabel(row, text="", image=sprite).pack(side="left", padx=(6, 4))
+            ctk.CTkLabel(row, text=name).pack(side="left", padx=6)
+            ctk.CTkLabel(row, text=str(qty)).pack(side="right", padx=8)
 
     def render_research(self, base):
         frame = self.tab_research
