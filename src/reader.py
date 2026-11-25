@@ -16,6 +16,10 @@ class Soldier:
         self.initialstats = Stats(data["initialStats"])
         self.currentstats = Stats(data["currentStats"])
         self.rank = data["rank"]
+        self.gender = data.get("gender", 0)
+        self.look = data.get("look", 0)
+        self.look_variant = data.get("lookVariant", 0)
+        self.armor = data.get("armor", "STR_NONE_UC")
         self.missions = data.get("missions", 0)
         self.kills = data.get("kills", 0)
         self.base = base_name

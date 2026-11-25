@@ -14,7 +14,7 @@ class SoldierView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.grid_columnconfigure(1, weight=1)  # Make the title column expandable
+        self.grid_columnconfigure(2, weight=1)  # Make the inventory column expandable
 
         # Back Button
         back_button = ctk.CTkButton(self, text="←", command=self.back_to_list, width=30)
@@ -22,7 +22,7 @@ class SoldierView(ctk.CTkFrame):
 
         # Name & Rank Banner (Top Left)
         name_banner = ctk.CTkFrame(self, fg_color="transparent")
-        name_banner.grid(row=0, column=1, padx=20, pady=20, sticky="w")
+        name_banner.grid(row=0, column=1, columnspan=2, padx=20, pady=20, sticky="w")
         self.rank_icon_label = ctk.CTkLabel(name_banner, text="")
         self.rank_icon_label.pack(side="left", padx=(0, 10))
         self.name_label = ctk.CTkLabel(
@@ -32,7 +32,7 @@ class SoldierView(ctk.CTkFrame):
 
         # Stats Frame (Left)
         stats_frame = ctk.CTkFrame(self)
-        stats_frame.grid(row=1, column=0, padx=20, pady=10, sticky="nsew")
+        stats_frame.grid(row=1, column=0, padx=(20, 10), pady=10, sticky="nsew")
         self.stats_labels = {}
 
         stat_names = [
@@ -55,15 +55,23 @@ class SoldierView(ctk.CTkFrame):
             value.grid(row=i, column=1, padx=10, pady=5, sticky="w")
             self.stats_labels[stat] = value
 
+        # Soldier Sprite Frame (Center, between Stats and Inventory)
+        sprite_frame = ctk.CTkFrame(self)
+        sprite_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
+        self.soldier_sprite_label = ctk.CTkLabel(sprite_frame, text="")
+        self.soldier_sprite_label.pack(expand=True, padx=15, pady=15)
+
         # Inventory Frame (Right)
         self.inventory_frame = ctk.CTkScrollableFrame(self, label_text="Inventory")
-        self.inventory_frame.grid(row=1, column=1, padx=20, pady=10, sticky="nsew")
+        self.inventory_frame.grid(
+            row=1, column=2, padx=(10, 20), pady=10, sticky="nsew"
+        )
         self.inventory_frame.grid_columnconfigure(0, weight=1)
 
-        # Service Record Frame (Bottom, spanning both columns)
+        # Service Record Frame (Bottom, spanning all columns)
         service_record_frame = ctk.CTkFrame(self)
         service_record_frame.grid(
-            row=2, column=0, columnspan=2, padx=20, pady=10, sticky="nsew"
+            row=2, column=0, columnspan=3, padx=20, pady=10, sticky="nsew"
         )
         service_record_frame.grid_columnconfigure((0, 1), weight=1)
 
@@ -130,6 +138,13 @@ class SoldierView(ctk.CTkFrame):
             else None
         )
         self.rank_icon_label.configure(image=rank_sprite)
+
+        soldier_sprite = (
+            rm.get_soldier_sprite(soldier, ctk_image=True, size=(160, 200))
+            if rm is not None
+            else None
+        )
+        self.soldier_sprite_label.configure(image=soldier_sprite)
 
         # Current Stats
         current_stats = soldier.currentstats

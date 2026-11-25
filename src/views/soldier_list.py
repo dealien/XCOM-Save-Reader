@@ -1,6 +1,12 @@
 from tkinter import ttk
+from typing import Any
 
 import customtkinter as ctk
+
+try:
+    from PIL import ImageTk
+except Exception:  # pragma: no cover - fallback when PIL is mocked in tests
+    ImageTk = None
 
 
 class SoldierListView(ctk.CTkFrame):
@@ -10,6 +16,7 @@ class SoldierListView(ctk.CTkFrame):
         self.sort_column = "Name"  # Default sort column
         self.sort_reverse = False
         self.show_kia = ctk.BooleanVar(value=False)
+        self._row_images: list[Any] = []
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
@@ -52,7 +59,7 @@ class SoldierListView(ctk.CTkFrame):
             "Treeview",
             background=bg_color,
             foreground=fg_color,
-            rowheight=35,
+            rowheight=44,
             fieldbackground=bg_color,
             bordercolor=bg_color,
             borderwidth=0,
@@ -77,7 +84,7 @@ class SoldierListView(ctk.CTkFrame):
 
         style.map("Treeview.Heading", background=[("active", "#4a4e54")])
 
-        tree = ttk.Treeview(self, show="headings")
+        tree = ttk.Treeview(self, show="tree headings")
 
         # Configure alternating row colors
         tree.tag_configure("odd", background="#2b2b2b")
@@ -91,7 +98,8 @@ class SoldierListView(ctk.CTkFrame):
         self.controller.show_frame(MainMenu)
 
     def update_view(self):
-        # Clear existing data
+        # Clear existing data and retained PhotoImage references
+        self._row_images.clear()
         for i in self.tree.get_children():
             self.tree.delete(i)
 
@@ -109,9 +117,11 @@ class SoldierListView(ctk.CTkFrame):
 
         soldiers = filtered_soldiers
 
-        # Define columns
+        # Define columns (#0 holds the soldier sprite icon)
         columns = ["ID", "Name", "Rank", "Missions", "Kills", "Base"]
         self.tree["columns"] = columns
+        self.tree.heading("#0", text="")
+        self.tree.column("#0", width=50, minwidth=44, stretch=False, anchor="center")
 
         # Configure columns
         for col in columns:
@@ -125,18 +135,37 @@ class SoldierListView(ctk.CTkFrame):
             else:
                 self.tree.column(col, anchor="w", stretch=False, width=80, minwidth=60)
 
+        rm = getattr(self.controller, "resource_manager", None)
+
         # Insert data with striped rows
         for i, soldier in enumerate(soldiers):
+            rank_key = self.controller.translation_manager.get_rank_string(
+                soldier.rank, getattr(soldier, "type", "STR_SOLDIER")
+            )
             values = [
                 soldier.id,
                 soldier.name,
-                self.controller.translation_manager.get(soldier.rank),
+                self.controller.translation_manager.get(rank_key),
                 soldier.missions,
                 soldier.kills,
                 soldier.base,
             ]
             tag = "even" if i % 2 == 0 else "odd"
-            self.tree.insert("", "end", values=values, iid=soldier.id, tags=(tag,))
+            insert_kwargs: dict[str, Any] = {
+                "values": values,
+                "iid": soldier.id,
+                "tags": (tag,),
+            }
+            if rm is not None and ImageTk is not None:
+                pil_img = rm.get_soldier_sprite(soldier, ctk_image=False, size=(32, 40))
+                if pil_img is not None:
+                    try:
+                        photo = ImageTk.PhotoImage(pil_img)
+                        self._row_images.append(photo)
+                        insert_kwargs["image"] = photo
+                    except Exception:
+                        pass
+            self.tree.insert("", "end", **insert_kwargs)
 
         # Add event handler for row selection
         self.tree.bind("<<TreeviewSelect>>", self.on_soldier_select)

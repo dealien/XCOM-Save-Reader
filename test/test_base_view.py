@@ -96,6 +96,35 @@ class DummyCTkScrollableFrame:
     def pack(self, **kwargs):
         pass
 
+    def grid(self, **kwargs):
+        pass
+
+    def grid_rowconfigure(self, index, weight=1):
+        pass
+
+    def grid_columnconfigure(self, index, weight=1):
+        pass
+
+    def winfo_children(self):
+        return []
+
+
+class DummyCTkEntry:
+    def __init__(self, master=None, **kwargs):
+        self.value = ""
+
+    def grid(self, **kwargs):
+        pass
+
+    def pack(self, **kwargs):
+        pass
+
+    def bind(self, event, command):
+        pass
+
+    def get(self):
+        return self.value
+
 
 class DummyTreeview:
     def __init__(self, master=None, **kwargs):
@@ -182,6 +211,7 @@ class TestBaseView(unittest.TestCase):
         mock_ctk.CTkOptionMenu = DummyCTkOptionMenu
         mock_ctk.CTkTabview = DummyCTkTabview
         mock_ctk.CTkScrollableFrame = DummyCTkScrollableFrame
+        mock_ctk.CTkEntry = DummyCTkEntry
         mock_ctk.CTkFont = MagicMock()
         sys.modules["customtkinter"] = mock_ctk
 
@@ -340,6 +370,37 @@ class TestBaseView(unittest.TestCase):
 
             # Verify insert called
             tree_instance.insert.assert_called()
+
+    def test_populate_soldier_tree_attaches_sprites(self):
+        """Base soldier list attaches 32x40 soldier sprites and retains references."""
+        s1 = MagicMock(
+            id=1,
+            recovery=0,
+            training=False,
+            psi_training=False,
+            rank=0,
+            type="STR_SOLDIER",
+            name="Soldier 1",
+            missions=1,
+            kills=0,
+        )
+        self.view.soldier_tree = MagicMock()
+        self.view.soldier_tree.get_children.return_value = []
+        self.mock_controller.resource_manager.get_soldier_sprite.return_value = (
+            MagicMock()
+        )
+
+        with patch("views.base_view.ImageTk") as mock_imagetk:
+            mock_photo = MagicMock()
+            mock_imagetk.PhotoImage.return_value = mock_photo
+            self.view.populate_soldier_tree([s1])
+
+        self.mock_controller.resource_manager.get_soldier_sprite.assert_called_once_with(
+            s1, ctk_image=False, size=(32, 40)
+        )
+        self.view.soldier_tree.insert.assert_called_once()
+        assert self.view.soldier_tree.insert.call_args.kwargs.get("image") is mock_photo
+        assert self.view._soldier_row_images == [mock_photo]
 
     def test_render_transfers(self):
         """Test transfer rendering"""
@@ -633,16 +694,93 @@ class TestBaseView(unittest.TestCase):
             self.assertIn("Skyranger-1 (TR[STR_READY])", texts)
 
     def test_render_storage_requests_item_sprites(self):
-        """Storage view requests item sprites via resource_manager."""
+        """Storage view builds contiguous grid and text list via resource_manager."""
         base = MagicMock()
         base.items = {"STR_RIFLE": 10}
 
-        with patch("customtkinter.CTkLabel"):
+        with patch("customtkinter.CTkLabel") as MockLabel:
             self.view.render_storage(base)
 
+        self.mock_controller.resource_manager.render_storage_grid.assert_called_once_with(
+            [("STR_RIFLE", 10)], grid_cols=16, scale=2
+        )
         self.mock_controller.resource_manager.get_item_sprite.assert_called_once_with(
             "STR_RIFLE", size=(24, 36)
         )
+        # Only one list label with item name should appear (no duplicate grid caption)
+        texts = [c.kwargs.get("text") for c in MockLabel.call_args_list]
+        self.assertEqual(texts.count("TR[STR_RIFLE]"), 1)
+
+    def test_render_storage_search_filters_items(self):
+        """Typing in the storage search entry filters both grid and list views."""
+        base = MagicMock()
+        base.items = {"STR_RIFLE": 10, "STR_PISTOL": 5}
+
+        with patch("customtkinter.CTkLabel") as MockLabel:
+            self.view.render_storage(base)
+            MockLabel.reset_mock()
+            self.mock_controller.resource_manager.reset_mock()
+
+            self.view.storage_search_entry.value = "rifle"
+            self.view._filter_storage_items()
+
+            texts = [c.kwargs.get("text") for c in MockLabel.call_args_list]
+            self.assertIn("TR[STR_RIFLE]", texts)
+            self.assertNotIn("TR[STR_PISTOL]", texts)
+            self.mock_controller.resource_manager.render_storage_grid.assert_called_once_with(
+                [("STR_RIFLE", 10)], grid_cols=16, scale=2
+            )
+
+    def test_render_storage_sort_modes(self):
+        """Sort dropdown reorders items by Name, ID, Quantity, Type, and Order."""
+        self.mock_controller.translation_manager.get.side_effect = {
+            "STR_Z_ID": "Alpha Item",
+            "STR_A_ID": "Zebra Item",
+            "STR_M_ID": "Beta Item",
+        }.get
+        self.mock_controller.data_manager.items = {
+            "STR_Z_ID": {"categories": ["Equipment"], "battleType": 6, "listOrder": 30},
+            "STR_A_ID": {"categories": ["Weapons"], "battleType": 1, "listOrder": 20},
+            "STR_M_ID": {"categories": ["Ammo"], "battleType": 2, "listOrder": 10},
+        }
+        base = MagicMock()
+        base.items = {"STR_Z_ID": 10, "STR_A_ID": 20, "STR_M_ID": 5}
+
+        with patch("customtkinter.CTkLabel"):
+            self.view.render_storage(base)
+            self.mock_controller.resource_manager.render_storage_grid.assert_called_with(
+                [("STR_Z_ID", 10), ("STR_M_ID", 5), ("STR_A_ID", 20)],
+                grid_cols=16,
+                scale=2,
+            )
+
+            self.view._on_storage_sort_change("ID")
+            self.mock_controller.resource_manager.render_storage_grid.assert_called_with(
+                [("STR_A_ID", 20), ("STR_M_ID", 5), ("STR_Z_ID", 10)],
+                grid_cols=16,
+                scale=2,
+            )
+
+            self.view._on_storage_sort_change("Quantity")
+            self.mock_controller.resource_manager.render_storage_grid.assert_called_with(
+                [("STR_A_ID", 20), ("STR_Z_ID", 10), ("STR_M_ID", 5)],
+                grid_cols=16,
+                scale=2,
+            )
+
+            self.view._on_storage_sort_change("Type")
+            self.mock_controller.resource_manager.render_storage_grid.assert_called_with(
+                [("STR_M_ID", 5), ("STR_Z_ID", 10), ("STR_A_ID", 20)],
+                grid_cols=16,
+                scale=2,
+            )
+
+            self.view._on_storage_sort_change("List Order")
+            self.mock_controller.resource_manager.render_storage_grid.assert_called_with(
+                [("STR_M_ID", 5), ("STR_A_ID", 20), ("STR_Z_ID", 10)],
+                grid_cols=16,
+                scale=2,
+            )
 
 
 if __name__ == "__main__":

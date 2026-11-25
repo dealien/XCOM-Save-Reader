@@ -413,3 +413,190 @@ def test_render_base_layout_real_ufo(tmp_path):
     assert img is not None
     assert img.size == (384, 384)
     assert img.getbbox() == (0, 0, 384, 384)
+
+
+def test_get_soldier_sprite_vanilla_and_recolor(tmp_path):
+    """Soldier sprites compose armor torso by gender and recolor face/hair by look."""
+    ufo_dir = _make_synthetic_basebits_ufo(tmp_path)
+    (ufo_dir / "UNITS").mkdir(parents=True, exist_ok=True)
+
+    # Extend palette so face group 6 (96) -> red, face target 160 -> blue,
+    # hair group 9 (144) -> green, hair target 245 -> yellow.
+    pal_path = ufo_dir / "GEODATA" / "PALETTES.DAT"
+    pal_bytes = bytearray(pal_path.read_bytes())
+    bat_off = pd.PALETTE_BATTLESCAPE * pd.PALETTE_RECORD_SIZE
+    pal_bytes[bat_off + 96 * 3 : bat_off + 96 * 3 + 3] = bytes([63, 0, 0])
+    pal_bytes[bat_off + 160 * 3 : bat_off + 160 * 3 + 3] = bytes([0, 0, 63])
+    pal_bytes[bat_off + 144 * 3 : bat_off + 144 * 3 + 3] = bytes([0, 63, 0])
+    pal_bytes[bat_off + 245 * 3 : bat_off + 245 * 3 + 3] = bytes([63, 63, 0])
+    pal_path.write_bytes(bytes(pal_bytes))
+
+    # Build XCOM_0.PCK with 275 frames:
+    # frame 3 (r-arm): face idx 96 at (0,0) and hair idx 144 at (1,0)
+    # frame 11 (l-arm): transparent
+    # frame 19 (legs): color 7 at (2,0)
+    # frame 35 (male torso): green color 2 at (3,0)
+    # frame 270 (female torso): cyan color 6 at (3,0)
+    pck_buf = bytearray()
+    offsets: list[int] = []
+    for idx in range(275):
+        offsets.append(len(pck_buf))
+        if idx == 3:
+            pck_buf.extend(bytes([0, 96, 144, 0xFF]))
+        elif idx == 19:
+            pck_buf.extend(bytes([0, 0xFE, 2, 7, 0xFF]))
+        elif idx == 35:
+            pck_buf.extend(bytes([0, 0xFE, 3, 2, 0xFF]))
+        elif idx == 270:
+            pck_buf.extend(bytes([0, 0xFE, 3, 6, 0xFF]))
+        else:
+            pck_buf.extend(bytes([0, 0xFF]))
+
+    (ufo_dir / "UNITS" / "XCOM_0.PCK").write_bytes(bytes(pck_buf))
+    (ufo_dir / "UNITS" / "XCOM_0.TAB").write_bytes(
+        struct.pack(f"<{len(offsets)}H", *offsets)
+    )
+
+    dm = MagicMock()
+    dm.base_path = str(tmp_path)
+    dm.master = "xcom1"
+    dm.extraSprites = {}
+    dm.armors = {
+        "STR_NONE_UC": {
+            "spriteSheet": "XCOM_0.PCK",
+            "spriteFaceGroup": 6,
+            "spriteFaceColor": [96, 96, 96, 96, 160, 160],
+            "spriteHairGroup": 9,
+            "spriteHairColor": [144, 144, 144, 144, 245, 245],
+        }
+    }
+
+    rm = ResourceManager(dm, cache_dir=tmp_path / "cache")
+    male_look0 = MagicMock(armor="STR_NONE_UC", gender=0, look=0)
+    female_look0 = MagicMock(armor="STR_NONE_UC", gender=1, look=0)
+    male_look2 = MagicMock(armor="STR_NONE_UC", gender=0, look=2)
+
+    img_m0 = rm.get_soldier_sprite(male_look0, ctk_image=False)
+    img_f0 = rm.get_soldier_sprite(female_look0, ctk_image=False)
+    img_m2 = rm.get_soldier_sprite(male_look2, ctk_image=False)
+
+    assert img_m0 is not None and img_m0.size == (32, 40)
+    # Torso differs by gender: male green vs female cyan at (3, 0)
+    assert img_m0.getpixel((3, 0)) == (0, 252, 0, 255)
+    assert img_f0.getpixel((3, 0)) == (0, 252, 252, 255)
+    # Face/hair differ by look: look=0 (96/144) vs look=2 (160/245)
+    assert img_m0.getpixel((0, 0)) == (252, 0, 0, 255)
+    assert img_m2.getpixel((0, 0)) == (0, 0, 252, 255)
+    assert img_m0.getpixel((1, 0)) == (0, 252, 0, 255)
+    assert img_m2.getpixel((1, 0)) == (252, 252, 0, 255)
+
+
+def test_get_soldier_sprite_mod_sheet_and_recolor(tmp_path):
+    """Modded paletted extraSprites unit sheets slice subX/subY and recolor ramps."""
+    mod_dir = tmp_path / "mod"
+    mod_dir.mkdir()
+
+    # Create 128x40 paletted PNG (4 frames of 32x40); frame 3 draws palette idx 96
+    sheet = Image.new("P", (128, 40), 0)
+    pal = [0] * 768
+    pal[96 * 3 : 96 * 3 + 3] = [200, 10, 10]
+    pal[160 * 3 : 160 * 3 + 3] = [10, 200, 10]
+    sheet.putpalette(pal)
+    sheet.info["transparency"] = 0
+    sheet.putpixel((3 * 32, 0), 96)
+    sheet.save(mod_dir / "unit.png", transparency=0)
+
+    dm = MagicMock()
+    dm.base_path = str(tmp_path)
+    dm.extraSprites = {
+        "MOD_UNIT.PCK": {
+            "subX": 32,
+            "subY": 40,
+            "_source_dir": str(mod_dir),
+            "_file_sources": {0: str(mod_dir)},
+            "files": {0: "unit.png"},
+        }
+    }
+    dm.armors = {
+        "STR_MOD_ARMOR": {
+            "spriteSheet": "MOD_UNIT.PCK",
+            "drawingRoutine": 4,
+            "spriteFaceGroup": 6,
+            "spriteFaceColor": [96, 96, 160, 160],
+        }
+    }
+
+    rm = ResourceManager(dm, cache_dir=tmp_path / "cache")
+    s0 = rm.get_soldier_sprite(
+        MagicMock(armor="STR_MOD_ARMOR", gender=0, look=0), ctk_image=False
+    )
+    s1 = rm.get_soldier_sprite(
+        MagicMock(armor="STR_MOD_ARMOR", gender=0, look=1), ctk_image=False
+    )
+    assert s0 is not None and s0.getpixel((0, 0)) == (200, 10, 10, 255)
+    assert s1 is not None and s1.getpixel((0, 0)) == (10, 200, 10, 255)
+
+
+def test_render_game_text_and_storage_tile(tmp_path):
+    """Game font renders counts cleanly onto 64x96 storage grid tiles."""
+    dm = MagicMock()
+    dm.base_path = str(REFERENCE if (REFERENCE / "common").is_dir() else tmp_path)
+    dm.master = "xcom1"
+    dm.extraSprites = {}
+    dm.items = {"STR_LASER_RIFLE": {"bigSprite": 0}}
+
+    rm = ResourceManager(dm, cache_dir=tmp_path / "cache")
+    txt = rm.render_game_text("42", scale=2)
+    assert txt.mode == "RGBA"
+    assert txt.getbbox() is not None
+
+    tile = rm.render_storage_item_tile("STR_LASER_RIFLE", 42, scale=2, ctk_image=False)
+    assert tile.size == (64, 96)
+    assert tile.mode == "RGBA"
+    # Bottom-right region should contain non-background text pixels
+    br_region = tile.crop((32, 70, 64, 96))
+    colors = br_region.getcolors(maxcolors=256)
+    assert colors is not None and len(colors) > 1
+
+    # Fallback path without FontSmall.png also produces valid RGBA image
+    dm_empty = MagicMock()
+    dm_empty.base_path = str(tmp_path)
+    rm_fallback = ResourceManager(dm_empty, cache_dir=tmp_path / "cache2")
+    fallback_txt = rm_fallback.render_game_text("99", scale=1)
+    assert fallback_txt.mode == "RGBA" and fallback_txt.getbbox() is not None
+
+
+def test_render_storage_grid_packs_items_without_text_labels(tmp_path):
+    """Contiguous storage grid packs 1x1, 1x2, and 2x3 items with count overlays."""
+    ufo_dir = _make_synthetic_basebits_ufo(tmp_path)
+    (ufo_dir / "UNITS").mkdir(parents=True, exist_ok=True)
+
+    # Create BIGOBS.PCK with frame 0 (red pixel at (0, 0)) and frame 1 (green pixel)
+    frame0 = bytes([0, 1, 0xFF])
+    frame1 = bytes([0, 2, 0xFF])
+    (ufo_dir / "UNITS" / "BIGOBS.PCK").write_bytes(frame0 + frame1)
+    (ufo_dir / "UNITS" / "BIGOBS.TAB").write_bytes(struct.pack("<HH", 0, len(frame0)))
+
+    dm = MagicMock()
+    dm.base_path = str(tmp_path)
+    dm.master = "xcom1"
+    dm.extraSprites = {}
+    dm.items = {
+        "STR_RIFLE": {"bigSprite": 0, "invWidth": 2, "invHeight": 3},
+        "STR_PISTOL": {"bigSprite": 1, "invWidth": 1, "invHeight": 2},
+        "STR_GRENADE": {"bigSprite": 0, "invWidth": 1, "invHeight": 1},
+    }
+
+    rm = ResourceManager(dm, cache_dir=tmp_path / "cache")
+    grid_img = rm.render_storage_grid(
+        [("STR_RIFLE", 5), ("STR_PISTOL", 12), ("STR_GRENADE", 120)],
+        grid_cols=6,
+        scale=2,
+        ctk_image=False,
+    )
+
+    assert grid_img is not None
+    assert grid_img.width == 6 * 32
+    assert grid_img.height >= 6 * 32
+    assert grid_img.height % 32 == 0
+    assert rm.render_storage_grid([], grid_cols=6, scale=2, ctk_image=False) is None

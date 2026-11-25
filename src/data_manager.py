@@ -8,7 +8,40 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
-CACHE_VERSION = "v3"
+CACHE_VERSION = "v4"
+
+
+class _DuplicateAnchorSafeLoader(yaml.SafeLoader):
+    """SafeLoader that allows duplicate YAML anchors (overwriting prior values)."""
+
+    def compose_node(self, parent, index):
+        if self.check_event(yaml.AliasEvent):
+            event = self.get_event()
+            anchor = event.anchor
+            if anchor not in self.anchors:
+                raise yaml.composer.ComposerError(
+                    None,
+                    None,
+                    f"found undefined alias {anchor!r}",
+                    event.start_mark,
+                )
+            return self.anchors[anchor]
+
+        event = self.peek_event()
+        anchor = event.anchor
+        self.descend_resolver(parent, index)
+        if self.check_event(yaml.ScalarEvent):
+            node = self.compose_scalar_node(None)
+        elif self.check_event(yaml.SequenceStartEvent):
+            node = self.compose_sequence_node(None)
+        elif self.check_event(yaml.MappingStartEvent):
+            node = self.compose_mapping_node(None)
+        else:
+            node = None
+        if anchor is not None and node is not None:
+            self.anchors[anchor] = node
+        self.ascend_resolver()
+        return node
 
 
 def _to_int_key(key):
@@ -42,6 +75,7 @@ class GameDataManager:
         self.manufacture = {}
         self.facilities = {}
         self.crafts = {}
+        self.armors = {}
         self.extraSprites = {}
 
         # Cache directory in OS temp folder
@@ -144,6 +178,7 @@ class GameDataManager:
         self.manufacture = {}
         self.facilities = {}
         self.crafts = {}
+        self.armors = {}
         self.extraSprites = {}
 
         # 1. Load Common
@@ -239,6 +274,7 @@ class GameDataManager:
             self.manufacture = data.get("manufacture", {})
             self.facilities = data.get("facilities", {})
             self.crafts = data.get("crafts", {})
+            self.armors = data.get("armors", {})
             self.extraSprites = data.get("extraSprites", {})
             if isinstance(self.extraSprites, dict):
                 for sprite_def in self.extraSprites.values():
@@ -274,6 +310,7 @@ class GameDataManager:
                 "manufacture": self.manufacture,
                 "facilities": self.facilities,
                 "crafts": self.crafts,
+                "armors": self.armors,
                 "extraSprites": self.extraSprites,
             }
             with open(path, "w", encoding="utf-8") as f:
@@ -303,7 +340,7 @@ class GameDataManager:
         try:
             with open(file_path, encoding="utf-8", errors="ignore") as f:
                 # Mod rulesets can have multiple documents separated by ---
-                docs = yaml.safe_load_all(f)
+                docs = yaml.load_all(f, Loader=_DuplicateAnchorSafeLoader)
                 for doc in docs:
                     if not doc:
                         continue
@@ -322,6 +359,9 @@ class GameDataManager:
                     )
                     self._merge_list_to_dict(
                         doc.get("crafts", []), self.crafts, source_dir
+                    )
+                    self._merge_list_to_dict(
+                        doc.get("armors", []), self.armors, source_dir
                     )
                     self._merge_extra_sprites(doc.get("extraSprites", []), source_dir)
 
@@ -426,3 +466,6 @@ class GameDataManager:
 
     def get_craft(self, craft_type):
         return self.crafts.get(craft_type, {})
+
+    def get_armor(self, armor_type):
+        return self.armors.get(armor_type, {})

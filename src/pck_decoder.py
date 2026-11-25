@@ -134,6 +134,29 @@ def apply_backpals(
     return merged
 
 
+def recolor_palette(
+    base_palette: Sequence[RGBA],
+    group: int | None,
+    target_color: int | None,
+    source_palette: Sequence[RGBA] | None = None,
+) -> list[RGBA]:
+    """Replace a 16-color VGA palette ramp ``group`` with ``target_color`` shades."""
+    recolored = list(base_palette)
+    src_pal = source_palette if source_palette is not None else base_palette
+    if group is None or target_color is None or group < 0 or target_color < 0:
+        return recolored
+
+    base_dst = group * 16
+    for shade in range(16):
+        dst_idx = base_dst + shade
+        src_idx = target_color + shade
+        if dst_idx == 0 or not (0 <= dst_idx < len(recolored)):
+            continue
+        if 0 <= src_idx < len(src_pal):
+            recolored[dst_idx] = src_pal[src_idx]
+    return recolored
+
+
 def parse_tab_bytes(tab_data: bytes, offset_size: int = 2) -> list[int]:
     """Parse a ``.TAB`` file into a list of byte offsets into a ``.PCK`` file.
 
@@ -529,6 +552,7 @@ class VanillaAssetExtractor:
         self._ensure_secure_cache_dir()
         self._palettes: list[list[RGBA]] | None = None
         self._archive_cache: dict[tuple[str, int], list[Image.Image]] = {}
+        self._raw_unit_cache: dict[str, tuple[bytes, list[int]]] = {}
 
     def _ensure_secure_cache_dir(self) -> None:
         self.cache_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -702,6 +726,54 @@ class VanillaAssetExtractor:
             width=DEFAULT_PCK_WIDTH,
             height=DEFAULT_PCK_HEIGHT,
         )
+
+    def decode_unit_frames(
+        self,
+        pck_name: str,
+        frame_indices: Sequence[int],
+        palette: Sequence[RGBA] | None = None,
+    ) -> dict[int, Image.Image]:
+        """Decode selected frames from a ``UNITS/*.PCK`` sprite archive."""
+        cache_key = pck_name.upper()
+        if cache_key not in self._raw_unit_cache:
+            pck_path = self._resolve_case_insensitive(f"UNITS/{pck_name}")
+            if pck_path is None:
+                raise FileNotFoundError(f"Missing unit PCK archive: UNITS/{pck_name}")
+            stem = Path(pck_name).stem
+            tab_path = self._resolve_case_insensitive(f"UNITS/{stem}.TAB")
+            pck_bytes = pck_path.read_bytes()
+            if tab_path is None:
+                offsets = [0]
+            else:
+                tab_bytes = tab_path.read_bytes()
+                offsets = parse_tab_bytes(tab_bytes, offset_size=2)
+                if (
+                    len(pck_bytes) > 65535
+                    and len(tab_bytes) % 4 == 0
+                    and any(
+                        offsets[i] > offsets[i + 1] for i in range(len(offsets) - 1)
+                    )
+                ):
+                    offsets = parse_tab_bytes(tab_bytes, offset_size=4)
+            self._raw_unit_cache[cache_key] = (pck_bytes, offsets)
+
+        pck_bytes, offsets = self._raw_unit_cache[cache_key]
+        active_palette = (
+            list(palette)
+            if palette is not None
+            else self.get_palette(PALETTE_BATTLESCAPE)
+        )
+        decoded: dict[int, Image.Image] = {}
+        for idx in frame_indices:
+            if 0 <= idx < len(offsets):
+                decoded[idx] = decode_pck_frame(
+                    pck_bytes,
+                    active_palette,
+                    start_offset=offsets[idx],
+                    width=DEFAULT_PCK_WIDTH,
+                    height=DEFAULT_PCK_HEIGHT,
+                )
+        return decoded
 
 
 def _extract_all(extractor: VanillaAssetExtractor) -> int:

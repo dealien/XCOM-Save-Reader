@@ -270,3 +270,37 @@ class TestGameDataManager:
         dm2.index_mods()
         dm2.load_all(["xcom1 ver: 1.0"])
         assert dm2.get_craft("STR_SKYRANGER")["sprite"] == 0
+
+    def test_duplicate_anchor_safe_loader_and_armors_cache(self):
+        """Duplicate YAML anchors parse cleanly and armors round-trip via JSON cache."""
+        ruleset_dir = os.path.join(self.mod1_dir, "Ruleset")
+        os.makedirs(ruleset_dir, exist_ok=True)
+        rul_text = (
+            "armors:\n"
+            "  - type: STR_A1\n"
+            "    stats: &DupStats\n"
+            "      tu: 10\n"
+            "    spriteSheet: XCOM_0.PCK\n"
+            "  - type: STR_A2\n"
+            "    stats: &DupStats\n"
+            "      tu: 20\n"
+            "    spriteSheet: XCOM_1.PCK\n"
+        )
+        with open(os.path.join(ruleset_dir, "armors.rul"), "w") as f:
+            f.write(rul_text)
+
+        dm = GameDataManager(self.test_dir)
+        dm._cache_dir = os.path.join(self.test_dir, "cache")
+        dm.index_mods()
+        mod_list = ["xcom1 ver: 1.0", "mod1 ver: 1.0"]
+        dm.load_all(mod_list)
+
+        assert dm.get_armor("STR_A1")["stats"]["tu"] == 10
+        assert dm.get_armor("STR_A2")["stats"]["tu"] == 20
+        assert dm.get_armor("STR_A2")["spriteSheet"] == "XCOM_1.PCK"
+
+        dm2 = GameDataManager(self.test_dir)
+        dm2._cache_dir = dm._cache_dir
+        dm2.index_mods()
+        dm2.load_all(mod_list)
+        assert dm2.get_armor("STR_A2")["spriteSheet"] == "XCOM_1.PCK"
